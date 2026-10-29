@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُخطط وحاسبة أنظمة كاميرات المراقبة الاحترافي | Smart CCTV Planner PRO v7.0</title>
+    <title>مُخطط وحاسبة أنظمة كاميرات المراقبة الاحترافي | Smart CCTV Planner PRO v8.0</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
@@ -46,9 +46,15 @@
             background: #00f2fe;
         }
         .glass-panel {
-            background: rgba(19, 32, 56, 0.78);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(56, 189, 248, 0.18);
+            background: rgba(19, 32, 56, 0.82);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .floating-inspector {
+            background: rgba(9, 16, 30, 0.94);
+            backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(0, 242, 254, 0.45);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0, 242, 254, 0.15);
         }
         .neon-border {
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.12), inset 0 0 15px rgba(0, 242, 254, 0.04);
@@ -76,9 +82,9 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 id="headerCompanyName" class="text-base sm:text-lg font-extrabold tracking-tight text-white">مُخطط كاميرات المراقبة الذكي</h1>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">PRO v7.0</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">PRO v8.0</span>
                     </div>
-                    <p class="text-xs text-slate-400">إضافة جميع البنود والمكونات (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات) يدوياً بالكامل</p>
+                    <p class="text-xs text-slate-400">قفل تصميم المبنى + لوحة إعدادات الكاميرا العائمة بجوار التصميم مباشرة</p>
                 </div>
             </div>
 
@@ -121,7 +127,7 @@
             <div class="flex items-center gap-2">
                 <button onclick="openInventoryModal()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-lg transition">
                     <i class="fa-solid fa-plus-circle"></i>
-                    <span>إضافة وتعديل المكونات والبنود يدوياً</span>
+                    <span>إضافة وتعديل المكونات يدوياً</span>
                 </button>
                 <button onclick="exportReportPrint()" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition">
                     <i class="fa-solid fa-file-pdf"></i>
@@ -138,48 +144,68 @@
     <!-- Main Workspace Container -->
     <main class="flex-1 max-w-[1700px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 no-print">
 
-        <!-- RIGHT SIDEBAR: Building Elements & Camera Inspector (4 Cols) -->
+        <!-- RIGHT SIDEBAR: Building Elements & Quick Camera Add (4 Cols) -->
         <aside class="lg:col-span-4 space-y-4">
 
-            <!-- 1. Custom Room & Area Builder (مصمم الغرف والمساحات اليدوي) -->
+            <!-- 1. Custom Room & Area Builder with Building LOCK Toggle -->
             <div class="glass-panel rounded-2xl p-4 neon-border">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2">
                         <i class="fa-solid fa-building"></i>
-                        <span>1. تصميم وتسمية الغرف والمساحات</span>
+                        <span>1. تصميم المبنى والمساحات</span>
                     </h2>
-                    <span class="text-[10px] text-cyan-400">تحكم كامل بالأبعاد</span>
-                </div>
-
-                <!-- Add Custom Room Form -->
-                <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs mb-3">
-                    <div class="font-bold text-slate-300">إضافة غرفة أو مساحة جديدة للمبنى:</div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="newRoomNameInput" placeholder="اكتب اسم الغرفة أو المساحة..." class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold col-span-2">
-                        <div>
-                            <label class="block text-slate-400 text-[10px] mb-0.5">نوع المساحة:</label>
-                            <select id="newRoomTypeInput" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold">
-                                <option value="room">غرفة داخلية</option>
-                                <option value="outdoor">مساحة خارجية / جراج</option>
-                                <option value="gate">بوابة / مدخل</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-400 text-[10px] mb-0.5">العرض × الطول:</label>
-                            <div class="flex gap-1">
-                                <input type="number" id="newRoomWidthInput" value="150" placeholder="عرض" class="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-1 py-1 text-white text-center">
-                                <input type="number" id="newRoomHeightInput" value="100" placeholder="طول" class="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-1 py-1 text-white text-center">
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="addNewBuildingSpace()" class="w-full py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black transition">
-                        + إضافة المساحة للمخطط الهندسي
+                    <!-- Lock / Unlock Building Button -->
+                    <button onclick="toggleBuildingLock()" id="btnLockBuildingSidebar" class="px-2.5 py-1 rounded-lg text-[11px] font-black flex items-center gap-1.5 transition bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40">
+                        <i class="fa-solid fa-lock-open" id="iconLockSidebar"></i>
+                        <span id="txtLockSidebar">قفل وتثبيت المبنى</span>
                     </button>
                 </div>
 
-                <!-- Existing Spaces List with Live Width/Height Editing -->
-                <div id="buildingElementsList" class="space-y-1.5 max-h-[160px] overflow-y-auto pr-1">
-                    <!-- Populated via JS -->
+                <!-- Add Custom Room Form -->
+                <div id="buildingEditorControls" class="space-y-3">
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+                        <div class="font-bold text-slate-300">إضافة غرفة أو مساحة جديدة للمبنى:</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="newRoomNameInput" placeholder="اكتب اسم الغرفة أو المساحة..." class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold col-span-2">
+                            <div>
+                                <label class="block text-slate-400 text-[10px] mb-0.5">نوع المساحة:</label>
+                                <select id="newRoomTypeInput" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold">
+                                    <option value="room">غرفة داخلية</option>
+                                    <option value="outdoor">مساحة خارجية / جراج</option>
+                                    <option value="gate">بوابة / مدخل</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-slate-400 text-[10px] mb-0.5">العرض × الطول:</label>
+                                <div class="flex gap-1">
+                                    <input type="number" id="newRoomWidthInput" value="150" placeholder="عرض" class="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-1 py-1 text-white text-center">
+                                    <input type="number" id="newRoomHeightInput" value="100" placeholder="طول" class="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-1 py-1 text-white text-center">
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="addNewBuildingSpace()" class="w-full py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black transition">
+                            + إضافة المساحة للمخطط الهندسي
+                        </button>
+                    </div>
+
+                    <!-- Existing Spaces List with Live Width/Height Editing -->
+                    <div id="buildingElementsList" class="space-y-1.5 max-h-[175px] overflow-y-auto pr-1">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+
+                <!-- Locked Notice Banner -->
+                <div id="buildingLockedBanner" class="hidden p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-center space-y-2 my-2">
+                    <div class="text-amber-400 font-black text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>تصميم المبنى مقفول ومثبّت الآن!</span>
+                    </div>
+                    <p class="text-[11px] text-slate-300 leading-relaxed">
+                        يمكنك الآن تحريك الكاميرات وجهاز الـ DVR وتحديد الزوايا بحرية تامة دون القلق من تحرك الغرف.
+                    </p>
+                    <button onclick="toggleBuildingLock()" class="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-[11px] hover:bg-amber-400 transition">
+                        فك قفل المبنى للتعديل
+                    </button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-800 text-xs mt-3">
@@ -196,78 +222,72 @@
 
             <!-- 2. Add Cameras Toolbar -->
             <div class="glass-panel rounded-2xl p-4">
-                <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2 mb-3">
-                    <i class="fa-solid fa-video"></i>
-                    <span>2. إضافة كاميرات المراقبة على الرسم</span>
-                </h2>
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2">
+                        <i class="fa-solid fa-video"></i>
+                        <span>2. إضافة كاميرات المراقبة على الرسم</span>
+                    </h2>
+                    <span class="text-[10px] text-slate-400">اضغط على أي كاميرا لفتح إعداداتها</span>
+                </div>
 
                 <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="addCamera('dome')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/60 border border-slate-700 text-right transition">
-                        <div class="text-xs font-bold text-white">كاميرا داخلية Dome</div>
-                        <div class="text-[10px] text-cyan-300 font-semibold">عدسة عريضة 105°</div>
-                    </button>
-                    <button onclick="addCamera('bullet')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-emerald-950/60 border border-slate-700 text-right transition">
-                        <div class="text-xs font-bold text-white">كاميرا خارجية Bullet</div>
-                        <div class="text-[10px] text-emerald-300 font-semibold">رؤية ليلية 80°</div>
-                    </button>
-                    <button onclick="addCamera('zoom')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-amber-950/60 border border-slate-700 text-right transition">
-                        <div class="text-xs font-bold text-white">كاميرا زووم 6mm</div>
-                        <div class="text-[10px] text-amber-300 font-semibold">مسافات مركزة</div>
-                    </button>
-                    <button onclick="addCamera('ptz')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-purple-950/60 border border-slate-700 text-right transition">
-                        <div class="text-xs font-bold text-white">متحركة PTZ 360°</div>
-                        <div class="text-[10px] text-purple-300 font-semibold">تغطية دائرية كاملة</div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 3. Selected Camera Inspector -->
-            <div class="glass-panel rounded-2xl p-4 border border-cyan-500/30" id="cameraInspectorPanel">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-sm font-extrabold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-cyan-400"></i>
-                        <span>3. خصائص الكاميرا المحددة</span>
-                    </h2>
-                    <button onclick="deleteSelectedCamera()" id="btnDeleteCam" class="text-xs bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded-lg font-bold transition">
-                        حذف الكاميرا
-                    </button>
-                </div>
-
-                <div id="inspectorContent" class="space-y-3 text-xs">
-                    <div>
-                        <label class="block text-slate-400 mb-1">اسم الكاميرا:</label>
-                        <input type="text" id="camLabelInput" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span class="text-slate-300">اتجاه الدوران (Rotation):</span>
-                            <span class="font-bold text-cyan-400"><span id="lblCamRotation">0</span>°</span>
+                    <button onclick="addCamera('dome')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/60 border border-slate-700 hover:border-cyan-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-white group-hover:text-cyan-300">كاميرا داخلية Dome</span>
+                            <i class="fa-solid fa-plus-circle text-cyan-400"></i>
                         </div>
-                        <input type="range" id="rngCamRotation" min="0" max="359" value="45" oninput="updateSelectedCameraFromUI()" class="w-full">
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span class="text-slate-300">مدى الرؤية (متر):</span>
-                            <span class="font-bold text-emerald-400"><span id="lblCamRange">12</span> متر</span>
+                        <div class="text-[10px] text-cyan-300/80 font-semibold mt-0.5">عدسة عريضة 105°</div>
+                    </button>
+                    <button onclick="addCamera('bullet')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-emerald-950/60 border border-slate-700 hover:border-emerald-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-white group-hover:text-emerald-300">كاميرا خارجية Bullet</span>
+                            <i class="fa-solid fa-plus-circle text-emerald-400"></i>
                         </div>
-                        <input type="range" id="rngCamRange" min="3" max="35" step="0.5" value="12" oninput="updateSelectedCameraFromUI()" class="w-full">
-                    </div>
+                        <div class="text-[10px] text-emerald-300/80 font-semibold mt-0.5">رؤية ليلية 80°</div>
+                    </button>
+                    <button onclick="addCamera('zoom')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-amber-950/60 border border-slate-700 hover:border-amber-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-white group-hover:text-amber-300">كاميرا زووم 6mm</span>
+                            <i class="fa-solid fa-plus-circle text-amber-400"></i>
+                        </div>
+                        <div class="text-[10px] text-amber-300/80 font-semibold mt-0.5">مسافات مركزة</div>
+                    </button>
+                    <button onclick="addCamera('ptz')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-purple-950/60 border border-slate-700 hover:border-purple-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-white group-hover:text-purple-300">متحركة PTZ 360°</span>
+                            <i class="fa-solid fa-plus-circle text-purple-400"></i>
+                        </div>
+                        <div class="text-[10px] text-purple-300/80 font-semibold mt-0.5">تغطية دائرية كاملة</div>
+                    </button>
                 </div>
-                <div id="inspectorEmptyState" class="hidden py-6 text-center text-slate-400 text-xs">
-                    اضغط على أي كاميرا بالمخطط لتعديلها
+
+                <!-- Quick Camera List for Direct Selection -->
+                <div class="mt-3 pt-3 border-t border-slate-800">
+                    <div class="text-[11px] font-bold text-slate-400 mb-2">الكاميرات الحالية بالمخطط (اضغط لتعديل المدى والزاوية):</div>
+                    <div id="quickCamerasList" class="flex flex-wrap gap-1.5">
+                        <!-- Populated via JS -->
+                    </div>
                 </div>
             </div>
 
         </aside>
 
-        <!-- LEFT / CENTER AREA: CANVAS WITH ZOOM & UNIFIED BOM (8 Cols) -->
+        <!-- LEFT / CENTER AREA: CANVAS WITH FLOATING CAMERA INSPECTOR & UNIFIED BOM (8 Cols) -->
         <section class="lg:col-span-8 flex flex-col gap-4">
 
-            <!-- Interactive Canvas Card with Zoom & Pan Toolbar -->
+            <!-- Interactive Canvas Card with Zoom, Lock Building & Floating Camera Settings -->
             <div class="glass-panel rounded-2xl p-3 sm:p-4 neon-border flex flex-col">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800">
-                    <!-- Zoom & Pan Controls -->
-                    <div class="flex items-center gap-1.5">
+                    <!-- Zoom, Pan & Lock Building Controls -->
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <!-- Main Lock Building Button right on the Canvas Toolbar -->
+                        <button onclick="toggleBuildingLock()" id="btnLockBuildingCanvas" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs text-emerald-300 font-black flex items-center gap-1.5 transition shadow">
+                            <i class="fa-solid fa-lock-open" id="iconLockCanvas"></i>
+                            <span id="txtLockCanvas">قفل المبنى (لتثبيت الغرف)</span>
+                        </button>
+
+                        <div class="h-4 w-[1px] bg-slate-700 mx-1"></div>
+
                         <button onclick="zoomCanvas(1.15)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold hover:bg-slate-800">
                             <i class="fa-solid fa-magnifying-glass-plus"></i> تكبير (+)
                         </button>
@@ -275,36 +295,106 @@
                             <i class="fa-solid fa-magnifying-glass-minus"></i> تصغير (-)
                         </button>
                         <button onclick="resetZoom()" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300 font-bold hover:bg-slate-800">
-                            ضبط الزوم (100%)
+                            100%
                         </button>
-                        <span id="zoomBadge" class="text-[11px] font-mono text-slate-400 px-2">100%</span>
+                        <span id="zoomBadge" class="text-[11px] font-mono text-slate-400 px-1">100%</span>
                     </div>
 
                     <div class="flex items-center gap-2">
                         <label class="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300">
                             <input type="checkbox" id="chkShowCables" checked onchange="drawScene()" class="rounded accent-cyan-400">
-                            <span>إظهار الأسلاك والمواسير</span>
+                            <span>إظهار الأسلاك</span>
                         </label>
-                        <button onclick="downloadCanvasImage()" class="px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold">
-                            حفظ صورة المخطط PNG
+                        <button onclick="downloadCanvasImage()" class="px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold hover:bg-cyan-500/30">
+                            حفظ صورة PNG
                         </button>
                     </div>
                 </div>
 
-                <!-- HTML5 Canvas Wrapper -->
+                <!-- HTML5 Canvas Wrapper + Direct Side-by-Side Floating Camera Inspector -->
                 <div class="relative w-full rounded-xl overflow-hidden border border-slate-700 bg-[#070d19]" id="canvasContainer">
                     <canvas id="cctvCanvas" class="w-full block cursor-grab active:cursor-grabbing touch-none"></canvas>
+
+                    <!-- FLOATING CAMERA SETTINGS HUD (تظهر مباشرة جنب التصميم عند الضغط على أي كاميرا) -->
+                    <div id="floatingCameraInspector" class="floating-inspector absolute top-3 left-3 z-30 w-72 sm:w-80 rounded-2xl p-3.5 transition-all duration-200">
+                        <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-800">
+                            <div class="flex items-center gap-2">
+                                <span id="inspectorColorDot" class="w-3 h-3 rounded-full bg-cyan-400 shadow"></span>
+                                <h3 class="text-xs font-black text-white">إعدادات ومدى الكاميرا المحددة</h3>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button onclick="deleteSelectedCamera()" class="text-[11px] bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 px-2 py-0.5 rounded-lg font-bold transition" title="حذف الكاميرا">
+                                    <i class="fa-solid fa-trash-can"></i> حذف
+                                </button>
+                                <button onclick="closeFloatingInspector()" class="text-slate-400 hover:text-white px-1.5 py-0.5 text-sm" title="إخفاء النافذة">✕</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <!-- Camera Name & Type -->
+                            <div class="grid grid-cols-12 gap-2 items-center">
+                                <div class="col-span-7">
+                                    <label class="block text-slate-400 text-[10px] mb-0.5">اسم الكاميرا:</label>
+                                    <input type="text" id="camLabelInput" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-white font-bold text-xs focus:border-cyan-400 focus:outline-none">
+                                </div>
+                                <div class="col-span-5">
+                                    <label class="block text-slate-400 text-[10px] mb-0.5">نوع العدسة:</label>
+                                    <select id="camTypeSelect" onchange="changeSelectedCameraType(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-1.5 py-1 text-cyan-300 font-bold text-[11px]">
+                                        <option value="dome">Dome 105°</option>
+                                        <option value="bullet">Bullet 80°</option>
+                                        <option value="zoom">Zoom 6mm</option>
+                                        <option value="ptz">PTZ 360°</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Rotation Angle Slider + Quick 45° Direction Buttons -->
+                            <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800/90">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-slate-300 font-bold text-[11px]"><i class="fa-solid fa-compass text-cyan-400 ml-1"></i>زاوية توجيه الكاميرا:</span>
+                                    <span class="font-mono font-black text-cyan-400"><span id="lblCamRotation">0</span>°</span>
+                                </div>
+                                <input type="range" id="rngCamRotation" min="0" max="359" value="45" oninput="updateSelectedCameraFromUI()" class="w-full">
+                                <div class="grid grid-cols-4 gap-1 mt-1.5">
+                                    <button onclick="setQuickRotation(0)" class="py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-bold">يمين 0°</button>
+                                    <button onclick="setQuickRotation(90)" class="py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-bold">أسفل 90°</button>
+                                    <button onclick="setQuickRotation(180)" class="py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-bold">يسار 180°</button>
+                                    <button onclick="setQuickRotation(270)" class="py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-bold">أعلى 270°</button>
+                                </div>
+                            </div>
+
+                            <!-- Viewing Range (Meters) Slider -->
+                            <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800/90">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-slate-300 font-bold text-[11px]"><i class="fa-solid fa-bullseye text-emerald-400 ml-1"></i>مدى الرؤية والتغطية:</span>
+                                    <span class="font-mono font-black text-emerald-400"><span id="lblCamRange">12</span> متر</span>
+                                </div>
+                                <input type="range" id="rngCamRange" min="3" max="40" step="0.5" value="12" oninput="updateSelectedCameraFromUI()" class="w-full">
+                            </div>
+
+                            <!-- Calculated Cable Length to DVR -->
+                            <div class="flex items-center justify-between text-[11px] bg-slate-950/90 px-3 py-1.5 rounded-lg border border-slate-800">
+                                <span class="text-slate-400">طول السلك حتى الـ DVR:</span>
+                                <span class="font-mono font-bold text-amber-400"><span id="lblCamCable">0</span> متر</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Helper Floating Pill when Inspector is Closed -->
+                    <div id="floatingHintPill" class="hidden absolute top-3 left-3 z-20 bg-slate-950/85 border border-cyan-500/30 rounded-xl px-3 py-1.5 text-[11px] text-cyan-300 font-bold pointer-events-none">
+                        💡 اضغط على أي كاميرا بالمخطط لفتح نافذة الإعدادات والمدى هنا
+                    </div>
                 </div>
             </div>
 
-            <!-- 4. Unified Bill of Materials & Components Manager (كل المكونات في مكان واحد) -->
+            <!-- 4. Unified Bill of Materials & Components Manager -->
             <div class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-emerald-500/30">
                 <div>
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
                         <div>
                             <h2 class="text-sm sm:text-base font-extrabold text-emerald-300 flex items-center gap-2">
                                 <i class="fa-solid fa-file-invoice-dollar text-emerald-400"></i>
-                                <span>4. جدول مقايسة المكونات والبنود (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات)</span>
+                                <span>3. جدول مقايسة المكونات والبنود (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات)</span>
                             </h2>
                             <p class="text-[11px] text-slate-400">يمكنك تعديل الكميات والسعر مباشرة من الجدول أو الضغط على زر إضافة مكون جديد لإضافة أي بند أو هارد تريده</p>
                         </div>
@@ -385,7 +475,7 @@
         </div>
     </section>
 
-    <!-- UNIFIED INVENTORY & COMPONENTS MODAL (كل المكونات والبنود يدوياً بدون قسم هاردات منفصل) -->
+    <!-- UNIFIED INVENTORY & COMPONENTS MODAL -->
     <div id="inventoryModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 no-print">
         <div class="glass-panel rounded-2xl max-w-5xl w-full p-5 border border-amber-500/40 shadow-2xl max-h-[92vh] flex flex-col">
             <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-4">
@@ -471,7 +561,7 @@
 
     <script>
         /**************************************************************
-         * 1. UNIFIED MANUAL INVENTORY (كاميرات، هاردات، أسلاك، مواسير في قائمة واحدة)
+         * 1. UNIFIED MANUAL INVENTORY & STATE
          **************************************************************/
         let customInventory = [
             { id: 'dome', name: 'كاميرا داخلية عريضة (Dome 2.8mm)', category: 'كاميرات داخلية', qtyMode: 'cam_dome', manualQty: 1, price: 950 },
@@ -491,6 +581,9 @@
             if (savedInv) customInventory = JSON.parse(savedInv);
         } catch (e) {}
 
+        // Building Lock State (قفل المبنى)
+        let isBuildingLocked = false;
+
         // Canvas Zoom & Pan State
         let canvasZoom = 1.0;
         let canvasPanX = 0;
@@ -508,15 +601,64 @@
         let dvrUnit = { nx: 0.15, ny: 0.20, label: 'جهاز DVR/NVR' };
 
         let cameras = [
-            { id: 1, type: 'dome', label: 'كاميرا الريسبشن', nx: 0.22, ny: 0.70, rotation: 325, rangeMeters: 11, color: '#00f2fe' },
-            { id: 2, type: 'bullet', label: 'كاميرا البوابة', nx: 0.80, ny: 0.25, rotation: 215, rangeMeters: 14, color: '#10b981' }
+            { id: 1, type: 'dome', label: 'كاميرا الريسبشن', nx: 0.26, ny: 0.72, rotation: 325, rangeMeters: 11, color: '#00f2fe' },
+            { id: 2, type: 'bullet', label: 'كاميرا البوابة', nx: 0.80, ny: 0.28, rotation: 215, rangeMeters: 14, color: '#10b981' }
         ];
 
         let selectedCameraId = 1;
+        let isInspectorOpen = true;
         let dragState = null;
 
         /**************************************************************
-         * 2. CANVAS SIZING, ZOOM & BUILDING SPACES CONTROLS
+         * 2. BUILDING LOCK / UNLOCK LOGIC (قفل وتثبيت المبنى)
+         **************************************************************/
+        function toggleBuildingLock() {
+            isBuildingLocked = !isBuildingLocked;
+
+            const editorControls = document.getElementById('buildingEditorControls');
+            const lockedBanner = document.getElementById('buildingLockedBanner');
+
+            const btnSidebar = document.getElementById('btnLockBuildingSidebar');
+            const iconSidebar = document.getElementById('iconLockSidebar');
+            const txtSidebar = document.getElementById('txtLockSidebar');
+
+            const btnCanvas = document.getElementById('btnLockBuildingCanvas');
+            const iconCanvas = document.getElementById('iconLockCanvas');
+            const txtCanvas = document.getElementById('txtLockCanvas');
+
+            if (isBuildingLocked) {
+                editorControls.classList.add('hidden');
+                lockedBanner.classList.remove('hidden');
+
+                btnSidebar.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black flex items-center gap-1.5 transition bg-amber-500 text-slate-950 shadow-lg';
+                iconSidebar.className = 'fa-solid fa-lock';
+                txtSidebar.textContent = 'المبنى مقفول (فك القفل)';
+
+                btnCanvas.className = 'px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 transition shadow-lg';
+                iconCanvas.className = 'fa-solid fa-lock';
+                txtCanvas.textContent = 'المبنى مقفول (تحريك الكاميرات فقط)';
+
+                showToast('🔒 تم قفل وتثبيت المبنى! يمكنك الآن تحريك الكاميرات بحرية تامة');
+            } else {
+                editorControls.classList.remove('hidden');
+                lockedBanner.classList.add('hidden');
+
+                btnSidebar.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black flex items-center gap-1.5 transition bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40';
+                iconSidebar.className = 'fa-solid fa-lock-open';
+                txtSidebar.textContent = 'قفل وتثبيت المبنى';
+
+                btnCanvas.className = 'px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs text-emerald-300 font-black flex items-center gap-1.5 transition shadow';
+                iconCanvas.className = 'fa-solid fa-lock-open';
+                txtCanvas.textContent = 'قفل المبنى (لتثبيت الغرف)';
+
+                showToast('🔓 تم فك قفل المبنى للتعديل على الغرف والمساحات');
+            }
+
+            drawScene();
+        }
+
+        /**************************************************************
+         * 3. CANVAS SIZING, ZOOM & BUILDING SPACES CONTROLS
          **************************************************************/
         const canvas = document.getElementById('cctvCanvas');
         const ctx = canvas.getContext('2d');
@@ -524,7 +666,7 @@
         function resizeCanvas() {
             const container = document.getElementById('canvasContainer');
             const width = container.clientWidth;
-            const height = Math.max(430, Math.min(620, Math.round(width * 0.56)));
+            const height = Math.max(450, Math.min(640, Math.round(width * 0.57)));
             canvas.width = width;
             canvas.height = height;
             drawScene();
@@ -545,7 +687,6 @@
             drawScene();
         }
 
-        // Mouse wheel zoom on canvas
         canvas.addEventListener('wheel', function(evt) {
             evt.preventDefault();
             const factor = evt.deltaY < 0 ? 1.08 : 0.92;
@@ -555,10 +696,15 @@
         function onScaleChange() {
             realWorldWidthMeters = Math.max(5, parseFloat(document.getElementById('realWidthMeters').value) || 20);
             drawScene();
+            syncInspectorUI();
             updateAllCalculations();
         }
 
         function addNewBuildingSpace() {
+            if (isBuildingLocked) {
+                showToast('فك قفل المبنى أولاً لإضافة غرف جديدة');
+                return;
+            }
             const name = document.getElementById('newRoomNameInput').value.trim() || 'مساحة جديدة';
             const type = document.getElementById('newRoomTypeInput').value;
             const w = parseFloat(document.getElementById('newRoomWidthInput').value) || 140;
@@ -617,7 +763,7 @@
         }
 
         /**************************************************************
-         * 3. DRAWING SCENE ON CANVAS (WITH TRUE CENTER ZOOM)
+         * 4. DRAWING SCENE ON CANVAS
          **************************************************************/
         function drawScene() {
             const w = canvas.width;
@@ -629,7 +775,6 @@
             ctx.fillRect(0, 0, w, h);
 
             ctx.save();
-            // Apply Zoom around center & Pan
             ctx.translate(w / 2 + canvasPanX, h / 2 + canvasPanY);
             ctx.scale(canvasZoom, canvasZoom);
             ctx.translate(-w / 2, -h / 2);
@@ -650,18 +795,20 @@
                 const ey = el.ny * h;
                 ctx.save();
                 ctx.strokeStyle = el.type === 'room' ? '#38bdf8' : el.type === 'outdoor' ? '#10b981' : '#f59e0b';
-                ctx.fillStyle = el.type === 'room' ? 'rgba(56, 189, 248, 0.12)' : el.type === 'outdoor' ? 'rgba(16, 185, 129, 0.10)' : 'rgba(245, 158, 11, 0.15)';
-                ctx.lineWidth = 2;
+                ctx.fillStyle = el.type === 'room' ? 'rgba(56, 189, 248, 0.11)' : el.type === 'outdoor' ? 'rgba(16, 185, 129, 0.09)' : 'rgba(245, 158, 11, 0.14)';
+                ctx.lineWidth = isBuildingLocked ? 1.5 : 2.2;
+                if (isBuildingLocked) ctx.setLineDash([4, 2]);
                 ctx.beginPath();
                 ctx.roundRect(ex - el.w / 2, ey - el.h / 2, el.w, el.h, 10);
                 ctx.fill();
                 ctx.stroke();
+                ctx.setLineDash([]);
 
-                ctx.fillStyle = '#ffffff';
+                ctx.fillStyle = isBuildingLocked ? 'rgba(226, 232, 240, 0.78)' : '#ffffff';
                 ctx.font = 'bold 12px Cairo, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(el.name, ex, ey);
+                ctx.fillText((isBuildingLocked ? '🔒 ' : '') + el.name, ex, ey);
                 ctx.restore();
             });
 
@@ -704,11 +851,11 @@
 
                 ctx.save();
                 const rotRad = (cam.rotation * Math.PI) / 180;
-                const halfFov = ((cam.type === 'ptz' ? 180 : cam.type === 'zoom' ? 22 : 50) * Math.PI) / 180;
+                const halfFov = ((cam.type === 'ptz' ? 180 : cam.type === 'zoom' ? 22 : cam.type === 'bullet' ? 40 : 52) * Math.PI) / 180;
 
                 const grad = ctx.createRadialGradient(cx, cy, 4, cx, cy, radiusPx);
-                grad.addColorStop(0, hexToRgba(cam.color, 0.45));
-                grad.addColorStop(1, hexToRgba(cam.color, 0.03));
+                grad.addColorStop(0, hexToRgba(cam.color, 0.48));
+                grad.addColorStop(1, hexToRgba(cam.color, 0.04));
 
                 ctx.fillStyle = grad;
                 ctx.beginPath();
@@ -718,7 +865,7 @@
                 ctx.fill();
 
                 ctx.strokeStyle = isSelected ? '#ffffff' : hexToRgba(cam.color, 0.85);
-                ctx.lineWidth = isSelected ? 2.2 : 1.4;
+                ctx.lineWidth = isSelected ? 2.4 : 1.4;
                 ctx.beginPath();
                 ctx.moveTo(cx, cy);
                 ctx.arc(cx, cy, radiusPx, rotRad - halfFov, rotRad + halfFov);
@@ -752,9 +899,9 @@
                 ctx.save();
                 if (isSelected) {
                     ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 2.5;
                     ctx.beginPath();
-                    ctx.arc(cx, cy, 16, 0, Math.PI * 2);
+                    ctx.arc(cx, cy, 17, 0, Math.PI * 2);
                     ctx.stroke();
                 }
 
@@ -772,10 +919,10 @@
                 ctx.textBaseline = 'middle';
                 ctx.fillText(String(idx + 1), cx, cy);
 
-                const labelText = `${cam.label}`;
+                const labelText = `${cam.label} (${cam.rangeMeters}م)`;
                 ctx.font = 'bold 11px Cairo, sans-serif';
                 const tw = ctx.measureText(labelText).width + 12;
-                ctx.fillStyle = 'rgba(2, 6, 23, 0.85)';
+                ctx.fillStyle = 'rgba(2, 6, 23, 0.88)';
                 ctx.strokeStyle = isSelected ? '#ffffff' : hexToRgba(cam.color, 0.6);
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -799,7 +946,7 @@
         }
 
         /**************************************************************
-         * 4. POINTER DRAGGING (CONVERTED TO ZOOM COORDS)
+         * 5. POINTER DRAGGING (RESPECTS BUILDING LOCK & OPENS FLOATING HUD)
          **************************************************************/
         function getCanvasPointerPos(evt) {
             const rect = canvas.getBoundingClientRect();
@@ -812,7 +959,9 @@
             const h = canvas.height;
             return {
                 x: (rawX - w / 2 - canvasPanX) / canvasZoom + w / 2,
-                y: (rawY - h / 2 - canvasPanY) / canvasZoom + h / 2
+                y: (rawY - h / 2 - canvasPanY) / canvasZoom + h / 2,
+                clientX,
+                clientY
             };
         }
 
@@ -821,32 +970,48 @@
             const w = canvas.width;
             const h = canvas.height;
 
+            // 1. Check Cameras First (Always draggable & opens floating settings panel immediately)
             for (let i = cameras.length - 1; i >= 0; i--) {
                 const cam = cameras[i];
-                if (Math.hypot(pos.x - cam.nx * w, pos.y - cam.ny * h) <= 18) {
+                if (Math.hypot(pos.x - cam.nx * w, pos.y - cam.ny * h) <= 20) {
                     selectedCameraId = cam.id;
+                    isInspectorOpen = true;
                     dragState = { type: 'camera', camId: cam.id };
                     syncInspectorUI();
+                    renderQuickCamerasList();
                     drawScene();
                     evt.preventDefault();
                     return;
                 }
             }
 
-            if (Math.abs(pos.x - dvrUnit.nx * w) <= 42 && Math.abs(pos.y - dvrUnit.ny * h) <= 15) {
+            // 2. Check DVR Unit
+            if (Math.abs(pos.x - dvrUnit.nx * w) <= 42 && Math.abs(pos.y - dvrUnit.ny * h) <= 16) {
                 dragState = { type: 'dvr' };
                 evt.preventDefault();
                 return;
             }
 
-            for (let i = buildingElements.length - 1; i >= 0; i--) {
-                const el = buildingElements[i];
-                if (Math.abs(pos.x - el.nx * w) <= el.w / 2 && Math.abs(pos.y - el.ny * h) <= el.h / 2) {
-                    dragState = { type: 'building', elemId: el.id };
-                    evt.preventDefault();
-                    return;
+            // 3. Check Building Rooms ONLY if Building is NOT Locked
+            if (!isBuildingLocked) {
+                for (let i = buildingElements.length - 1; i >= 0; i--) {
+                    const el = buildingElements[i];
+                    if (Math.abs(pos.x - el.nx * w) <= el.w / 2 && Math.abs(pos.y - el.ny * h) <= el.h / 2) {
+                        dragState = { type: 'building', elemId: el.id };
+                        evt.preventDefault();
+                        return;
+                    }
                 }
             }
+
+            // 4. Otherwise allow panning the canvas smoothly when zoomed or when building is locked
+            dragState = {
+                type: 'pan',
+                startX: pos.clientX,
+                startY: pos.clientY,
+                origPanX: canvasPanX,
+                origPanY: canvasPanY
+            };
         }
 
         function onPointerMove(evt) {
@@ -862,9 +1027,10 @@
                     cam.nx = Math.max(0.03, Math.min(0.97, pos.x / w));
                     cam.ny = Math.max(0.04, Math.min(0.96, pos.y / h));
                     drawScene();
+                    syncInspectorUI();
                     updateAllCalculations();
                 }
-            } else if (dragState.type === 'building') {
+            } else if (dragState.type === 'building' && !isBuildingLocked) {
                 const el = buildingElements.find(item => item.id === dragState.elemId);
                 if (el) {
                     el.nx = Math.max(0.05, Math.min(0.95, pos.x / w));
@@ -875,7 +1041,12 @@
                 dvrUnit.nx = Math.max(0.04, Math.min(0.96, pos.x / w));
                 dvrUnit.ny = Math.max(0.04, Math.min(0.96, pos.y / h));
                 drawScene();
+                syncInspectorUI();
                 updateAllCalculations();
+            } else if (dragState.type === 'pan') {
+                canvasPanX = dragState.origPanX + (pos.clientX - dragState.startX);
+                canvasPanY = dragState.origPanY + (pos.clientY - dragState.startY);
+                drawScene();
             }
         }
 
@@ -889,7 +1060,7 @@
         window.addEventListener('touchend', onPointerUp);
 
         /**************************************************************
-         * 5. CAMERA MANAGEMENT
+         * 6. FLOATING CAMERA INSPECTOR HUD & CAMERA MANAGEMENT
          **************************************************************/
         function addCamera(type) {
             const newId = Date.now();
@@ -906,28 +1077,64 @@
                 color
             });
             selectedCameraId = newId;
+            isInspectorOpen = true;
             syncInspectorUI();
+            renderQuickCamerasList();
             drawScene();
             updateAllCalculations();
-            showToast('تمت إضافة الكاميرا للمخطط');
+            showToast('تمت إضافة الكاميرا وفتح إعداداتها بجوار التصميم');
+        }
+
+        function selectCameraById(id) {
+            selectedCameraId = id;
+            isInspectorOpen = true;
+            syncInspectorUI();
+            renderQuickCamerasList();
+            drawScene();
+        }
+
+        function closeFloatingInspector() {
+            isInspectorOpen = false;
+            syncInspectorUI();
+        }
+
+        function renderQuickCamerasList() {
+            const container = document.getElementById('quickCamerasList');
+            if (!container) return;
+            if (cameras.length === 0) {
+                container.innerHTML = '<span class="text-[11px] text-slate-500">لا توجد كاميرات مضافة حالياً</span>';
+                return;
+            }
+            container.innerHTML = cameras.map((cam, idx) => `
+                <button onclick="selectCameraById(${cam.id})" class="px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1.5 border transition ${cam.id === selectedCameraId ? 'bg-cyan-500 text-slate-950 border-cyan-300 shadow' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}">
+                    <span class="w-2 h-2 rounded-full" style="background:${cam.color}"></span>
+                    <span>#${idx + 1} ${cam.label}</span>
+                </button>
+            `).join('');
         }
 
         function syncInspectorUI() {
             const cam = cameras.find(c => c.id === selectedCameraId);
-            const content = document.getElementById('inspectorContent');
-            const emptyState = document.getElementById('inspectorEmptyState');
-            if (!cam) {
-                content.classList.add('hidden');
-                emptyState.classList.remove('hidden');
+            const floatingPanel = document.getElementById('floatingCameraInspector');
+            const hintPill = document.getElementById('floatingHintPill');
+
+            if (!cam || !isInspectorOpen) {
+                floatingPanel.classList.add('hidden');
+                hintPill.classList.remove('hidden');
                 return;
             }
-            content.classList.remove('hidden');
-            emptyState.classList.add('hidden');
+
+            floatingPanel.classList.remove('hidden');
+            hintPill.classList.add('hidden');
+
+            document.getElementById('inspectorColorDot').style.backgroundColor = cam.color;
             document.getElementById('camLabelInput').value = cam.label;
+            document.getElementById('camTypeSelect').value = cam.type;
             document.getElementById('rngCamRotation').value = cam.rotation;
             document.getElementById('lblCamRotation').textContent = cam.rotation;
             document.getElementById('rngCamRange').value = cam.rangeMeters;
             document.getElementById('lblCamRange').textContent = cam.rangeMeters;
+            document.getElementById('lblCamCable').textContent = calculateCableMeters(cam);
         }
 
         function updateSelectedCameraFromUI() {
@@ -938,7 +1145,28 @@
             cam.rangeMeters = parseFloat(document.getElementById('rngCamRange').value) || 10;
             document.getElementById('lblCamRotation').textContent = cam.rotation;
             document.getElementById('lblCamRange').textContent = cam.rangeMeters;
+            renderQuickCamerasList();
             drawScene();
+        }
+
+        function setQuickRotation(deg) {
+            const cam = cameras.find(c => c.id === selectedCameraId);
+            if (!cam) return;
+            cam.rotation = deg;
+            document.getElementById('rngCamRotation').value = deg;
+            document.getElementById('lblCamRotation').textContent = deg;
+            drawScene();
+        }
+
+        function changeSelectedCameraType(newType) {
+            const cam = cameras.find(c => c.id === selectedCameraId);
+            if (!cam) return;
+            cam.type = newType;
+            cam.color = newType === 'dome' ? '#00f2fe' : newType === 'bullet' ? '#10b981' : newType === 'zoom' ? '#f59e0b' : '#a855f7';
+            syncInspectorUI();
+            renderQuickCamerasList();
+            drawScene();
+            updateAllCalculations();
         }
 
         function deleteSelectedCamera() {
@@ -946,13 +1174,14 @@
             cameras = cameras.filter(c => c.id !== selectedCameraId);
             selectedCameraId = cameras[0]?.id || null;
             syncInspectorUI();
+            renderQuickCamerasList();
             drawScene();
             updateAllCalculations();
             showToast('تم حذف الكاميرا');
         }
 
         /**************************************************************
-         * 6. UNIFIED BOM & COMPONENT CALCULATIONS
+         * 7. UNIFIED BOM & COMPONENT CALCULATIONS
          **************************************************************/
         function calculateCableMeters(cam) {
             const aspect = canvas.height / (canvas.width || 1);
@@ -977,7 +1206,7 @@
         function getModeArabicLabel(mode) {
             const map = {
                 manual: 'يدوي',
-                all_cams: 'بعددد الكاميرات',
+                all_cams: 'بعدد الكاميرات',
                 cable_m: 'بأمتار السلك',
                 cam_dome: 'بعدد Dome',
                 cam_bullet: 'بعدد Bullet',
@@ -1058,7 +1287,7 @@
         }
 
         /**************************************************************
-         * 7. UNIFIED INVENTORY MODAL MANAGEMENT
+         * 8. UNIFIED INVENTORY MODAL MANAGEMENT
          **************************************************************/
         function openInventoryModal() {
             const invContainer = document.getElementById('inventoryTbody');
@@ -1165,7 +1394,7 @@
         }
 
         /**************************************************************
-         * 8. EXPORTS (PRINT & WHATSAPP)
+         * 9. EXPORTS (PRINT & WHATSAPP)
          **************************************************************/
         function downloadCanvasImage() {
             const link = document.createElement('a');
@@ -1224,6 +1453,7 @@
         window.onload = function() {
             resizeCanvas();
             renderBuildingElementsList();
+            renderQuickCamerasList();
             syncInspectorUI();
             updateAllCalculations();
         };
