@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُخطط وحاسبة أنظمة كاميرات المراقبة الاحترافي | Smart CCTV Planner PRO v4.0</title>
+    <title>مُخطط وحاسبة أنظمة كاميرات المراقبة الاحترافي | Smart CCTV Planner PRO v7.0</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Cairo -->
@@ -18,16 +18,6 @@
                 extend: {
                     fontFamily: {
                         sans: ['Cairo', 'sans-serif'],
-                    },
-                    colors: {
-                        cyber: {
-                            950: '#060b14',
-                            900: '#0b1322',
-                            800: '#132038',
-                            700: '#1e3256',
-                            accent: '#00f2fe',
-                            emerald: '#10b981',
-                        }
                     }
                 }
             }
@@ -41,7 +31,6 @@
             color: #e2e8f0;
             overflow-x: hidden;
         }
-        /* Custom Scrollbars */
         ::-webkit-scrollbar {
             width: 7px;
             height: 7px;
@@ -67,24 +56,11 @@
         input[type="range"] {
             accent-color: #00f2fe;
         }
-        /* Print Styles for Official Quotation */
         @media print {
-            body {
-                background: #ffffff !important;
-                color: #0f172a !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-only {
-                display: block !important;
-            }
-            .print-card {
-                background: #ffffff !important;
-                border: 1px solid #cbd5e1 !important;
-                color: #0f172a !important;
-                box-shadow: none !important;
-            }
+            body { background: #ffffff !important; color: #0f172a !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .print-card { background: #ffffff !important; border: 1px solid #cbd5e1 !important; color: #0f172a !important; }
         }
     </style>
 </head>
@@ -93,7 +69,6 @@
     <!-- Top Navigation & Live KPI Header -->
     <header class="glass-panel sticky top-0 z-40 border-b border-cyan-500/20 px-4 py-3 no-print">
         <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-3">
-            <!-- Brand Identity -->
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
                     <i class="fa-solid fa-eye text-slate-950 text-xl"></i>
@@ -101,9 +76,9 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 id="headerCompanyName" class="text-base sm:text-lg font-extrabold tracking-tight text-white">مُخطط كاميرات المراقبة الذكي</h1>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">PRO v4.0</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">PRO v7.0</span>
                     </div>
-                    <p id="headerCompanySub" class="text-xs text-slate-400">مخزن مكونات متكامل • تصميم هندسي للمباني • زوم وحركة • عرض سعر احترافي</p>
+                    <p class="text-xs text-slate-400">إضافة جميع البنود والمكونات (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات) يدوياً بالكامل</p>
                 </div>
             </div>
 
@@ -112,8 +87,8 @@
                 <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
                     <i class="fa-solid fa-video text-cyan-400"></i>
                     <div>
-                        <div class="text-[10px] text-slate-400">الكاميرات</div>
-                        <div class="text-sm font-bold text-white"><span id="statCamCount">3</span> كاميرات</div>
+                        <div class="text-[10px] text-slate-400">الكاميرات بالمخطط</div>
+                        <div class="text-sm font-bold text-white"><span id="statCamCount">2</span> كاميرات</div>
                     </div>
                 </div>
 
@@ -126,10 +101,10 @@
                 </div>
 
                 <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
-                    <i class="fa-solid fa-hard-drive text-purple-400"></i>
+                    <i class="fa-solid fa-boxes-stacked text-purple-400"></i>
                     <div>
-                        <div class="text-[10px] text-slate-400">الهارد المعتمد</div>
-                        <div class="text-sm font-bold text-white" id="statRecommendedHDD">2 TB</div>
+                        <div class="text-[10px] text-slate-400">بنود المقايسة</div>
+                        <div class="text-sm font-bold text-white"><span id="statItemsCount">0</span> بنود</div>
                     </div>
                 </div>
 
@@ -144,17 +119,17 @@
 
             <!-- Action Buttons -->
             <div class="flex items-center gap-2">
-                <button onclick="openInventoryModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600/60 text-xs font-bold flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
-                    <span>إدارة المخزن والأسعار الهاردات</span>
+                <button onclick="openInventoryModal()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-lg transition">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>إضافة وتعديل المكونات والبنود يدوياً</span>
                 </button>
-                <button onclick="exportReportPrint()" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-cyan-500/20 transition">
+                <button onclick="exportReportPrint()" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition">
                     <i class="fa-solid fa-file-pdf"></i>
                     <span>طباعة عرض السعر</span>
                 </button>
-                <button onclick="sendWhatsAppQuote()" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition">
+                <button onclick="sendWhatsAppQuote()" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition">
                     <i class="fa-brands fa-whatsapp text-base"></i>
-                    <span class="hidden sm:inline">واتساب</span>
+                    <span>واتساب</span>
                 </button>
             </div>
         </div>
@@ -163,153 +138,106 @@
     <!-- Main Workspace Container -->
     <main class="flex-1 max-w-[1700px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 no-print">
 
-        <!-- RIGHT SIDEBAR: Building Elements & Camera Inspector (4 Cols on Desktop) -->
+        <!-- RIGHT SIDEBAR: Building Elements & Camera Inspector (4 Cols) -->
         <aside class="lg:col-span-4 space-y-4">
 
-            <!-- 1. Building & Floor Plan Layout Builder (مُصمم المباني والغرف) -->
+            <!-- 1. Custom Room & Area Builder (مصمم الغرف والمساحات اليدوي) -->
             <div class="glass-panel rounded-2xl p-4 neon-border">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2">
                         <i class="fa-solid fa-building"></i>
-                        <span>1. تصميم المبنى والغرف (Floor Plan Builder)</span>
+                        <span>1. تصميم وتسمية الغرف والمساحات</span>
                     </h2>
-                    <label class="cursor-pointer text-xs bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 px-2 py-1 rounded-lg font-bold transition flex items-center gap-1">
-                        <i class="fa-solid fa-upload"></i>
-                        <span>رفع كروكي</span>
-                        <input type="file" id="floorplanUpload" accept="image/*" class="hidden" onchange="handleFloorPlanUpload(event)">
-                    </label>
+                    <span class="text-[10px] text-cyan-400">تحكم كامل بالأبعاد</span>
                 </div>
 
-                <!-- Building Presets -->
-                <div class="grid grid-cols-3 gap-2 mb-3">
-                    <button onclick="setTemplate('apartment')" id="tpl-apartment" class="tpl-btn py-2 px-1 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition bg-cyan-500/20 border-cyan-400 text-white">
-                        <i class="fa-solid fa-house text-cyan-400"></i>
-                        <span>شقة / فيلا</span>
-                    </button>
-                    <button onclick="setTemplate('store')" id="tpl-store" class="tpl-btn py-2 px-1 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition bg-slate-900/70 border-slate-700 text-slate-300">
-                        <i class="fa-solid fa-shop text-emerald-400"></i>
-                        <span>معرض / محل</span>
-                    </button>
-                    <button onclick="setTemplate('warehouse')" id="tpl-warehouse" class="tpl-btn py-2 px-1 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition bg-slate-900/70 border-slate-700 text-slate-300">
-                        <i class="fa-solid fa-warehouse text-amber-400"></i>
-                        <span>مخزن / مصنع</span>
+                <!-- Add Custom Room Form -->
+                <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs mb-3">
+                    <div class="font-bold text-slate-300">إضافة غرفة أو مساحة جديدة للمبنى:</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="newRoomNameInput" placeholder="اكتب اسم الغرفة أو المساحة..." class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold col-span-2">
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">نوع المساحة:</label>
+                            <select id="newRoomTypeInput" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold">
+                                <option value="room">غرفة داخلية</option>
+                                <option value="outdoor">مساحة خارجية / جراج</option>
+                                <option value="gate">بوابة / مدخل</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">العرض × الطول:</label>
+                            <div class="flex gap-1">
+                                <input type="number" id="newRoomWidthInput" value="150" placeholder="عرض" class="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-1 py-1 text-white text-center">
+                                <input type="number" id="newRoomHeightInput" value="100" placeholder="طول" class="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-1 py-1 text-white text-center">
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="addNewBuildingSpace()" class="w-full py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black transition">
+                        + إضافة المساحة للمخطط الهندسي
                     </button>
                 </div>
 
-                <!-- Add Custom Rooms / Gates / Outdoor Areas -->
-                <div class="space-y-2.5 pt-2 border-t border-slate-800 text-xs">
-                    <div class="flex items-center justify-between">
-                        <span class="text-slate-300 font-bold">إضافة عنصر للمبنى:</span>
-                        <span class="text-[10px] text-cyan-400">(يظهر على المخطط)</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-1.5">
-                        <button onclick="addBuildingElement('room', 'غرفة إدارية')" class="py-1.5 px-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold flex items-center gap-1 transition">
-                            <i class="fa-solid fa-door-open text-cyan-400"></i> غرفة
-                        </button>
-                        <button onclick="addBuildingElement('outdoor', 'ساحة خارجية / جراج')" class="py-1.5 px-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold flex items-center gap-1 transition">
-                            <i class="fa-solid fa-tree text-emerald-400"></i> مساحة خارجى
-                        </button>
-                        <button onclick="addBuildingElement('gate', 'بوابة / مدخل رئيسي')" class="py-1.5 px-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold flex items-center gap-1 transition">
-                            <i class="fa-solid fa-archway text-amber-400"></i> بوابة
-                        </button>
-                    </div>
-
-                    <div id="buildingElementsList" class="space-y-1.5 max-h-[130px] overflow-y-auto pr-1">
-                        <!-- Populated via JS -->
-                    </div>
+                <!-- Existing Spaces List with Live Width/Height Editing -->
+                <div id="buildingElementsList" class="space-y-1.5 max-h-[160px] overflow-y-auto pr-1">
+                    <!-- Populated via JS -->
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-800 text-xs mt-3">
                     <div>
                         <label class="block text-slate-400 mb-1">اسم العميل / المشروع:</label>
-                        <input type="text" id="clientNameInput" value="شركة النور للتوكيلات" oninput="updateAllCalculations()" class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold focus:border-cyan-400 focus:outline-none">
+                        <input type="text" id="clientNameInput" value="شركة النور للتوكيلات" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
                     </div>
                     <div>
-                        <label class="block text-slate-400 mb-1">عرض المساحة (متر):</label>
-                        <input type="number" id="realWidthMeters" value="20" min="5" max="200" oninput="onScaleChange()" class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-bold focus:border-cyan-400 focus:outline-none">
+                        <label class="block text-slate-400 mb-1">إجمالي عرض الموقع (متر):</label>
+                        <input type="number" id="realWidthMeters" value="20" min="5" max="200" oninput="onScaleChange()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-bold">
                     </div>
                 </div>
             </div>
 
-            <!-- 2. Add Cameras & DVR Toolbar -->
+            <!-- 2. Add Cameras Toolbar -->
             <div class="glass-panel rounded-2xl p-4">
                 <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2 mb-3">
-                    <i class="fa-solid fa-plus-circle"></i>
-                    <span>2. إضافة كاميرات للمخطط</span>
+                    <i class="fa-solid fa-video"></i>
+                    <span>2. إضافة كاميرات المراقبة على الرسم</span>
                 </h2>
 
                 <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="addCamera('dome105')" class="group p-2.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/60 border border-slate-700/80 hover:border-cyan-400/60 text-right transition flex items-start gap-2.5">
-                        <div class="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center shrink-0 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-bullseye text-cyan-400"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-white">داخلية عريضة Dome</div>
-                            <div class="text-[10px] text-cyan-300 font-semibold">عدسة 2.8mm • زاوية 105°</div>
-                        </div>
+                    <button onclick="addCamera('dome')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/60 border border-slate-700 text-right transition">
+                        <div class="text-xs font-bold text-white">كاميرا داخلية Dome</div>
+                        <div class="text-[10px] text-cyan-300 font-semibold">عدسة عريضة 105°</div>
                     </button>
-
-                    <button onclick="addCamera('bullet80')" class="group p-2.5 rounded-xl bg-slate-900/90 hover:bg-emerald-950/60 border border-slate-700/80 hover:border-emerald-400/60 text-right transition flex items-start gap-2.5">
-                        <div class="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center shrink-0 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-video text-emerald-400"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-white">خارجية Bullet</div>
-                            <div class="text-[10px] text-emerald-300 font-semibold">عدسة 3.6mm • زاوية 80°</div>
-                        </div>
+                    <button onclick="addCamera('bullet')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-emerald-950/60 border border-slate-700 text-right transition">
+                        <div class="text-xs font-bold text-white">كاميرا خارجية Bullet</div>
+                        <div class="text-[10px] text-emerald-300 font-semibold">رؤية ليلية 80°</div>
                     </button>
-
-                    <button onclick="addCamera('varifocal50')" class="group p-2.5 rounded-xl bg-slate-900/90 hover:bg-amber-950/60 border border-slate-700/80 hover:border-amber-400/60 text-right transition flex items-start gap-2.5">
-                        <div class="w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-400/30 flex items-center justify-center shrink-0 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-crosshairs text-amber-400"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-white">زووم مسافات 6mm</div>
-                            <div class="text-[10px] text-amber-300 font-semibold">عدسة مركزة • زاوية 48°</div>
-                        </div>
+                    <button onclick="addCamera('zoom')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-amber-950/60 border border-slate-700 text-right transition">
+                        <div class="text-xs font-bold text-white">كاميرا زووم 6mm</div>
+                        <div class="text-[10px] text-amber-300 font-semibold">مسافات مركزة</div>
                     </button>
-
-                    <button onclick="addCamera('ptz360')" class="group p-2.5 rounded-xl bg-slate-900/90 hover:bg-purple-950/60 border border-slate-700/80 hover:border-purple-400/60 text-right transition flex items-start gap-2.5">
-                        <div class="w-9 h-9 rounded-lg bg-purple-500/15 border border-purple-400/30 flex items-center justify-center shrink-0 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-compass text-purple-400"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold text-white">متحركة شاملة PTZ</div>
-                            <div class="text-[10px] text-purple-300 font-semibold">تغطية دائرية 360°</div>
-                        </div>
+                    <button onclick="addCamera('ptz')" class="p-2.5 rounded-xl bg-slate-900/90 hover:bg-purple-950/60 border border-slate-700 text-right transition">
+                        <div class="text-xs font-bold text-white">متحركة PTZ 360°</div>
+                        <div class="text-[10px] text-purple-300 font-semibold">تغطية دائرية كاملة</div>
                     </button>
                 </div>
             </div>
 
-            <!-- 3. Selected Camera Live Inspector -->
+            <!-- 3. Selected Camera Inspector -->
             <div class="glass-panel rounded-2xl p-4 border border-cyan-500/30" id="cameraInspectorPanel">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-sm font-extrabold text-white flex items-center gap-2">
                         <i class="fa-solid fa-sliders text-cyan-400"></i>
                         <span>3. خصائص الكاميرا المحددة</span>
                     </h2>
-                    <button onclick="deleteSelectedCamera()" id="btnDeleteCam" class="text-xs bg-rose-500/20 hover:bg-rose-500 hover:text-white text-rose-400 border border-rose-500/30 px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1">
-                        <i class="fa-solid fa-trash-can"></i> حذف
+                    <button onclick="deleteSelectedCamera()" id="btnDeleteCam" class="text-xs bg-rose-500/20 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded-lg font-bold transition">
+                        حذف الكاميرا
                     </button>
                 </div>
 
                 <div id="inspectorContent" class="space-y-3 text-xs">
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="col-span-2">
-                            <label class="block text-slate-400 mb-1">اسم الكاميرا:</label>
-                            <input type="text" id="camLabelInput" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold focus:border-cyan-400 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-slate-400 mb-1">اللون:</label>
-                            <div class="flex items-center gap-1 pt-1">
-                                <button onclick="setCamColor('#00f2fe')" class="w-6 h-6 rounded-full bg-[#00f2fe] border-2 border-white/60"></button>
-                                <button onclick="setCamColor('#10b981')" class="w-6 h-6 rounded-full bg-[#10b981] border-2 border-white/60"></button>
-                                <button onclick="setCamColor('#f59e0b')" class="w-6 h-6 rounded-full bg-[#f59e0b] border-2 border-white/60"></button>
-                                <button onclick="setCamColor('#a855f7')" class="w-6 h-6 rounded-full bg-[#a855f7] border-2 border-white/60"></button>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="block text-slate-400 mb-1">اسم الكاميرا:</label>
+                        <input type="text" id="camLabelInput" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
                     </div>
-
                     <div>
                         <div class="flex justify-between mb-1">
                             <span class="text-slate-300">اتجاه الدوران (Rotation):</span>
@@ -317,15 +245,6 @@
                         </div>
                         <input type="range" id="rngCamRotation" min="0" max="359" value="45" oninput="updateSelectedCameraFromUI()" class="w-full">
                     </div>
-
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span class="text-slate-300">زاوية العدسة (FOV):</span>
-                            <span class="font-bold text-cyan-400"><span id="lblCamFOV">100</span>°</span>
-                        </div>
-                        <input type="range" id="rngCamFOV" min="25" max="360" value="100" oninput="updateSelectedCameraFromUI()" class="w-full">
-                    </div>
-
                     <div>
                         <div class="flex justify-between mb-1">
                             <span class="text-slate-300">مدى الرؤية (متر):</span>
@@ -334,15 +253,14 @@
                         <input type="range" id="rngCamRange" min="3" max="35" step="0.5" value="12" oninput="updateSelectedCameraFromUI()" class="w-full">
                     </div>
                 </div>
-
                 <div id="inspectorEmptyState" class="hidden py-6 text-center text-slate-400 text-xs">
-                    <i class="fa-solid fa-hand-pointer text-2xl text-cyan-400 mb-2 block"></i> اضغط على أي كاميرا بالمخطط لتعديلها
+                    اضغط على أي كاميرا بالمخطط لتعديلها
                 </div>
             </div>
 
         </aside>
 
-        <!-- LEFT / CENTER AREA: CANVAS WITH ZOOM & PAN + CALCULATORS (8 Cols on Desktop) -->
+        <!-- LEFT / CENTER AREA: CANVAS WITH ZOOM & UNIFIED BOM (8 Cols) -->
         <section class="lg:col-span-8 flex flex-col gap-4">
 
             <!-- Interactive Canvas Card with Zoom & Pan Toolbar -->
@@ -350,152 +268,77 @@
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800">
                     <!-- Zoom & Pan Controls -->
                     <div class="flex items-center gap-1.5">
-                        <button onclick="zoomCanvas(1.15)" title="تكبير الزوم" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold hover:bg-slate-800 flex items-center gap-1">
+                        <button onclick="zoomCanvas(1.15)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold hover:bg-slate-800">
                             <i class="fa-solid fa-magnifying-glass-plus"></i> تكبير (+)
                         </button>
-                        <button onclick="zoomCanvas(0.85)" title="تصغير الزوم" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold hover:bg-slate-800 flex items-center gap-1">
+                        <button onclick="zoomCanvas(0.85)" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold hover:bg-slate-800">
                             <i class="fa-solid fa-magnifying-glass-minus"></i> تصغير (-)
                         </button>
-                        <button onclick="resetZoom()" title="إعادة ضبط الرؤية" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300 font-bold hover:bg-slate-800">
-                            ضبط الافتراضي
+                        <button onclick="resetZoom()" class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300 font-bold hover:bg-slate-800">
+                            ضبط الزوم (100%)
                         </button>
+                        <span id="zoomBadge" class="text-[11px] font-mono text-slate-400 px-2">100%</span>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center gap-2">
                         <label class="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300">
                             <input type="checkbox" id="chkShowCables" checked onchange="drawScene()" class="rounded accent-cyan-400">
-                            <span>الأسلاك والمواسير</span>
+                            <span>إظهار الأسلاك والمواسير</span>
                         </label>
-                        <label class="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300">
-                            <input type="checkbox" id="chkNightMode" onchange="drawScene()" class="rounded accent-cyan-400">
-                            <span>رؤية ليلية IR</span>
-                        </label>
-                        <button onclick="downloadCanvasImage()" class="px-3 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-camera-retro"></i> حفظ PNG
+                        <button onclick="downloadCanvasImage()" class="px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold">
+                            حفظ صورة المخطط PNG
                         </button>
                     </div>
                 </div>
 
                 <!-- HTML5 Canvas Wrapper -->
-                <div class="relative w-full rounded-xl overflow-hidden border border-slate-700/80 bg-[#070d19] shadow-inner" id="canvasContainer">
+                <div class="relative w-full rounded-xl overflow-hidden border border-slate-700 bg-[#070d19]" id="canvasContainer">
                     <canvas id="cctvCanvas" class="w-full block cursor-grab active:cursor-grabbing touch-none"></canvas>
-
-                    <!-- Floating Legend -->
-                    <div class="absolute bottom-2.5 right-2.5 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-lg px-3 py-1.5 flex items-center gap-3 text-[11px] pointer-events-none">
-                        <span class="flex items-center gap-1.5 text-slate-300"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span> مدى الرؤية</span>
-                        <span class="flex items-center gap-1.5 text-amber-300"><span class="w-3 h-0.5 bg-amber-400 inline-block"></span> مسار السلك والماسور</span>
-                    </div>
                 </div>
             </div>
 
-            <!-- Bottom Calculators Grid: Hard Drives & Financial BOM -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <!-- 4. Smart Hard Drive & Storage Calculator -->
-                <div class="glass-panel rounded-2xl p-4 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <h2 class="text-sm font-extrabold text-purple-300 flex items-center gap-2">
-                                <i class="fa-solid fa-hard-drive text-purple-400"></i>
-                                <span>4. حاسبة الهارد ديسك والتخزين المعتمدة</span>
-                            </h2>
-                            <button onclick="openInventoryModal()" class="text-[11px] text-cyan-300 hover:underline">أسعار الهاردات</button>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <div>
-                                <label class="block text-slate-400 mb-1">دقة الكاميرات:</label>
-                                <select id="hddResolution" onchange="updateAllCalculations()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-semibold">
-                                    <option value="2">2MP (Full HD)</option>
-                                    <option value="4">4MP (2K)</option>
-                                    <option value="5" selected>5MP (Ultra Clarity)</option>
-                                    <option value="8">8MP (4K UHD)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-slate-400 mb-1">تقنية ضغط الفيديو:</label>
-                                <select id="hddCodec" onchange="updateAllCalculations()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-semibold">
-                                    <option value="0.55" selected>H.265+ (توفير ذكي أقصى)</option>
-                                    <option value="0.75">H.265 القياسي</option>
-                                    <option value="1.35">H.264 (قديم)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-slate-400 mb-1">مدة حفظ التسجيل:</label>
-                                <select id="hddDays" onchange="updateAllCalculations()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-semibold">
-                                    <option value="7">7 أيام</option>
-                                    <option value="15">15 يوم</option>
-                                    <option value="30" selected>30 يوم (شهر)</option>
-                                    <option value="60">60 يوم</option>
-                                    <option value="90">90 يوم (3 شهور)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-slate-400 mb-1">نظام التسجيل:</label>
-                                <select id="hddMode" onchange="updateAllCalculations()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-semibold">
-                                    <option value="1.0" selected>24 ساعة متواصل</option>
-                                    <option value="0.6">عند الحركة Motion (60%)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-3 rounded-xl bg-purple-950/50 border border-purple-500/30 grid grid-cols-3 gap-2 text-center text-xs">
+            <!-- 4. Unified Bill of Materials & Components Manager (كل المكونات في مكان واحد) -->
+            <div class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-emerald-500/30">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
                         <div>
-                            <div class="text-[10px] text-slate-400">المساحة الفعلية</div>
-                            <div class="text-sm font-black text-white" id="outExactStorage">0 GB</div>
-                        </div>
-                        <div class="border-x border-purple-500/20 px-1">
-                            <div class="text-[10px] text-purple-300">الهارد المقترح</div>
-                            <div class="text-base font-black text-purple-400" id="outCommercialHDD">2 TB</div>
-                        </div>
-                        <div>
-                            <div class="text-[10px] text-slate-400">تكلفة الهارد</div>
-                            <div class="text-sm font-black text-emerald-400" id="outHDDCost">0 ج.م</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. Instant Quotation & Bill of Materials (BOM) -->
-                <div class="glass-panel rounded-2xl p-4 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <h2 class="text-sm font-extrabold text-emerald-300 flex items-center gap-2">
+                            <h2 class="text-sm sm:text-base font-extrabold text-emerald-300 flex items-center gap-2">
                                 <i class="fa-solid fa-file-invoice-dollar text-emerald-400"></i>
-                                <span>5. مقايسة المكونات والتكلفة الإجمالية</span>
+                                <span>4. جدول مقايسة المكونات والبنود (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات)</span>
                             </h2>
-                            <button onclick="openInventoryModal()" class="text-[11px] text-cyan-300 hover:underline">إدارة الأسعار</button>
+                            <p class="text-[11px] text-slate-400">يمكنك تعديل الكميات والسعر مباشرة من الجدول أو الضغط على زر إضافة مكون جديد لإضافة أي بند أو هارد تريده</p>
                         </div>
-
-                        <div class="overflow-x-auto max-h-[170px] overflow-y-auto">
-                            <table class="w-full text-xs text-right">
-                                <thead>
-                                    <tr class="border-b border-slate-700 text-slate-400 text-[11px]">
-                                        <th class="pb-1">البند والمواصفات</th>
-                                        <th class="pb-1 text-center">الكمية</th>
-                                        <th class="pb-1 text-left">الإجمالي</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="bomTableBody" class="divide-y divide-slate-800">
-                                    <!-- Populated via JS -->
-                                </tbody>
-                            </table>
-                        </div>
+                        <button onclick="openInventoryModal()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>إضافة / تعديل المكونات يدوياً</span>
+                        </button>
                     </div>
 
-                    <div class="mt-3 pt-3 border-t border-slate-700 flex items-center justify-between">
-                        <div>
-                            <span class="text-xs text-slate-400 block">الإجمالي النهائي للعرض:</span>
-                        </div>
-                        <div class="text-xl font-black text-emerald-400">
-                            <span id="bomGrandTotal">0</span> <span class="currency-label text-xs">ج.م</span>
-                        </div>
+                    <div class="overflow-x-auto max-h-[270px] overflow-y-auto">
+                        <table class="w-full text-xs text-right">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-slate-400 text-[11px]">
+                                    <th class="py-2 px-2">اسم البند / المكون</th>
+                                    <th class="py-2 px-2">التصنيف</th>
+                                    <th class="py-2 px-2 text-center">طريقة حساب الكمية</th>
+                                    <th class="py-2 px-2 text-center">الكمية الفعلية</th>
+                                    <th class="py-2 px-2 text-center">سعر الوحدة (ج.م)</th>
+                                    <th class="py-2 px-2 text-left">الإجمالي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bomTableBody" class="divide-y divide-slate-800/80">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
+                <div class="mt-4 pt-3 border-t border-slate-700 flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs text-slate-400">الإجمالي النهائي لعرض السعر والمكونات:</span>
+                    <div class="text-2xl font-black text-emerald-400">
+                        <span id="bomGrandTotal">0</span> <span class="text-xs">ج.م</span>
+                    </div>
+                </div>
             </div>
 
         </section>
@@ -506,28 +349,28 @@
         <div class="border-b-2 border-slate-800 pb-4 mb-6 flex justify-between items-start">
             <div>
                 <h1 id="printCompanyName" class="text-2xl font-black text-slate-900">مُخطط كاميرات المراقبة الذكي</h1>
-                <p id="printCompanyPhone" class="text-sm text-slate-600 mt-1">للاتصال والواتساب: 01000000000</p>
+                <p class="text-sm text-slate-600 mt-1">عرض سعر فني ومالي معتمد</p>
             </div>
             <div class="text-left">
-                <div class="text-lg font-bold text-slate-900">عرض سعر فني ومالي معتمد</div>
                 <div class="text-xs text-slate-600" id="printDate">التاريخ: --/--/----</div>
                 <div class="text-xs font-bold text-slate-800 mt-1" id="printClientName">العميل: مشروع</div>
             </div>
         </div>
 
         <div class="mb-6">
-            <h2 class="text-base font-bold text-slate-900 mb-2">أولاً: المخطط الهندسي وزوايا الرؤية</h2>
+            <h2 class="text-base font-bold text-slate-900 mb-2">أولاً: المخطط الهندسي وتوزيع الكاميرات</h2>
             <div class="border border-slate-300 rounded-xl p-2 bg-slate-50">
                 <img id="printCanvasImg" src="" alt="Floor Plan" class="w-full h-auto rounded-lg" />
             </div>
         </div>
 
-        <div class="print-card p-4 rounded-xl mb-6">
-            <h3 class="font-bold text-sm mb-3 border-b pb-1">ثانياً: مقايسة المكونات والتكلفة الإجمالية (BOM)</h3>
+        <div class="print-card p-4 rounded-xl mb-6 bg-slate-100">
+            <h3 class="font-bold text-sm mb-3 border-b pb-1">ثانياً: مقايسة المكونات والبنود والتكلفة الإجمالية</h3>
             <table class="w-full text-xs text-right border-collapse">
                 <thead>
                     <tr class="border-b border-slate-300 font-bold">
                         <th class="py-2">البند والمواصفات</th>
+                        <th class="py-2">التصنيف</th>
                         <th class="py-2 text-center">الكمية</th>
                         <th class="py-2 text-center">سعر الوحدة</th>
                         <th class="py-2 text-left">الإجمالي</th>
@@ -536,113 +379,116 @@
                 <tbody id="printBomBody" class="divide-y divide-slate-200"></tbody>
             </table>
             <div class="mt-4 pt-3 border-t-2 border-slate-800 flex justify-between items-center text-base font-black">
-                <span>الإجمالي النهائي شامل التوريد والتركيب:</span>
-                <span><span id="printGrandTotal">0</span> <span class="currency-label">ج.م</span></span>
+                <span>الإجمالي النهائي:</span>
+                <span><span id="printGrandTotal">0</span> ج.م</span>
             </div>
         </div>
     </section>
 
-    <!-- INVENTORY & HARD DISK PRICING MODAL (إدارة المخزن والهاردات والأسعار) -->
-    <div id="inventoryModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 no-print">
-        <div class="glass-panel rounded-2xl max-w-3xl w-full p-5 border border-amber-500/40 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <!-- UNIFIED INVENTORY & COMPONENTS MODAL (كل المكونات والبنود يدوياً بدون قسم هاردات منفصل) -->
+    <div id="inventoryModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 no-print">
+        <div class="glass-panel rounded-2xl max-w-5xl w-full p-5 border border-amber-500/40 shadow-2xl max-h-[92vh] flex flex-col">
             <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-4">
-                <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
-                    <span>إدارة المخزن، المكونات، أسعار الهاردات والأسلاك</span>
-                </h3>
-                <button onclick="closeInventoryModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
+                <div>
+                    <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
+                        <span>إدارة وإضافة جميع المكونات والبنود يدوياً (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات)</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400 mt-0.5">اكتب اسم المكون بنفسك (مثلاً: هارد 2 تيرا، سلك نحاس، مواسير، كاميرا...)، واكتب التصنيف، وحدد الكمية والسعر براحتك</p>
+                </div>
+                <button onclick="closeInventoryModal()" class="text-slate-400 hover:text-white text-lg px-2">✕</button>
             </div>
 
-            <div class="space-y-6 text-xs">
-                <!-- 1. Hard Disk Custom Pricing Table -->
-                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-purple-300 mb-2 flex items-center justify-between">
-                        <span>أسعار مساحات الهارد ديسك (Surveillance HDD):</span>
-                        <span class="text-[10px] text-slate-400">تحدد السعر بالجنيه لكل مساحة بالظبط</span>
-                    </h4>
-                    <div id="hddPricingList" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <!-- Quick Add New Component Bar -->
+            <div class="bg-slate-900/95 p-3.5 rounded-xl border border-amber-500/30 mb-4 text-xs">
+                <div class="font-bold text-amber-300 mb-2"><i class="fa-solid fa-plus-circle ml-1"></i>إضافة مكون أو بند جديد يدوياً:</div>
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end">
+                    <div class="sm:col-span-4">
+                        <label class="block text-slate-400 text-[10px] mb-1">اسم البند / المكون (اكتبه براحتك):</label>
+                        <input type="text" id="quickAddName" placeholder="مثال: هارد ديسك WD 2TB / كاميرا خارجية / مواسير..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-slate-400 text-[10px] mb-1">التصنيف (اكتبه يدوياً):</label>
+                        <input type="text" id="quickAddCat" placeholder="مثال: هاردات / أسلاك / كاميرات" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-bold">
+                    </div>
+                    <div class="sm:col-span-3">
+                        <label class="block text-slate-400 text-[10px] mb-1">طريقة حساب الكمية:</label>
+                        <select id="quickAddMode" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-bold">
+                            <option value="manual">كمية يدوية (أكتب العدد بنفسي)</option>
+                            <option value="all_cams">تلقائي = إجمالي عدد الكاميرات</option>
+                            <option value="cable_m">تلقائي = إجمالي أمتار السلك بالمخطط</option>
+                            <option value="cam_dome">تلقائي = عدد الكاميرات الداخلية Dome</option>
+                            <option value="cam_bullet">تلقائي = عدد الكاميرات الخارجية Bullet</option>
+                            <option value="cam_zoom">تلقائي = عدد كاميرات الزووم 6mm</option>
+                            <option value="cam_ptz">تلقائي = عدد كاميرات الـ PTZ</option>
+                        </select>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <label class="block text-slate-400 text-[10px] mb-1">الكمية:</label>
+                        <input type="number" id="quickAddQty" value="1" min="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-bold text-center">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-slate-400 text-[10px] mb-1">سعر الوحدة (ج.م):</label>
+                        <input type="number" id="quickAddPrice" value="1000" min="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-emerald-400 font-bold text-center">
+                    </div>
+                </div>
+                <button onclick="addNewInventoryItemFromBar()" class="mt-2.5 w-full py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black transition">
+                    + إدراج المكون في الجدول فوراً
+                </button>
+            </div>
+
+            <!-- Editable Table of All Components -->
+            <div class="flex-1 overflow-y-auto bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs">
+                <table class="w-full text-right">
+                    <thead>
+                        <tr class="text-slate-400 border-b border-slate-700 text-[11px]">
+                            <th class="py-2 px-2">اسم البند أو المكون (حر)</th>
+                            <th class="py-2 px-2">التصنيف (حر)</th>
+                            <th class="py-2 px-2">طريقة حساب الكمية</th>
+                            <th class="py-2 px-2 text-center">الكمية اليدوية</th>
+                            <th class="py-2 px-2 text-center">سعر الوحدة (ج.م)</th>
+                            <th class="py-2 px-2 text-center">حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTbody" class="divide-y divide-slate-800">
                         <!-- Populated via JS -->
-                    </div>
-                </div>
+                    </tbody>
+                </table>
+            </div>
 
-                <!-- 2. Custom Inventory Items Table -->
-                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-                    <div class="flex items-center justify-between mb-2">
-                        <h4 class="font-bold text-emerald-300">قائمة الكاميرات، الأسلاك، المواسير، والإكسسوارات:</h4>
-                        <button onclick="addNewCustomItem()" class="px-3 py-1 rounded bg-emerald-500 text-slate-950 font-bold text-[11px]">
-                            + إضافة بند جديد للمخزن
-                        </button>
-                    </div>
-
-                    <div class="overflow-x-auto max-h-[260px] overflow-y-auto">
-                        <table class="w-full text-right">
-                            <thead>
-                                <tr class="text-slate-400 border-b border-slate-700 text-[11px]">
-                                    <th class="py-1.5 px-2">اسم البند والمواصفات</th>
-                                    <th class="py-1.5 px-2">القسم / الفئة</th>
-                                    <th class="py-1.5 px-2">سعر الوحدة</th>
-                                    <th class="py-1.5 px-2 text-center">إجراء</th>
-                                </tr>
-                            </thead>
-                            <tbody id="customInventoryTbody" class="divide-y divide-slate-800">
-                                <!-- Populated via JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
-                    <button onclick="saveInventoryChanges()" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black transition">
-                        حفظ جميع التعديلات والأسعار
-                    </button>
-                </div>
+            <div class="flex justify-end gap-2 pt-3 mt-3 border-t border-slate-800">
+                <button onclick="saveInventoryChanges()" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition">
+                    حفظ التعديلات وتحديث المقايسة
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div id="toastMsg" class="fixed bottom-4 left-4 z-50 px-4 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs shadow-xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
-        تم التحديث بنجاح
+        تم الحفظ بنجاح
     </div>
 
     <script>
         /**************************************************************
-         * 1. DYNAMIC INVENTORY & PRICING STATE
+         * 1. UNIFIED MANUAL INVENTORY (كاميرات، هاردات، أسلاك، مواسير في قائمة واحدة)
          **************************************************************/
         let customInventory = [
-            { id: 'dome', name: 'كاميرا داخلية عريضة (Dome 2.8mm)', category: 'كاميرات', price: 950 },
-            { id: 'bullet', name: 'كاميرا خارجية ليلية (Bullet 3.6mm)', category: 'كاميرات', price: 1150 },
-            { id: 'zoom', name: 'كاميرا زووم مسافات (6mm)', category: 'كاميرات', price: 1650 },
-            { id: 'ptz', name: 'كاميرا متحركة شاملة (PTZ 360°)', category: 'كاميرات', price: 3400 },
-            { id: 'dvr', name: 'جهاز تسجيل ذكي DVR/NVR (قنوات متعددة)', category: 'أجهزة تسجيل', price: 2600 },
-            { id: 'cable', name: 'متر سلك إشارة وباور نحاس (RG59/Cat6)', category: 'أسلاك', price: 22 },
-            { id: 'conduit', name: 'متر مواسير PVC + بواطات حماية للأسلاك', category: 'مواسير وحماية', price: 12 },
-            { id: 'acc', name: 'باور سبلاي + جاكات BNC وعلب ووتربروف (للكاميرا)', category: 'إكسسوارات', price: 150 },
-            { id: 'install', name: 'مصنعية التركيب والبرمجة والربط بالموبايل', category: 'خدمات', price: 300 }
+            { id: 'dome', name: 'كاميرا داخلية عريضة (Dome 2.8mm)', category: 'كاميرات داخلية', qtyMode: 'cam_dome', manualQty: 1, price: 950 },
+            { id: 'bullet', name: 'كاميرا خارجية ليلية (Bullet 3.6mm)', category: 'كاميرات خارجية', qtyMode: 'cam_bullet', manualQty: 1, price: 1150 },
+            { id: 'zoom', name: 'كاميرا زووم مسافات (6mm)', category: 'كاميرات زووم', qtyMode: 'cam_zoom', manualQty: 1, price: 1650 },
+            { id: 'ptz', name: 'كاميرا متحركة شاملة (PTZ 360°)', category: 'كاميرات متحركة', qtyMode: 'cam_ptz', manualQty: 1, price: 3400 },
+            { id: 'dvr', name: 'جهاز تسجيل ذكي DVR / NVR 8 قنوات', category: 'أجهزة تسجيل', qtyMode: 'manual', manualQty: 1, price: 2600 },
+            { id: 'hdd1', name: 'هارد ديسك مراقبة WD Purple مساحة 2 تيرا', category: 'هاردات تخزين', qtyMode: 'manual', manualQty: 1, price: 2250 },
+            { id: 'cable', name: 'متر سلك إشارة وباور نحاس صافي (RG59/Cat6)', category: 'أسلاك وكابلات', qtyMode: 'cable_m', manualQty: 50, price: 22 },
+            { id: 'conduit', name: 'متر مواسير PVC وبواطات حماية للأسلاك', category: 'مواسير وحماية', qtyMode: 'cable_m', manualQty: 50, price: 12 },
+            { id: 'acc', name: 'باور سبلاي + جاكات BNC وعلب ووتربروف', category: 'إكسسوارات كاميرات', qtyMode: 'all_cams', manualQty: 2, price: 150 },
+            { id: 'install', name: 'مصنعية التركيب والبرمجة والتشغيل', category: 'مصنعية وخدمات', qtyMode: 'all_cams', manualQty: 2, price: 300 }
         ];
 
-        // Specific Hard Disk custom pricing map by Terabytes
-        let hddPricingMap = {
-            1: 1250,
-            2: 2100,
-            4: 3900,
-            6: 5600,
-            8: 7400,
-            12: 11200
-        };
-
-        let appConfig = {
-            companyName: 'سمارت فيجن للأنظمة الأمنية',
-            companyPhone: '201000000000',
-            currency: 'ج.م'
-        };
-
-        // Load saved inventory/config if available
         try {
-            const savedInv = localStorage.getItem('cctv_pro_inventory_v4');
-            const savedHdd = localStorage.getItem('cctv_pro_hdd_v4');
+            const savedInv = localStorage.getItem('cctv_pro_unified_inv_v7');
             if (savedInv) customInventory = JSON.parse(savedInv);
-            if (savedHdd) hddPricingMap = JSON.parse(savedHdd);
         } catch (e) {}
 
         // Canvas Zoom & Pan State
@@ -650,30 +496,27 @@
         let canvasPanX = 0;
         let canvasPanY = 0;
 
-        // Building / Floor Plan Elements (Rooms, Gates, Outdoor Areas)
+        // Custom Building Spaces (Rooms, Outdoor, Gates)
         let buildingElements = [
-            { id: 1, type: 'room', name: 'غرفة الإدارة والـ DVR', nx: 0.15, ny: 0.20, w: 120, h: 80 },
-            { id: 2, type: 'room', name: 'صالة الاستقبال والريسبشن', nx: 0.50, ny: 0.50, w: 180, h: 120 },
-            { id: 3, type: 'outdoor', name: 'الساحة الخارجية والجراج', nx: 0.75, ny: 0.75, w: 160, h: 100 },
-            { id: 4, type: 'gate', name: 'بوابة الدخول الرئيسية', nx: 0.85, ny: 0.20, w: 90, h: 50 }
+            { id: 1, type: 'room', name: 'غرفة الإدارة والـ DVR', nx: 0.16, ny: 0.22, w: 135, h: 85 },
+            { id: 2, type: 'room', name: 'صالة الاستقبال والريسبشن', nx: 0.48, ny: 0.48, w: 195, h: 125 },
+            { id: 3, type: 'outdoor', name: 'الساحة الخارجية والجراج', nx: 0.76, ny: 0.74, w: 175, h: 105 },
+            { id: 4, type: 'gate', name: 'بوابة الدخول الرئيسية', nx: 0.84, ny: 0.20, w: 105, h: 55 }
         ];
 
-        let currentTemplate = 'apartment';
-        let uploadedFloorImage = null;
         let realWorldWidthMeters = 20;
-
-        let dvrUnit = { nx: 0.14, ny: 0.18, label: 'جهاز DVR/NVR' };
+        let dvrUnit = { nx: 0.15, ny: 0.20, label: 'جهاز DVR/NVR' };
 
         let cameras = [
-            { id: 1, type: 'dome105', label: 'كاميرا الريسبشن', nx: 0.20, ny: 0.70, rotation: 325, fov: 105, rangeMeters: 11, color: '#00f2fe' },
-            { id: 2, type: 'bullet80', label: 'بوابة الدخول', nx: 0.80, ny: 0.25, rotation: 215, fov: 80, rangeMeters: 14, color: '#10b981' }
+            { id: 1, type: 'dome', label: 'كاميرا الريسبشن', nx: 0.22, ny: 0.70, rotation: 325, rangeMeters: 11, color: '#00f2fe' },
+            { id: 2, type: 'bullet', label: 'كاميرا البوابة', nx: 0.80, ny: 0.25, rotation: 215, rangeMeters: 14, color: '#10b981' }
         ];
 
         let selectedCameraId = 1;
         let dragState = null;
 
         /**************************************************************
-         * 2. CANVAS SIZING & ZOOM / PAN CONTROLS
+         * 2. CANVAS SIZING, ZOOM & BUILDING SPACES CONTROLS
          **************************************************************/
         const canvas = document.getElementById('cctvCanvas');
         const ctx = canvas.getContext('2d');
@@ -681,16 +524,16 @@
         function resizeCanvas() {
             const container = document.getElementById('canvasContainer');
             const width = container.clientWidth;
-            const height = Math.max(420, Math.min(600, Math.round(width * 0.56)));
+            const height = Math.max(430, Math.min(620, Math.round(width * 0.56)));
             canvas.width = width;
             canvas.height = height;
             drawScene();
         }
-
         window.addEventListener('resize', resizeCanvas);
 
         function zoomCanvas(factor) {
-            canvasZoom = Math.max(0.6, Math.min(2.5, canvasZoom * factor));
+            canvasZoom = Math.max(0.5, Math.min(2.6, canvasZoom * factor));
+            document.getElementById('zoomBadge').textContent = Math.round(canvasZoom * 100) + '%';
             drawScene();
         }
 
@@ -698,62 +541,16 @@
             canvasZoom = 1.0;
             canvasPanX = 0;
             canvasPanY = 0;
+            document.getElementById('zoomBadge').textContent = '100%';
             drawScene();
         }
 
-        function setTemplate(tplName) {
-            currentTemplate = tplName;
-            uploadedFloorImage = null;
-            document.querySelectorAll('.tpl-btn').forEach(btn => {
-                btn.className = 'tpl-btn py-2 px-1 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition bg-slate-900/70 border-slate-700 text-slate-300';
-            });
-            const activeBtn = document.getElementById('tpl-' + tplName);
-            if (activeBtn) activeBtn.className = 'tpl-btn py-2 px-1 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition bg-cyan-500/20 border-cyan-400 text-white';
-
-            if (tplName === 'apartment') {
-                realWorldWidthMeters = 18;
-                buildingElements = [
-                    { id: 1, type: 'room', name: 'غرفة المعيشة والـ DVR', nx: 0.15, ny: 0.25, w: 130, h: 90 },
-                    { id: 2, type: 'room', name: 'غرفة النوم الرئيسية', nx: 0.55, ny: 0.25, w: 130, h: 90 },
-                    { id: 3, type: 'outdoor', name: 'التراس والبلكونة', nx: 0.50, ny: 0.75, w: 180, h: 80 }
-                ];
-            } else if (tplName === 'store') {
-                realWorldWidthMeters = 22;
-                buildingElements = [
-                    { id: 1, type: 'room', name: 'مكتب الإدارة', nx: 0.20, ny: 0.20, w: 120, h: 90 },
-                    { id: 2, type: 'room', name: 'صالة العرض والكاشير', nx: 0.60, ny: 0.50, w: 200, h: 140 },
-                    { id: 3, type: 'gate', name: 'واجهة المحل والباب', nx: 0.60, ny: 0.90, w: 140, h: 50 }
-                ];
-            } else if (tplName === 'warehouse') {
-                realWorldWidthMeters = 35;
-                buildingElements = [
-                    { id: 1, type: 'room', name: 'غرفة الأمن ومراقبة الكاميرات', nx: 0.15, ny: 0.18, w: 110, h: 80 },
-                    { id: 2, type: 'outdoor', name: 'مساحة تخزين البضائع الكبرى', nx: 0.55, ny: 0.50, w: 220, h: 160 },
-                    { id: 3, type: 'gate', name: 'بوابة الشاحنات والسيارات', nx: 0.85, ny: 0.85, w: 120, h: 60 }
-                ];
-            }
-
-            document.getElementById('realWidthMeters').value = realWorldWidthMeters;
-            renderBuildingElementsList();
-            drawScene();
-            updateAllCalculations();
-        }
-
-        function handleFloorPlanUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    uploadedFloorImage = img;
-                    drawScene();
-                    showToast('تم رفع كروكي المبنى بنجاح!');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
+        // Mouse wheel zoom on canvas
+        canvas.addEventListener('wheel', function(evt) {
+            evt.preventDefault();
+            const factor = evt.deltaY < 0 ? 1.08 : 0.92;
+            zoomCanvas(factor);
+        }, { passive: false });
 
         function onScaleChange() {
             realWorldWidthMeters = Math.max(5, parseFloat(document.getElementById('realWidthMeters').value) || 20);
@@ -761,41 +558,55 @@
             updateAllCalculations();
         }
 
-        function addBuildingElement(type, defaultName) {
-            const newElem = {
+        function addNewBuildingSpace() {
+            const name = document.getElementById('newRoomNameInput').value.trim() || 'مساحة جديدة';
+            const type = document.getElementById('newRoomTypeInput').value;
+            const w = parseFloat(document.getElementById('newRoomWidthInput').value) || 140;
+            const h = parseFloat(document.getElementById('newRoomHeightInput').value) || 95;
+
+            buildingElements.push({
                 id: Date.now(),
                 type,
-                name: defaultName,
-                nx: 0.45 + (Math.random() * 0.2 - 0.1),
-                ny: 0.45 + (Math.random() * 0.2 - 0.1),
-                w: 120,
-                h: 80
-            };
-            buildingElements.push(newElem);
+                name,
+                nx: 0.50 + (Math.random() * 0.16 - 0.08),
+                ny: 0.50 + (Math.random() * 0.16 - 0.08),
+                w,
+                h
+            });
+
+            document.getElementById('newRoomNameInput').value = '';
             renderBuildingElementsList();
             drawScene();
-            showToast(`تمت إضافة "${defaultName}" للمبنى`);
+            showToast(`تمت إضافة "${name}" إلى المخطط`);
         }
 
         function renderBuildingElementsList() {
             const container = document.getElementById('buildingElementsList');
             if (!container) return;
             container.innerHTML = buildingElements.map(el => `
-                <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between text-[11px]">
-                    <div class="flex items-center gap-1.5 truncate">
+                <div class="p-2 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between gap-1 text-[11px]">
+                    <div class="flex items-center gap-1.5 flex-1 min-w-0">
                         <i class="fa-solid ${el.type === 'room' ? 'fa-door-open text-cyan-400' : el.type === 'outdoor' ? 'fa-tree text-emerald-400' : 'fa-archway text-amber-400'}"></i>
-                        <input type="text" value="${el.name}" oninput="updateBuildingElementName(${el.id}, this.value)" class="bg-transparent border-b border-slate-700 text-white font-bold w-28 focus:outline-none focus:border-cyan-400">
+                        <input type="text" value="${el.name}" oninput="updateBuildingElement(${el.id}, 'name', this.value)" class="bg-transparent border-b border-slate-700 text-white font-bold w-full focus:outline-none focus:border-cyan-400" title="اسم الغرفة">
                     </div>
-                    <button onclick="deleteBuildingElement(${el.id})" class="text-rose-400 hover:text-rose-300 px-1">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <input type="number" value="${el.w}" oninput="updateBuildingElement(${el.id}, 'w', this.value)" class="w-11 bg-slate-900 border border-slate-700 rounded px-1 py-0.5 text-center text-cyan-300" title="العرض">
+                        <span class="text-slate-500">×</span>
+                        <input type="number" value="${el.h}" oninput="updateBuildingElement(${el.id}, 'h', this.value)" class="w-11 bg-slate-900 border border-slate-700 rounded px-1 py-0.5 text-center text-cyan-300" title="الطول">
+                        <button onclick="deleteBuildingElement(${el.id})" class="text-rose-400 hover:text-rose-300 px-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function updateBuildingElementName(id, newName) {
+        function updateBuildingElement(id, prop, val) {
             const el = buildingElements.find(item => item.id === id);
-            if (el) el.name = newName;
+            if (!el) return;
+            if (prop === 'name') el.name = val;
+            if (prop === 'w') el.w = Math.max(40, parseFloat(val) || 100);
+            if (prop === 'h') el.h = Math.max(40, parseFloat(val) || 80);
             drawScene();
         }
 
@@ -806,32 +617,34 @@
         }
 
         /**************************************************************
-         * 3. DRAWING SCENE & CUSTOM BUILDING ELEMENTS ON CANVAS
+         * 3. DRAWING SCENE ON CANVAS (WITH TRUE CENTER ZOOM)
          **************************************************************/
         function drawScene() {
             const w = canvas.width;
             const h = canvas.height;
-            const pixelsPerMeter = (w / realWorldWidthMeters) * canvasZoom;
+            const pixelsPerMeter = (w / realWorldWidthMeters);
 
             ctx.clearRect(0, 0, w, h);
-            ctx.save();
-
-            // Apply Zoom & Pan transformation
-            ctx.translate(canvasPanX, canvasPanY);
-
-            // Background Base
-            ctx.fillStyle = document.getElementById('chkNightMode')?.checked ? '#030712' : '#070e1b';
+            ctx.fillStyle = '#070e1b';
             ctx.fillRect(0, 0, w, h);
 
-            // Uploaded image or architectural background
-            if (uploadedFloorImage) {
-                ctx.save();
-                ctx.globalAlpha = 0.75;
-                ctx.drawImage(uploadedFloorImage, 20, 20, w - 40, h - 40);
-                ctx.restore();
+            ctx.save();
+            // Apply Zoom around center & Pan
+            ctx.translate(w / 2 + canvasPanX, h / 2 + canvasPanY);
+            ctx.scale(canvasZoom, canvasZoom);
+            ctx.translate(-w / 2, -h / 2);
+
+            // Subtle Blueprint Grid
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.06)';
+            ctx.lineWidth = 1;
+            for (let gx = 0; gx < w; gx += 40) {
+                ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+            }
+            for (let gy = 0; gy < h; gy += 40) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
             }
 
-            // Draw Building Custom Rooms/Areas
+            // Draw Building Rooms / Outdoor / Gates
             buildingElements.forEach(el => {
                 const ex = el.nx * w;
                 const ey = el.ny * h;
@@ -845,14 +658,14 @@
                 ctx.stroke();
 
                 ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 11px Cairo, sans-serif';
+                ctx.font = 'bold 12px Cairo, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(el.name, ex, ey);
                 ctx.restore();
             });
 
-            // Draw Cable & PVC Conduit Paths from DVR to Cameras
+            // Draw Cables & Conduits
             const dvrX = dvrUnit.nx * w;
             const dvrY = dvrUnit.ny * h;
             const showCables = document.getElementById('chkShowCables')?.checked;
@@ -861,9 +674,7 @@
                 cameras.forEach(cam => {
                     const cx = cam.nx * w;
                     const cy = cam.ny * h;
-
                     ctx.save();
-                    // PVC Conduit outer casing line
                     ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
                     ctx.lineWidth = 5;
                     ctx.beginPath();
@@ -872,7 +683,6 @@
                     ctx.lineTo(cx, cy);
                     ctx.stroke();
 
-                    // Inner copper cable line
                     ctx.strokeStyle = cam.id === selectedCameraId ? '#fbbf24' : '#f59e0b';
                     ctx.lineWidth = 2;
                     ctx.setLineDash([5, 4]);
@@ -894,7 +704,7 @@
 
                 ctx.save();
                 const rotRad = (cam.rotation * Math.PI) / 180;
-                const halfFov = ((cam.fov / 2) * Math.PI) / 180;
+                const halfFov = ((cam.type === 'ptz' ? 180 : cam.type === 'zoom' ? 22 : 50) * Math.PI) / 180;
 
                 const grad = ctx.createRadialGradient(cx, cy, 4, cx, cy, radiusPx);
                 grad.addColorStop(0, hexToRgba(cam.color, 0.45));
@@ -902,30 +712,22 @@
 
                 ctx.fillStyle = grad;
                 ctx.beginPath();
-                if (cam.fov >= 359) {
-                    ctx.arc(cx, cy, radiusPx, 0, Math.PI * 2);
-                } else {
-                    ctx.moveTo(cx, cy);
-                    ctx.arc(cx, cy, radiusPx, rotRad - halfFov, rotRad + halfFov);
-                    ctx.closePath();
-                }
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radiusPx, rotRad - halfFov, rotRad + halfFov);
+                ctx.closePath();
                 ctx.fill();
 
                 ctx.strokeStyle = isSelected ? '#ffffff' : hexToRgba(cam.color, 0.85);
                 ctx.lineWidth = isSelected ? 2.2 : 1.4;
                 ctx.beginPath();
-                if (cam.fov >= 359) {
-                    ctx.arc(cx, cy, radiusPx, 0, Math.PI * 2);
-                } else {
-                    ctx.moveTo(cx, cy);
-                    ctx.arc(cx, cy, radiusPx, rotRad - halfFov, rotRad + halfFov);
-                    ctx.closePath();
-                }
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radiusPx, rotRad - halfFov, rotRad + halfFov);
+                ctx.closePath();
                 ctx.stroke();
                 ctx.restore();
             });
 
-            // Draw DVR Unit
+            // Draw DVR
             ctx.save();
             ctx.fillStyle = '#1e293b';
             ctx.strokeStyle = '#fbbf24';
@@ -941,7 +743,7 @@
             ctx.fillText('🖧 ' + dvrUnit.label, dvrX, dvrY);
             ctx.restore();
 
-            // Draw Cameras Nodes
+            // Draw Cameras
             cameras.forEach((cam, idx) => {
                 const cx = cam.nx * w;
                 const cy = cam.ny * h;
@@ -997,15 +799,20 @@
         }
 
         /**************************************************************
-         * 4. MOUSE & TOUCH DRAGGING
+         * 4. POINTER DRAGGING (CONVERTED TO ZOOM COORDS)
          **************************************************************/
         function getCanvasPointerPos(evt) {
             const rect = canvas.getBoundingClientRect();
             const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
             const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+            const rawX = (clientX - rect.left) * (canvas.width / rect.width);
+            const rawY = (clientY - rect.top) * (canvas.height / rect.height);
+
+            const w = canvas.width;
+            const h = canvas.height;
             return {
-                x: ((clientX - rect.left) * (canvas.width / rect.width) - canvasPanX),
-                y: ((clientY - rect.top) * (canvas.height / rect.height) - canvasPanY)
+                x: (rawX - w / 2 - canvasPanX) / canvasZoom + w / 2,
+                y: (rawY - h / 2 - canvasPanY) / canvasZoom + h / 2
             };
         }
 
@@ -1014,12 +821,9 @@
             const w = canvas.width;
             const h = canvas.height;
 
-            // Check camera nodes
             for (let i = cameras.length - 1; i >= 0; i--) {
                 const cam = cameras[i];
-                const cx = cam.nx * w;
-                const cy = cam.ny * h;
-                if (Math.hypot(pos.x - cx, pos.y - cy) <= 18) {
+                if (Math.hypot(pos.x - cam.nx * w, pos.y - cam.ny * h) <= 18) {
                     selectedCameraId = cam.id;
                     dragState = { type: 'camera', camId: cam.id };
                     syncInspectorUI();
@@ -1029,25 +833,19 @@
                 }
             }
 
-            // Check building elements
+            if (Math.abs(pos.x - dvrUnit.nx * w) <= 42 && Math.abs(pos.y - dvrUnit.ny * h) <= 15) {
+                dragState = { type: 'dvr' };
+                evt.preventDefault();
+                return;
+            }
+
             for (let i = buildingElements.length - 1; i >= 0; i--) {
                 const el = buildingElements[i];
-                const ex = el.nx * w;
-                const ey = el.ny * h;
-                if (Math.abs(pos.x - ex) <= el.w / 2 && Math.abs(pos.y - ey) <= el.h / 2) {
+                if (Math.abs(pos.x - el.nx * w) <= el.w / 2 && Math.abs(pos.y - el.ny * h) <= el.h / 2) {
                     dragState = { type: 'building', elemId: el.id };
                     evt.preventDefault();
                     return;
                 }
-            }
-
-            // Check DVR
-            const dvrX = dvrUnit.nx * w;
-            const dvrY = dvrUnit.ny * h;
-            if (Math.abs(pos.x - dvrX) <= 42 && Math.abs(pos.y - dvrY) <= 15) {
-                dragState = { type: 'dvr' };
-                evt.preventDefault();
-                return;
             }
         }
 
@@ -1061,29 +859,27 @@
             if (dragState.type === 'camera') {
                 const cam = cameras.find(c => c.id === dragState.camId);
                 if (cam) {
-                    cam.nx = Math.max(0.04, Math.min(0.96, pos.x / w));
-                    cam.ny = Math.max(0.05, Math.min(0.95, pos.y / h));
+                    cam.nx = Math.max(0.03, Math.min(0.97, pos.x / w));
+                    cam.ny = Math.max(0.04, Math.min(0.96, pos.y / h));
                     drawScene();
                     updateAllCalculations();
                 }
             } else if (dragState.type === 'building') {
                 const el = buildingElements.find(item => item.id === dragState.elemId);
                 if (el) {
-                    el.nx = Math.max(0.08, Math.min(0.92, pos.x / w));
-                    el.ny = Math.max(0.08, Math.min(0.92, pos.y / h));
+                    el.nx = Math.max(0.05, Math.min(0.95, pos.x / w));
+                    el.ny = Math.max(0.05, Math.min(0.95, pos.y / h));
                     drawScene();
                 }
             } else if (dragState.type === 'dvr') {
-                dvrUnit.nx = Math.max(0.05, Math.min(0.95, pos.x / w));
-                dvrUnit.ny = Math.max(0.05, Math.min(0.95, pos.y / h));
+                dvrUnit.nx = Math.max(0.04, Math.min(0.96, pos.x / w));
+                dvrUnit.ny = Math.max(0.04, Math.min(0.96, pos.y / h));
                 drawScene();
                 updateAllCalculations();
             }
         }
 
-        function onPointerUp() {
-            dragState = null;
-        }
+        function onPointerUp() { dragState = null; }
 
         canvas.addEventListener('mousedown', onPointerDown);
         window.addEventListener('mousemove', onPointerMove);
@@ -1093,52 +889,43 @@
         window.addEventListener('touchend', onPointerUp);
 
         /**************************************************************
-         * 5. CAMERA & INVENTORY MANAGEMENT
+         * 5. CAMERA MANAGEMENT
          **************************************************************/
-        function addCamera(presetType) {
+        function addCamera(type) {
             const newId = Date.now();
             const count = cameras.length + 1;
-            let newCam = {
+            let color = type === 'dome' ? '#00f2fe' : type === 'bullet' ? '#10b981' : type === 'zoom' ? '#f59e0b' : '#a855f7';
+            cameras.push({
                 id: newId,
-                type: presetType,
+                type,
                 label: `كاميرا ${count}`,
                 nx: 0.5 + (Math.random() * 0.1 - 0.05),
                 ny: 0.5 + (Math.random() * 0.1 - 0.05),
                 rotation: 45,
-                fov: 105,
                 rangeMeters: 12,
-                color: '#00f2fe'
-            };
-            cameras.push(newCam);
+                color
+            });
             selectedCameraId = newId;
             syncInspectorUI();
             drawScene();
             updateAllCalculations();
-            showToast(`تمت إضافة ${newCam.label}`);
+            showToast('تمت إضافة الكاميرا للمخطط');
         }
 
         function syncInspectorUI() {
             const cam = cameras.find(c => c.id === selectedCameraId);
             const content = document.getElementById('inspectorContent');
             const emptyState = document.getElementById('inspectorEmptyState');
-            const btnDelete = document.getElementById('btnDeleteCam');
-
             if (!cam) {
                 content.classList.add('hidden');
                 emptyState.classList.remove('hidden');
-                btnDelete.classList.add('hidden');
                 return;
             }
-
             content.classList.remove('hidden');
             emptyState.classList.add('hidden');
-            btnDelete.classList.remove('hidden');
-
             document.getElementById('camLabelInput').value = cam.label;
             document.getElementById('rngCamRotation').value = cam.rotation;
             document.getElementById('lblCamRotation').textContent = cam.rotation;
-            document.getElementById('rngCamFOV').value = cam.fov;
-            document.getElementById('lblCamFOV').textContent = cam.fov;
             document.getElementById('rngCamRange').value = cam.rangeMeters;
             document.getElementById('lblCamRange').textContent = cam.rangeMeters;
         }
@@ -1148,20 +935,9 @@
             if (!cam) return;
             cam.label = document.getElementById('camLabelInput').value || 'كاميرا';
             cam.rotation = parseInt(document.getElementById('rngCamRotation').value, 10) || 0;
-            cam.fov = parseInt(document.getElementById('rngCamFOV').value, 10) || 90;
             cam.rangeMeters = parseFloat(document.getElementById('rngCamRange').value) || 10;
-
             document.getElementById('lblCamRotation').textContent = cam.rotation;
-            document.getElementById('lblCamFOV').textContent = cam.fov;
             document.getElementById('lblCamRange').textContent = cam.rangeMeters;
-            drawScene();
-            updateAllCalculations();
-        }
-
-        function setCamColor(hexColor) {
-            const cam = cameras.find(c => c.id === selectedCameraId);
-            if (!cam) return;
-            cam.color = hexColor;
             drawScene();
         }
 
@@ -1176,9 +952,9 @@
         }
 
         /**************************************************************
-         * 6. STORAGE, CONDUITS & FINANCIAL BOM CALCULATIONS
-         ********************************------------------------------*/
-        function calculateSingleCamCableMeters(cam) {
+         * 6. UNIFIED BOM & COMPONENT CALCULATIONS
+         **************************************************************/
+        function calculateCableMeters(cam) {
             const aspect = canvas.height / (canvas.width || 1);
             const realHeightMeters = realWorldWidthMeters * aspect;
             const dx = Math.abs(cam.nx - dvrUnit.nx) * realWorldWidthMeters;
@@ -1186,114 +962,133 @@
             return Math.round((dx + dy) * 1.25 + 3);
         }
 
-        function updateAllCalculations() {
-            const camCount = cameras.length;
-            let totalCableMeters = 0;
-            cameras.forEach(c => {
-                totalCableMeters += calculateSingleCamCableMeters(c);
-            });
-
-            // Storage HDD calculation
-            const resMP = parseFloat(document.getElementById('hddResolution').value) || 5;
-            const codecFactor = parseFloat(document.getElementById('hddCodec').value) || 0.55;
-            const days = parseFloat(document.getElementById('hddDays').value) || 30;
-            const modeFactor = parseFloat(document.getElementById('hddMode').value) || 1.0;
-
-            const bitratePerCam = resMP * 0.72 * codecFactor;
-            const totalGB = Math.round(camCount * bitratePerCam * 10.55 * days * modeFactor);
-            const totalTB = totalGB / 1000;
-
-            // Pick exact Hard disk size from custom pricing map
-            let commercialTB = 1;
-            const availableSizes = Object.keys(hddPricingMap).map(Number).sort((a,b)=>a-b);
-            for (let sz of availableSizes) {
-                if (totalTB <= sz) {
-                    commercialTB = sz;
-                    break;
-                }
-                commercialTB = availableSizes[availableSizes.length - 1];
+        function resolveItemQuantity(item, counts) {
+            switch (item.qtyMode) {
+                case 'cam_dome': return counts.dome;
+                case 'cam_bullet': return counts.bullet;
+                case 'cam_zoom': return counts.zoom;
+                case 'cam_ptz': return counts.ptz;
+                case 'all_cams': return counts.totalCams;
+                case 'cable_m': return counts.totalCableMeters;
+                default: return parseFloat(item.manualQty) || 0;
             }
+        }
 
-            const hddCost = hddPricingMap[commercialTB] || 2100;
+        function getModeArabicLabel(mode) {
+            const map = {
+                manual: 'يدوي',
+                all_cams: 'بعددد الكاميرات',
+                cable_m: 'بأمتار السلك',
+                cam_dome: 'بعدد Dome',
+                cam_bullet: 'بعدد Bullet',
+                cam_zoom: 'بعدد الزووم',
+                cam_ptz: 'بعدد PTZ'
+            };
+            return map[mode] || 'يدوي';
+        }
 
-            document.getElementById('outExactStorage').textContent = totalGB >= 1000 ? `${(totalGB/1024).toFixed(2)} TB` : `${totalGB} GB`;
-            document.getElementById('outCommercialHDD').textContent = `${commercialTB} TB Surveillance`;
-            document.getElementById('outHDDCost').textContent = `${hddCost.toLocaleString()} ${appConfig.currency}`;
+        function updateAllCalculations() {
+            const totalCams = cameras.length;
+            let totalCableMeters = 0;
+            cameras.forEach(c => totalCableMeters += calculateCableMeters(c));
 
-            // Build BOM from custom inventory
-            const getItemPrice = (id, fallback) => {
-                const found = customInventory.find(i => i.id === id);
-                return found ? found.price : fallback;
+            const counts = {
+                totalCams,
+                totalCableMeters,
+                dome: cameras.filter(c => c.type === 'dome').length,
+                bullet: cameras.filter(c => c.type === 'bullet').length,
+                zoom: cameras.filter(c => c.type === 'zoom').length,
+                ptz: cameras.filter(c => c.type === 'ptz').length
             };
 
-            const domeCount = cameras.filter(c => c.type === 'dome105').length;
-            const bulletCount = cameras.filter(c => c.type === 'bullet80').length;
-            const zoomCount = cameras.filter(c => c.type === 'varifocal50').length;
-            const ptzCount = cameras.filter(c => c.type === 'ptz360').length;
+            const activeBomItems = [];
 
-            const bomItems = [];
-            if (domeCount > 0) bomItems.push({ title: 'كاميرات داخلية Dome', qty: `${domeCount} عدد`, unit: getItemPrice('dome', 950), total: domeCount * getItemPrice('dome', 950) });
-            if (bulletCount > 0) bomItems.push({ title: 'كاميرات خارجية Bullet', qty: `${bulletCount} عدد`, unit: getItemPrice('bullet', 1150), total: bulletCount * getItemPrice('bullet', 1150) });
-            if (zoomCount > 0) bomItems.push({ title: 'كاميرات زووم 6mm', qty: `${zoomCount} عدد`, unit: getItemPrice('zoom', 1650), total: zoomCount * getItemPrice('zoom', 1650) });
-            if (ptzCount > 0) bomItems.push({ title: 'كاميرات PTZ 360°', qty: `${ptzCount} عدد`, unit: getItemPrice('ptz', 3400), total: ptzCount * getItemPrice('ptz', 3400) });
+            customInventory.forEach((item, idx) => {
+                const qty = resolveItemQuantity(item, counts);
+                if (qty > 0) {
+                    const total = Math.round(qty * (parseFloat(item.price) || 0));
+                    activeBomItems.push({
+                        idx,
+                        title: item.name,
+                        category: item.category,
+                        qtyMode: item.qtyMode,
+                        qty,
+                        unit: parseFloat(item.price) || 0,
+                        total
+                    });
+                }
+            });
 
-            if (camCount > 0) {
-                bomItems.push({ title: 'جهاز تسجيل DVR / NVR معتمد', qty: '1 جهاز', unit: getItemPrice('dvr', 2600), total: getItemPrice('dvr', 2600) });
-                bomItems.push({ title: `هارد ديسك مخصص للمراقبة ${commercialTB} TB`, qty: '1 عدد', unit: hddCost, total: hddCost });
-                bomItems.push({ title: 'كابلات إشارة وباور نحاس صافي', qty: `${totalCableMeters} متر`, unit: getItemPrice('cable', 22), total: totalCableMeters * getItemPrice('cable', 22) });
-                bomItems.push({ title: 'مواسير PVC وبواطات لحماية الأسلاك', qty: `${totalCableMeters} متر`, unit: getItemPrice('conduit', 12), total: totalCableMeters * getItemPrice('conduit', 12) });
-                bomItems.push({ title: 'باور سبلاي + جاكات BNC وإكسسوارات', qty: `${camCount} أطقم`, unit: getItemPrice('acc', 150), total: camCount * getItemPrice('acc', 150) });
-                bomItems.push({ title: 'مصنعية التركيب والبرمجة', qty: `${camCount} نقطة`, unit: getItemPrice('install', 300), total: camCount * getItemPrice('install', 300) });
-            }
+            const grandTotal = activeBomItems.reduce((acc, item) => acc + item.total, 0);
 
-            const grandTotal = bomItems.reduce((acc, item) => acc + item.total, 0);
-
-            // Render BOM Table
-            document.getElementById('bomTableBody').innerHTML = bomItems.map(item => `
-                <tr>
-                    <td class="py-1.5 text-slate-200 font-semibold">${item.title}</td>
-                    <td class="py-1.5 text-center text-cyan-300 font-bold">${item.qty}</td>
-                    <td class="py-1.5 text-left font-bold text-white">${item.total.toLocaleString()} ${appConfig.currency}</td>
+            document.getElementById('bomTableBody').innerHTML = activeBomItems.map(item => `
+                <tr class="hover:bg-slate-900/60">
+                    <td class="py-2 px-2 text-white font-bold">${item.title}</td>
+                    <td class="py-2 px-2"><span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 text-[10px] font-bold">${item.category}</span></td>
+                    <td class="py-2 px-2 text-center text-slate-400 text-[11px]">${getModeArabicLabel(item.qtyMode)}</td>
+                    <td class="py-2 px-2 text-center">
+                        ${item.qtyMode === 'manual'
+                            ? `<input type="number" value="${item.qty}" min="0" oninput="inlineUpdateItem(${item.idx}, 'manualQty', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-center text-amber-300 font-bold">`
+                            : `<span class="font-bold text-cyan-300">${item.qty}</span>`
+                        }
+                    </td>
+                    <td class="py-2 px-2 text-center">
+                        <input type="number" value="${item.unit}" min="0" oninput="inlineUpdateItem(${item.idx}, 'price', this.value)" class="w-24 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-center text-emerald-400 font-bold">
+                    </td>
+                    <td class="py-2 px-2 text-left font-black text-white">${item.total.toLocaleString()} ج.م</td>
                 </tr>
             `).join('');
 
-            document.getElementById('statCamCount').textContent = camCount;
+            document.getElementById('statCamCount').textContent = totalCams;
             document.getElementById('statCableMeters').textContent = totalCableMeters;
-            document.getElementById('statRecommendedHDD').textContent = `${commercialTB} TB`;
+            document.getElementById('statItemsCount').textContent = activeBomItems.length;
             document.getElementById('statTotalCost').textContent = grandTotal.toLocaleString();
             document.getElementById('bomGrandTotal').textContent = grandTotal.toLocaleString();
 
-            window.__latestQuoteData = { camCount, totalCableMeters, commercialTB, totalGB, days, resMP, grandTotal, bomItems };
+            window.__latestQuoteData = { camCount: totalCams, totalCableMeters, grandTotal, bomItems: activeBomItems };
+        }
+
+        function inlineUpdateItem(idx, field, value) {
+            if (!customInventory[idx]) return;
+            customInventory[idx][field] = parseFloat(value) || 0;
+            try {
+                localStorage.setItem('cctv_pro_unified_inv_v7', JSON.stringify(customInventory));
+            } catch (e) {}
+            updateAllCalculations();
         }
 
         /**************************************************************
-         * 7. INVENTORY MODAL MANAGEMENT
-         ********************************------------------------------*/
+         * 7. UNIFIED INVENTORY MODAL MANAGEMENT
+         **************************************************************/
         function openInventoryModal() {
-            // Render HDD pricing inputs
-            const hddList = document.getElementById('hddPricingList');
-            hddList.innerHTML = Object.entries(hddPricingMap).map(([tb, price]) => `
-                <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                    <label class="block text-slate-400 text-[10px] mb-1">هارد ${tb} تيرا (TB):</label>
-                    <input type="number" id="hdd_price_${tb}" value="${price}" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-emerald-400 font-bold text-xs">
-                </div>
-            `).join('');
-
-            // Render custom inventory items
-            const invTbody = document.getElementById('customInventoryTbody');
-            invTbody.innerHTML = customInventory.map((item, index) => `
+            const invContainer = document.getElementById('inventoryTbody');
+            invContainer.innerHTML = customInventory.map((item, idx) => `
                 <tr>
-                    <td class="py-1.5 px-2">
-                        <input type="text" id="inv_name_${index}" value="${item.name}" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-white font-bold">
+                    <td class="py-1.5 px-1.5">
+                        <input type="text" id="inv_name_${idx}" value="${item.name}" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold text-xs" placeholder="اسم المكون أو الهارد أو البند">
                     </td>
-                    <td class="py-1.5 px-2 text-slate-400">${item.category}</td>
-                    <td class="py-1.5 px-2">
-                        <input type="number" id="inv_price_${index}" value="${item.price}" class="w-28 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-emerald-400 font-bold">
+                    <td class="py-1.5 px-1.5">
+                        <input type="text" id="inv_cat_${idx}" value="${item.category}" class="w-36 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-bold text-xs" placeholder="التصنيف يدوياً">
                     </td>
-                    <td class="py-1.5 px-2 text-center">
-                        <button onclick="removeCustomInventoryItem(${index})" class="text-rose-400 hover:text-rose-300">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                    <td class="py-1.5 px-1.5">
+                        <select id="inv_mode_${idx}" class="w-44 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-slate-200 font-bold text-xs">
+                            <option value="manual" ${item.qtyMode === 'manual' ? 'selected' : ''}>كمية يدوية (أكتب العدد بنفسي)</option>
+                            <option value="all_cams" ${item.qtyMode === 'all_cams' ? 'selected' : ''}>تلقائي = إجمالي عدد الكاميرات</option>
+                            <option value="cable_m" ${item.qtyMode === 'cable_m' ? 'selected' : ''}>تلقائي = أمتار السلك بالمخطط</option>
+                            <option value="cam_dome" ${item.qtyMode === 'cam_dome' ? 'selected' : ''}>تلقائي = عدد كاميرات Dome</option>
+                            <option value="cam_bullet" ${item.qtyMode === 'cam_bullet' ? 'selected' : ''}>تلقائي = عدد كاميرات Bullet</option>
+                            <option value="cam_zoom" ${item.qtyMode === 'cam_zoom' ? 'selected' : ''}>تلقائي = عدد كاميرات الزووم</option>
+                            <option value="cam_ptz" ${item.qtyMode === 'cam_ptz' ? 'selected' : ''}>تلقائي = عدد كاميرات PTZ</option>
+                        </select>
+                    </td>
+                    <td class="py-1.5 px-1.5 text-center">
+                        <input type="number" id="inv_qty_${idx}" value="${item.manualQty}" min="0" class="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-amber-300 font-bold text-xs text-center">
+                    </td>
+                    <td class="py-1.5 px-1.5 text-center">
+                        <input type="number" id="inv_price_${idx}" value="${item.price}" min="0" class="w-28 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-emerald-400 font-bold text-xs text-center">
+                    </td>
+                    <td class="py-1.5 px-1.5 text-center">
+                        <button onclick="removeInventoryItem(${idx})" class="text-rose-400 hover:text-rose-300 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -1304,74 +1099,96 @@
         }
 
         function closeInventoryModal() {
-            const modal = document.getElementById('inventoryModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('inventoryModal').classList.add('hidden');
+            document.getElementById('inventoryModal').classList.remove('flex');
         }
 
-        function addNewCustomItem() {
-            customInventory.push({ id: 'custom_' + Date.now(), name: 'بند إضافي جديد', category: 'إكسسوارات', price: 100 });
+        function addNewInventoryItemFromBar() {
+            const name = document.getElementById('quickAddName').value.trim();
+            if (!name) {
+                showToast('يرجى كتابة اسم البند أو المكون أولاً');
+                return;
+            }
+            const category = document.getElementById('quickAddCat').value.trim() || 'مكونات عامة';
+            const qtyMode = document.getElementById('quickAddMode').value || 'manual';
+            const manualQty = parseFloat(document.getElementById('quickAddQty').value) || 1;
+            const price = parseFloat(document.getElementById('quickAddPrice').value) || 0;
+
+            syncModalInputsToState();
+
+            customInventory.push({
+                id: 'item_' + Date.now(),
+                name,
+                category,
+                qtyMode,
+                manualQty,
+                price
+            });
+
+            document.getElementById('quickAddName').value = '';
             openInventoryModal();
+            updateAllCalculations();
+            showToast(`تمت إضافة "${name}" إلى المكونات بنجاح`);
         }
 
-        function removeCustomInventoryItem(index) {
-            customInventory.splice(index, 1);
+        function syncModalInputsToState() {
+            customInventory.forEach((item, idx) => {
+                const nameEl = document.getElementById(`inv_name_${idx}`);
+                const catEl = document.getElementById(`inv_cat_${idx}`);
+                const modeEl = document.getElementById(`inv_mode_${idx}`);
+                const qtyEl = document.getElementById(`inv_qty_${idx}`);
+                const priceEl = document.getElementById(`inv_price_${idx}`);
+                if (nameEl) item.name = nameEl.value;
+                if (catEl) item.category = catEl.value;
+                if (modeEl) item.qtyMode = modeEl.value;
+                if (qtyEl) item.manualQty = parseFloat(qtyEl.value) || 0;
+                if (priceEl) item.price = parseFloat(priceEl.value) || 0;
+            });
+        }
+
+        function removeInventoryItem(idx) {
+            syncModalInputsToState();
+            customInventory.splice(idx, 1);
             openInventoryModal();
+            updateAllCalculations();
         }
 
         function saveInventoryChanges() {
-            // Save HDD prices
-            Object.keys(hddPricingMap).forEach(tb => {
-                const val = parseFloat(document.getElementById(`hdd_price_${tb}`)?.value);
-                if (!isNaN(val)) hddPricingMap[tb] = val;
-            });
-
-            // Save custom inventory items
-            customInventory.forEach((item, index) => {
-                const nameEl = document.getElementById(`inv_name_${index}`);
-                const priceEl = document.getElementById(`inv_price_${index}`);
-                if (nameEl && priceEl) {
-                    item.name = nameEl.value;
-                    item.price = parseFloat(priceEl.value) || 0;
-                }
-            });
-
+            syncModalInputsToState();
             try {
-                localStorage.setItem('cctv_pro_inventory_v4', JSON.stringify(customInventory));
-                localStorage.setItem('cctv_pro_hdd_v4', JSON.stringify(hddPricingMap));
+                localStorage.setItem('cctv_pro_unified_inv_v7', JSON.stringify(customInventory));
             } catch (e) {}
 
             closeInventoryModal();
             updateAllCalculations();
-            showToast('تم حفظ أسعار ومكونات المخزن والهاردات بنجاح!');
+            showToast('تم حفظ جميع المكونات والبنود بنجاح!');
         }
 
         /**************************************************************
-         * 8. EXPORTS (PDF PRINT & WHATSAPP)
-         ********************************------------------------------*/
+         * 8. EXPORTS (PRINT & WHATSAPP)
+         **************************************************************/
         function downloadCanvasImage() {
             const link = document.createElement('a');
-            link.download = 'مخطط-الكاميرات-الهندسي.png';
+            link.download = 'مخطط-الكاميرات.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
-            showToast('تم حفظ صورة المخطط!');
+            showToast('تم حفظ صورة المخطط');
         }
 
         function exportReportPrint() {
             const q = window.__latestQuoteData;
             if (!q) return;
-            document.getElementById('printCompanyName').textContent = appConfig.companyName;
-            document.getElementById('printCompanyPhone').textContent = `للاتصال والواتساب: ${appConfig.companyPhone}`;
             document.getElementById('printDate').textContent = `التاريخ: ${new Date().toLocaleDateString('ar-EG')}`;
-            document.getElementById('printClientName').textContent = `العميل / المشروع: ${document.getElementById('clientNameInput').value}`;
+            document.getElementById('printClientName').textContent = `العميل: ${document.getElementById('clientNameInput').value}`;
             document.getElementById('printCanvasImg').src = canvas.toDataURL('image/png');
 
             document.getElementById('printBomBody').innerHTML = q.bomItems.map(item => `
                 <tr>
                     <td class="py-2 font-semibold">${item.title}</td>
+                    <td class="py-2">${item.category}</td>
                     <td class="py-2 text-center">${item.qty}</td>
-                    <td class="py-2 text-center">${item.unit.toLocaleString()} ${appConfig.currency}</td>
-                    <td class="py-2 text-left font-bold">${item.total.toLocaleString()} ${appConfig.currency}</td>
+                    <td class="py-2 text-center">${item.unit.toLocaleString()} ج.م</td>
+                    <td class="py-2 text-left font-bold">${item.total.toLocaleString()} ج.م</td>
                 </tr>
             `).join('');
 
@@ -1386,15 +1203,14 @@
             let msg = `*عرض سعر فني ومالي لكاميرات المراقبة* 📹🛡️\n`;
             msg += `المشروع: *${client}*\n`;
             msg += `────────────────────\n`;
-            msg += `• عدد الكاميرات: *${q.camCount} كاميرات*\n`;
-            msg += `• الهارد ديسك المقترح: *${q.commercialTB} TB Surveillance*\n`;
-            msg += `• إجمالي الأسلاك والمواسير: *${q.totalCableMeters} متر*\n`;
+            msg += `• عدد الكاميرات بالمخطط: *${q.camCount} كاميرات*\n`;
+            msg += `• إجمالي أمتار السلك والمواسير: *${q.totalCableMeters} متر*\n`;
             msg += `────────────────────\n`;
             q.bomItems.forEach(i => {
-                msg += `• ${i.title} (${i.qty}): ${i.total.toLocaleString()} ${appConfig.currency}\n`;
+                msg += `• ${i.title} (الكمية: ${i.qty}): ${i.total.toLocaleString()} ج.م\n`;
             });
             msg += `────────────────────\n`;
-            msg += `*✅ إجمالي العرض النهائي: ${q.grandTotal.toLocaleString()} ${appConfig.currency}*\n`;
+            msg += `*✅ الإجمالي النهائي: ${q.grandTotal.toLocaleString()} ج.م*\n`;
             window.open(`https://wa.me/?text=` + encodeURIComponent(msg), '_blank');
         }
 
