@@ -1,803 +1,1975 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مُخطط وحاسبة أنظمة كاميرات المراقبة الاحترافي | Smart CCTV Planner PRO v9.0</title>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- Google Fonts: Cairo -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script>
-tailwind.config = {
-darkMode: 'class',
-theme: {
-extend: {
-fontFamily: {
-sans: ['Cairo', 'sans-serif'],
-}
-}
-}
-}
-</script>
-<style>
-body {
-font-family: 'Cairo', sans-serif;
-background-color: #060b14;
-color: #e2e8f0;
-overflow-x: hidden;
-}
-::-webkit-scrollbar {
-width: 7px;
-height: 7px;
-}
-::-webkit-scrollbar-track {
-background: #0b1322;
-}
-::-webkit-scrollbar-thumb {
-background: #1e3256;
-border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-background: #00f2fe;
-}
-.glass-panel {
-background: rgba(19, 32, 56, 0.82);
-backdrop-filter: blur(14px);
-border: 1px solid rgba(56, 189, 248, 0.2);
-}
-.floating-inspector {
-background: rgba(9, 16, 30, 0.94);
-backdrop-filter: blur(16px);
-border: 1.5px solid rgba(0, 242, 254, 0.45);
-box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0, 242, 254, 0.15);
-}
-.neon-border {
-box-shadow: 0 0 20px rgba(0, 242, 254, 0.12), inset 0 0 15px rgba(0, 242, 254, 0.04);
-}
-input[type="range"] {
-accent-color: #00f2fe;
-}
-@media print {
-body { background: #ffffff !important; color: #0f172a !important; }
-.no-print { display: none !important; }
-.print-only { display: block !important; }
-.print-card { background: #ffffff !important; border: 1px solid #cbd5e1 !important; color: #0f172a !important; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُخطط وحاسبة أنظمة كاميرات المراقبة الاحترافي | Smart CCTV Planner PRO v9.5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #060b14;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1322;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e3256;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f2fe;
+        }
+        .glass-panel {
+            background: rgba(15, 25, 45, 0.88);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+        }
+        .floating-inspector {
+            background: rgba(8, 15, 28, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(0, 242, 254, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.15);
+        }
+        .neon-border {
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.12), inset 0 0 15px rgba(0, 242, 254, 0.04);
+        }
+        input[type="range"] {
+            accent-color: #00f2fe;
+        }
+        @media print {
+            body { background: #ffffff !important; color: #0f172a !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-slate-950">
-<!-- SECURITY & LICENSE ACTIVATION LOCK OVERLAY -->
-<div id="securityLockOverlay" class="fixed inset-0 z-[100] bg-[#040811]/95 backdrop-blur-xl hidden items-center justify-center p-4 no-print">
-<div class="glass-panel rounded-3xl max-w-md w-full p-6 border-2 border-cyan-500/40 shadow-2xl text-center space-y-4">
-<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 mx-auto flex items-center justify-center shadow-lg shadow-cyan-500/30">
-<i class="fa-solid fa-shield-halved text-slate-950 text-3xl"></i>
-</div>
-<div>
-<h2 id="lockOverlayTitle" class="text-xl font-black text-white">تفعيل ترخيص المنظومة الهندسية</h2>
-<p id="lockOverlaySubtitle" class="text-xs text-slate-400 mt-1">أدخل الرقم السري للفتح الفوري للمتابعة</p>
-</div>
-<!-- Activation Input Section -->
-<div id="activationInputSection" class="space-y-3 text-right">
-<div>
-<label class="block text-xs font-bold text-cyan-300 mb-1">🔑 خانة إدخال الرقم السري أو كود التفعيل:</label>
-<input type="text" id="inpLicenseKey" placeholder="أدخل الرقم السري (مثال: 1234)" class="w-full bg-slate-900 border-2 border-cyan-400 rounded-xl px-3.5 py-3 text-center font-mono font-black text-white text-base tracking-wider focus:outline-none focus:ring-2 focus:ring-cyan-300">
-</div>
-<button onclick="verifyLicenseOrPin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/25 transition">
-<i class="fa-solid fa-key ml-1"></i> تفعيل وفتح النظام الآن
-</button>
-<div class="flex items-center justify-center text-[11px] text-slate-400 pt-1">
-<span>الرقم السري الافتراضي: <strong class="text-emerald-400 font-mono">1234</strong></span>
-</div>
-</div>
-</div>
-</div>
-<!-- Top Navigation & Live KPI Header -->
-<header class="glass-panel sticky top-0 z-40 border-b border-cyan-500/20 px-4 py-3 no-print">
-<div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-3">
-<div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
-<i class="fa-solid fa-eye text-slate-950 text-xl"></i>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h1 id="headerCompanyName" class="text-base sm:text-lg font-extrabold tracking-tight text-white">الشركة الهندسية للأنظمة الأمنية</h1>
-<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">PRO v9.0</span>
-</div>
-<p id="headerProjectSummary" class="text-xs text-slate-400">المشروع: تأمين المقر الإداري • م. أحمد محمود</p>
-</div>
-</div>
-<!-- Live Summary Pills -->
-<div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
-<div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
-<i class="fa-solid fa-video text-cyan-400"></i>
-<div>
-<div class="text-[10px] text-slate-400">الكاميرات</div>
-<div class="text-xs sm:text-sm font-bold text-white"><span id="statCamCount">2</span> كاميرات</div>
-</div>
-</div>
-<div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
-<i class="fa-solid fa-network-wired text-amber-400"></i>
-<div>
-<div class="text-[10px] text-slate-400">الأسلاك والمواسير</div>
-<div class="text-xs sm:text-sm font-bold text-white"><span id="statCableMeters">0</span> متر</div>
-</div>
-</div>
-<div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
-<i class="fa-solid fa-bolt text-yellow-400"></i>
-<div>
-<div class="text-[10px] text-slate-400">استهلاك الباور</div>
-<div class="text-xs sm:text-sm font-bold text-white"><span id="statPowerAmps">0</span> أمبير</div>
-</div>
-</div>
-<div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
-<i class="fa-solid fa-boxes-stacked text-purple-400"></i>
-<div>
-<div class="text-[10px] text-slate-400">بنود المقايسة</div>
-<div class="text-xs sm:text-sm font-bold text-white"><span id="statItemsCount">0</span> بنود</div>
-</div>
-</div>
-<div class="bg-emerald-950/60 border border-emerald-500/40 rounded-xl px-3.5 py-1.5 flex items-center gap-2">
-<i class="fa-solid fa-sack-dollar text-emerald-400 text-base"></i>
-<div>
-<div class="text-[10px] text-emerald-300">إجمالي المقايسة</div>
-<div class="text-sm sm:text-base font-black text-emerald-400"><span id="statTotalCost">0</span> <span class="currency-label text-xs">ج.م</span></div>
-</div>
-</div>
-</div>
-<!-- Action Buttons -->
-<div class="flex flex-wrap items-center gap-1.5">
-<button onclick="toggleDashboardPanel()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-cyan-500/40 text-cyan-300 text-xs font-black flex items-center gap-1.5 transition">
-<i class="fa-solid fa-gauge-high"></i>
-<span>الداشبورد وبيانات الشركة</span>
-</button>
-<button onclick="openInventoryModal()" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-lg transition">
-<i class="fa-solid fa-plus-circle"></i>
-<span>المكونات والأسعار</span>
-</button>
-<button onclick="openBackupSecurityModal()" class="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black flex items-center gap-1.5 shadow-lg transition">
-<i class="fa-solid fa-shield-lock"></i>
-<span>النسخ الاحتياطي والتأمين</span>
-</button>
-<button onclick="lockScreenNow()" class="px-2.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 text-xs font-bold transition">
-<i class="fa-solid fa-lock"></i>
-</button>
-<button onclick="exportReportPrint()" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition">
-<i class="fa-solid fa-file-pdf"></i>
-<span>طباعة</span>
-</button>
-<button onclick="sendWhatsAppQuote()" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition">
-<i class="fa-brands fa-whatsapp text-base"></i>
-</button>
-</div>
-</div>
-</header>
-<!-- EXECUTIVE DASHBOARD & COMPANY / PROJECT IDENTITY PANEL -->
-<section id="executiveDashboardSection" class="max-w-[1700px] w-full mx-auto px-3 sm:px-5 pt-4 no-print">
-<div class="glass-panel rounded-2xl p-4 sm:p-5 border border-cyan-500/30 neon-border space-y-4">
-<div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
-<div class="flex items-center gap-2">
-<i class="fa-solid fa-chart-pie text-cyan-400 text-lg"></i>
-<h2 class="text-sm sm:text-base font-black text-white">لوحة القيادة والبيانات الرسمية للشركة والمشروع</h2>
-</div>
-<div class="flex items-center gap-2">
-<button onclick="saveCurrentProjectToArchive()" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 text-xs font-black flex items-center gap-1.5 transition">
-<i class="fa-solid fa-floppy-disk"></i>
-<span>حفظ المشروع الحالي (<span id="savedProjectsCountBadge">0</span>)</span>
-</button>
-<button onclick="exportFullBackupJSON()" class="px-3 py-1.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 border border-cyan-500/40 text-xs font-black flex items-center gap-1.5 transition">
-<i class="fa-solid fa-download"></i>
-<span>نسخة احتياطية</span>
-</button>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
-<div class="lg:col-span-5 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2.5">
-<div class="text-cyan-300 font-black pb-1 border-b border-slate-800">بيانات الشركة المنفذة</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-<div class="sm:col-span-2">
-<label class="block text-slate-400 text-[10px] mb-0.5">اسم الشركة:</label>
-<input type="text" id="compNameInput" value="الشركة الهندسية للأنظمة الأمنية والمراقبة" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
-</div>
-<div>
-<label class="block text-slate-400 text-[10px] mb-0.5">اسم المسؤول:</label>
-<input type="text" id="compEngineerInput" value="م. أحمد محمود" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white">
-</div>
-<div>
-<label class="block text-slate-400 text-[10px] mb-0.5">تليفون الشركة:</label>
-<input type="text" id="compPhoneInput" value="01001234567" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-mono">
-</div>
-</div>
-</div>
-<div class="lg:col-span-5 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2.5">
-<div class="text-amber-300 font-black pb-1 border-b border-slate-800">بيانات المشروع والعميل</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-<div>
-<label class="block text-slate-400 text-[10px] mb-0.5">اسم المشروع:</label>
-<input type="text" id="projTitleInput" value="تأمين ومراقبة المقر" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
-</div>
-<div>
-<label class="block text-slate-400 text-[10px] mb-0.5">اسم العميل:</label>
-<input type="text" id="clientNameInput" value="شركة النور للتوكيلات" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
-</div>
-</div>
-</div>
-<div class="lg:col-span-2 bg-slate-900 p-3.5 rounded-2xl border border-slate-800 space-y-2 text-[11px]">
-<div class="text-emerald-300 font-black border-b border-slate-800 pb-1">توصيات هندسية</div>
-<div class="flex justify-between"><span class="text-slate-400">DVR:</span><strong id="recDvrChannels" class="text-cyan-300">4 قنوات</strong></div>
-<div class="flex justify-between"><span class="text-slate-400">الباور:</span><strong id="recPowerSupply" class="text-amber-300">12V 5A</strong></div>
-<button onclick="openBackupSecurityModal()" class="w-full py-1.5 rounded bg-slate-800 text-cyan-300 font-bold mt-2">الأرشيف والتأمين</button>
-</div>
-</div>
-</div>
-</section>
-<!-- Main Workspace Container -->
-<main class="flex-1 max-w-[1700px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 no-print">
-<aside class="lg:col-span-4 space-y-4">
-<div class="glass-panel rounded-2xl p-4 neon-border">
-<div class="flex items-center justify-between mb-3">
-<h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2">
-<i class="fa-solid fa-building"></i>
-<span>1. تصميم المبنى والمساحات</span>
-</h2>
-<button onclick="toggleBuildingLock()" id="btnLockBuildingSidebar" class="px-2.5 py-1 rounded-lg text-[11px] font-black flex items-center gap-1.5 transition bg-slate-800 text-emerald-400 border border-emerald-500/40">
-<i class="fa-solid fa-lock-open" id="iconLockSidebar"></i>
-<span id="txtLockSidebar">قفل المبنى</span>
-</button>
-</div>
-<div id="buildingEditorControls" class="space-y-3">
-<div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs">
-<input type="text" id="newRoomNameInput" placeholder="اكتب اسم الغرفة..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold">
-<button onclick="addNewBuildingSpace()" class="w-full py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black">+ إضافة غرفة للمخطط</button>
-</div>
-<div id="buildingElementsList" class="space-y-1.5 max-h-[160px] overflow-y-auto"></div>
-</div>
-<div id="buildingLockedBanner" class="hidden p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-center space-y-2">
-<div class="text-amber-400 font-black text-xs">🔒 تصميم المبنى مقفول ومثبّت!</div>
-<button onclick="toggleBuildingLock()" class="px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-[11px]">فك قفل المبنى</button>
-</div>
-</div>
-<div class="glass-panel rounded-2xl p-4">
-<h2 class="text-sm font-extrabold text-cyan-300 mb-3"><i class="fa-solid fa-video ml-1"></i>2. إضافة كاميرات المراقبة</h2>
-<div class="grid grid-cols-2 gap-2.5">
-<button onclick="addCamera('dome')" class="p-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-right text-xs font-bold text-white">Dome الداخلية</button>
-<button onclick="addCamera('bullet')" class="p-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-emerald-400 text-right text-xs font-bold text-white">Bullet الخارجية</button>
-<button onclick="addCamera('zoom')" class="p-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-400 text-right text-xs font-bold text-white">زووم 6mm</button>
-<button onclick="addCamera('ptz')" class="p-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-purple-400 text-right text-xs font-bold text-white">PTZ 360°</button>
-</div>
-<div class="mt-3 pt-3 border-t border-slate-800">
-<div class="text-[11px] font-bold text-slate-400 mb-2">الكاميرات المتاحة (اضغط لفتح الإعدادات):</div>
-<div id="quickCamerasList" class="flex flex-wrap gap-1.5"></div>
-</div>
-</div>
-</aside>
-<section class="lg:col-span-8 flex flex-col gap-4">
-<div class="glass-panel rounded-2xl p-3 sm:p-4 neon-border flex flex-col">
-<div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800">
-<div class="flex flex-wrap items-center gap-1.5">
-<button onclick="toggleBuildingLock()" id="btnLockBuildingCanvas" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs text-emerald-300 font-black">قفل المبنى</button>
-<button onclick="zoomCanvas(1.15)" class="px-2 py-1 rounded bg-slate-900 text-xs text-cyan-300">+</button>
-<button onclick="zoomCanvas(0.85)" class="px-2 py-1 rounded bg-slate-900 text-xs text-cyan-300">-</button>
-<button onclick="resetZoom()" class="px-2 py-1 rounded bg-slate-900 text-xs text-slate-300">100%</button>
-</div>
-</div>
-<div class="relative w-full rounded-xl overflow-hidden border border-slate-700 bg-[#070d19]" id="canvasContainer">
-<canvas id="cctvCanvas" class="w-full block cursor-grab active:cursor-grabbing touch-none"></canvas>
-<!-- FLOATING CAMERA SETTINGS HUD -->
-<div id="floatingCameraInspector" class="floating-inspector absolute top-3 left-3 z-30 w-72 rounded-2xl p-3.5">
-<div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
-<span class="text-xs font-black text-white">إعدادات الكاميرا المحددة</span>
-<div class="flex gap-1">
-<button onclick="deleteSelectedCamera()" class="text-[11px] bg-rose-500/20 text-rose-400 px-2 py-0.5 rounded font-bold">حذف</button>
-<button onclick="closeFloatingInspector()" class="text-slate-400 px-1">✕</button>
-</div>
-</div>
-<div class="space-y-2.5 text-xs">
-<div>
-<label class="block text-slate-400 text-[10px] mb-0.5">اسم الكاميرا:</label>
-<input type="text" id="camLabelInput" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-white font-bold">
-</div>
-<div>
-<div class="flex justify-between text-[11px] mb-1"><span class="text-slate-300">زاوية الدوران:</span><span id="lblCamRotation" class="text-cyan-400">0</span>°</div>
-<input type="range" id="rngCamRotation" min="0" max="359" value="45" oninput="updateSelectedCameraFromUI()" class="w-full">
-</div>
-<div>
-<div class="flex justify-between text-[11px] mb-1"><span class="text-slate-300">مدى الرؤية:</span><span id="lblCamRange" class="text-emerald-400">12</span>متر</div>
-<input type="range" id="rngCamRange" min="3" max="40" step="0.5" value="12" oninput="updateSelectedCameraFromUI()" class="w-full">
-</div>
-</div>
-</div>
-<div id="floatingHintPill" class="hidden absolute top-3 left-3 z-20 bg-slate-950/85 border border-cyan-500/30 rounded-xl px-3 py-1.5 text-[11px] text-cyan-300 font-bold">
-💡 اضغط على أي كاميرا بالمخطط لفتح إعداداتها هنا
-</div>
-</div>
-</div>
-<!-- Unified Bill of Materials -->
-<div class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-emerald-500/30">
-<div>
-<div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
-<h2 class="text-sm font-extrabold text-emerald-300">3. مقايسة المكونات والبنود والأسعار</h2>
-<button onclick="openInventoryModal()" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-black text-xs">إضافة وإدارة المكونات يدوياً</button>
-</div>
-<div class="overflow-x-auto max-h-[250px] overflow-y-auto">
-<table class="w-full text-xs text-right">
-<thead>
-<tr class="border-b border-slate-700 text-slate-400 text-[11px]">
-<th class="py-2 px-2">اسم البند / المكون</th>
-<th class="py-2 px-2">التصنيف</th>
-<th class="py-2 px-2 text-center">الكمية</th>
-<th class="py-2 px-2 text-center">سعر الوحدة (ج.م)</th>
-<th class="py-2 px-2 text-left">الإجمالي</th>
-</tr>
-</thead>
-<tbody id="bomTableBody" class="divide-y divide-slate-800/80"></tbody>
-</table>
-</div>
-</div>
-<div class="mt-3 pt-3 border-t border-slate-700 flex justify-between items-center text-base font-black text-emerald-400">
-<span>الإجمالي النهائي:</span>
-<span><span id="bomGrandTotal">0</span> ج.م</span>
-</div>
-</div>
-</section>
-</main>
-<!-- UNIFIED INVENTORY MODAL -->
-<div id="inventoryModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 no-print">
-<div class="glass-panel rounded-2xl max-w-4xl w-full p-5 border border-amber-500/40 shadow-2xl max-h-[90vh] flex flex-col">
-<div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-3">
-<h3 class="text-sm font-extrabold text-white">إدارة المكونات والبنود يدوياً (كاميرات، هاردات، أسلاك، مواسير)</h3>
-<button onclick="closeInventoryModal()" class="text-slate-400 hover:text-white">✕</button>
-</div>
-<div class="bg-slate-900 p-3 rounded-xl border border-amber-500/30 mb-3 text-xs grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
-<div>
-<label class="block text-slate-400 text-[10px] mb-1">اسم المكون (حر):</label>
-<input type="text" id="quickAddName" placeholder="مثال: هارد 2 تيرا" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-white font-bold">
-</div>
-<div>
-<label class="block text-slate-400 text-[10px] mb-1">التصنيف (حر):</label>
-<input type="text" id="quickAddCat" placeholder="هاردات / أسلاك" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1 text-cyan-300 font-bold">
-</div>
-<div>
-<label class="block text-slate-400 text-[10px] mb-1">طريقة الكمية:</label>
-<select id="quickAddMode" class="w-full bg-slate-950 border border-slate-700 rounded px-2 py-1 text-white font-bold">
-<option value="manual">يدوي</option>
-<option value="all_cams">بعدد الكاميرات</option>
-<option value="cable_m">بأمتار السلك</option>
-</select>
-</div>
-<div>
-<label class="block text-slate-400 text-[10px] mb-1">الكمية والسعر:</label>
-<div class="flex gap-1">
-<input type="number" id="quickAddQty" value="1" class="w-1/2 bg-slate-950 border border-slate-700 rounded px-1 py-1 text-center text-white">
-<input type="number" id="quickAddPrice" value="1000" class="w-1/2 bg-slate-950 border border-slate-700 rounded px-1 py-1 text-center text-emerald-400">
-</div>
-</div>
-<button onclick="addNewInventoryItemFromBar()" class="py-1.5 rounded bg-emerald-500 text-slate-950 font-black">إضافة البند</button>
-</div>
-<div class="flex-1 overflow-y-auto bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs">
-<table class="w-full text-right">
-<thead>
-<tr class="text-slate-400 border-b border-slate-700 text-[11px]">
-<th class="py-2 px-2">اسم المكون</th>
-<th class="py-2 px-2">التصنيف</th>
-<th class="py-2 px-2 text-center">الكمية</th>
-<th class="py-2 px-2 text-center">سعر الوحدة</th>
-<th class="py-2 px-2 text-center">حذف</th>
-</tr>
-</thead>
-<tbody id="inventoryTbody" class="divide-y divide-slate-800"></tbody>
-</table>
-</div>
-<div class="flex justify-end pt-3">
-<button onclick="saveInventoryChanges()" class="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs">حفظ التعديلات</button>
-</div>
-</div>
-</div>
-<!-- BACKUP & SECURITY MODAL -->
-<div id="backupSecurityModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 no-print">
-<div class="glass-panel rounded-2xl max-w-2xl w-full p-5 border border-purple-500/40 shadow-2xl space-y-4">
-<div class="flex items-center justify-between pb-3 border-b border-slate-700">
-<h3 class="text-sm font-extrabold text-white">النسخ الاحتياطي وتأمين البرنامج برقم سري (PIN)</h3>
-<button onclick="closeBackupSecurityModal()" class="text-slate-400 hover:text-white">✕</button>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-<div class="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-2">
-<div class="font-black text-cyan-300">النسخ الاحتياطي للبيانات</div>
-<div class="flex gap-2">
-<button onclick="exportFullBackupJSON()" class="py-2 px-3 rounded bg-cyan-500 text-slate-950 font-bold">تصدير نسخة</button>
-<label class="cursor-pointer py-2 px-3 rounded bg-amber-500 text-slate-950 font-bold">
-استيراد نسخة <input type="file" accept=".json" class="hidden" onchange="importFullBackupJSON(event)">
-</label>
-</div>
-</div>
-<div class="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-2">
-<div class="font-black text-emerald-300">الرقم السري لتأمين البرنامج (PIN)</div>
-<div class="flex gap-2">
-<input type="password" id="cfgPinCodeInput" value="1234" class="w-24 bg-slate-950 border border-slate-700 rounded px-2 text-center font-mono font-bold text-white">
-<button onclick="saveSecurityPinConfig()" class="py-2 px-4 rounded bg-emerald-500 text-slate-950 font-bold">حفظ الرقم</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- PRINTABLE QUOTATION SHEET -->
-<section class="hidden print-only p-8 max-w-4xl mx-auto">
-<div class="border-b-2 border-slate-800 pb-4 mb-5 flex justify-between items-start">
-<div>
-<h1 id="printCompanyName" class="text-2xl font-black text-slate-900">الشركة الهندسية</h1>
-<p id="printCompanyDetails" class="text-xs text-slate-700 mt-1">ت: 01001234567</p>
-</div>
-<div class="text-left text-xs text-slate-600">
-<div id="printDate">التاريخ: --/--/----</div>
-<div id="printProjectTitle" class="font-bold text-slate-900 mt-1">المشروع: تأمين المقر</div>
-</div>
-</div>
-<div class="mb-5"><img id="printCanvasImg" src="" class="w-full h-auto rounded-lg border" /></div>
-<table class="w-full text-xs text-right border-collapse mb-4">
-<thead>
-<tr class="border-b border-slate-300 font-bold bg-slate-100">
-<th class="py-2 px-2">البند والمواصفات</th>
-<th class="py-2 px-2">التصنيف</th>
-<th class="py-2 px-2 text-center">الكمية</th>
-<th class="py-2 px-2 text-center">سعر الوحدة</th>
-<th class="py-2 px-2 text-left">الإجمالي</th>
-</tr>
-</thead>
-<tbody id="printBomBody" class="divide-y divide-slate-200"></tbody>
-</table>
-<div class="flex justify-between font-black text-base pt-2 border-t-2 border-slate-900">
-<span>الإجمالي النهائي:</span>
-<span><span id="printGrandTotal">0</span> ج.م</span>
-</div>
-</section>
-<!-- Toast -->
-<div id="toastMsg" class="fixed bottom-4 left-4 z-50 px-4 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs shadow-xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
-تم الحفظ بنجاح
-</div>
-<script>
-let appMetadata = { companyName: 'الشركة الهندسية', engineerName: 'م. أحمد محمود', companyPhone: '01001234567', projectTitle: 'تأمين ومراقبة المقر', clientName: 'شركة النور' };
-let securityConfig = { pinCode: '1234' };
-try {
-const savedSec = localStorage.getItem('cctv_pro_security_v9');
-if (savedSec) securityConfig = { ...securityConfig, ...JSON.parse(savedSec) };
-} catch (e) {}
-let customInventory = [
-{ id: 'dome', name: 'كاميرا داخلية Dome 2.8mm', category: 'كاميرات', qtyMode: 'cam_dome', manualQty: 1, price: 950 },
-{ id: 'bullet', name: 'كاميرا خارجية Bullet 3.6mm', category: 'كاميرات', qtyMode: 'cam_bullet', manualQty: 1, price: 1150 },
-{ id: 'dvr', name: 'جهاز تسجيل DVR 8 قنوات', category: 'أجهزة تسجيل', qtyMode: 'manual', manualQty: 1, price: 2600 },
-{ id: 'hdd', name: 'هارد ديسك مراقبة 2 تيرا', category: 'هاردات', qtyMode: 'manual', manualQty: 1, price: 2250 },
-{ id: 'cable', name: 'متر سلك نحاس RG59', category: 'أسلاك', qtyMode: 'cable_m', manualQty: 50, price: 22 }
-];
-try {
-const savedInv = localStorage.getItem('cctv_pro_unified_inv_v7');
-if (savedInv) customInventory = JSON.parse(savedInv);
-} catch (e) {}
-let isBuildingLocked = false;
-let canvasZoom = 1.0, canvasPanX = 0, canvasPanY = 0;
-let buildingElements = [
-{ id: 1, type: 'room', name: 'غرفة الإدارة', nx: 0.20, ny: 0.25, w: 140, h: 90 },
-{ id: 2, type: 'room', name: 'صالة الاستقبال', nx: 0.50, ny: 0.50, w: 200, h: 130 }
-];
-let realWorldWidthMeters = 20;
-let dvrUnit = { nx: 0.15, ny: 0.20, label: 'جهاز DVR' };
-let cameras = [
-{ id: 1, type: 'dome', label: 'كاميرا 1', nx: 0.25, ny: 0.70, rotation: 45, rangeMeters: 12, color: '#00f2fe' }
-];
-let selectedCameraId = 1, isInspectorOpen = true, dragState = null;
-// Simple Password / PIN Verification
-function verifyLicenseOrPin() {
-const entered = (document.getElementById('inpLicenseKey').value || '').trim();
-if (entered === securityConfig.pinCode || entered === '1234') {
-document.getElementById('securityLockOverlay').classList.add('hidden');
-document.getElementById('securityLockOverlay').classList.remove('flex');
-showToast('🔓 تم فتح النظام بنجاح!');
-} else {
-showToast('❌ الرقم السري غير صحيح! (الافتراضي: 1234)');
-}
-}
-function lockScreenNow() {
-document.getElementById('inpLicenseKey').value = '';
-const overlay = document.getElementById('securityLockOverlay');
-overlay.classList.remove('hidden');
-overlay.classList.add('flex');
-}
-function toggleBuildingLock() {
-isBuildingLocked = !isBuildingLocked;
-document.getElementById('buildingEditorControls').classList.toggle('hidden', isBuildingLocked);
-document.getElementById('buildingLockedBanner').classList.toggle('hidden', !isBuildingLocked);
-document.getElementById('txtLockSidebar').textContent = isBuildingLocked ? 'مقبول (فك القفل)' : 'قفل المبنى';
-document.getElementById('btnLockBuildingCanvas').className = isBuildingLocked ? 'px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 text-xs font-black' : 'px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs text-emerald-300 font-black';
-drawScene();
-showToast(isBuildingLocked ? '🔒 تم قفل الغرف ومساحات المبنى' : '🔓 تم فك قفل الغرف للتعديل');
-}
-const canvas = document.getElementById('cctvCanvas');
-const ctx = canvas.getContext('2d');
-function resizeCanvas() {
-const container = document.getElementById('canvasContainer');
-canvas.width = container.clientWidth;
-canvas.height = Math.max(450, Math.min(600, Math.round(container.clientWidth * 0.55)));
-drawScene();
-}
-window.addEventListener('resize', resizeCanvas);
-function zoomCanvas(f) { canvasZoom = Math.max(0.5, Math.min(2.5, canvasZoom * f)); drawScene(); }
-function resetZoom() { canvasZoom = 1; canvasPanX = 0; canvasPanY = 0; drawScene(); }
-function addNewBuildingSpace() {
-if (isBuildingLocked) return;
-const name = document.getElementById('newRoomNameInput').value.trim() || 'غرفة جديدة';
-buildingElements.push({ id: Date.now(), type: 'room', name, nx: 0.5, ny: 0.5, w: 130, h: 90 });
-document.getElementById('newRoomNameInput').value = '';
-renderBuildingElementsList();
-drawScene();
-}
-function renderBuildingElementsList() {
-const container = document.getElementById('buildingElementsList');
-if (!container) return;
-container.innerHTML = buildingElements.map(el => ⁠<div class="p-2 rounded bg-slate-950 border border-slate-800 flex items-center justify-between text-[11px]"> <span class="text-white font-bold">${el.name}</span> <button onclick="deleteBuildingElement(${el.id})" class="text-rose-400"><i class="fa-solid fa-trash"></i></button> </div>⁠).join('');
-}
-function deleteBuildingElement(id) {
-buildingElements = buildingElements.filter(e => e.id !== id);
-renderBuildingElementsList();
-drawScene();
-}
-function drawScene() {
-const w = canvas.width, h = canvas.height;
-ctx.clearRect(0, 0, w, h);
-ctx.fillStyle = '#070e1b';
-ctx.fillRect(0, 0, w, h);
-ctx.save();
-ctx.translate(w/2 + canvasPanX, h/2 + canvasPanY);
-ctx.scale(canvasZoom, canvasZoom);
-ctx.translate(-w/2, -h/2);
-buildingElements.forEach(el => {
-const ex = el.nx * w, ey = el.ny * h;
-ctx.strokeStyle = '#38bdf8';
-ctx.fillStyle = 'rgba(56, 189, 248, 0.1)';
-ctx.lineWidth = isBuildingLocked ? 1.5 : 2;
-ctx.beginPath();
-ctx.roundRect(ex - el.w/2, ey - el.h/2, el.w, el.h, 8);
-ctx.fill();
-ctx.stroke();
-ctx.fillStyle = '#fff';
-ctx.font = 'bold 11px Cairo, sans-serif';
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-ctx.fillText(el.name, ex, ey);
-});
-// Draw DVR
-const dvrX = dvrUnit.nx * w, dvrY = dvrUnit.ny * h;
-ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2;
-ctx.beginPath(); ctx.roundRect(dvrX - 35, dvrY - 14, 70, 28, 6); ctx.fill(); ctx.stroke();
-ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px Cairo'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-ctx.fillText('🖧 DVR', dvrX, dvrY);
-// Draw Cameras
-cameras.forEach((cam, idx) => {
-const cx = cam.nx * w, cy = cam.ny * h;
-ctx.fillStyle = cam.color; ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 2;
-ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-ctx.fillStyle = '#020617'; ctx.font = 'bold 10px Cairo'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-ctx.fillText(idx+1, cx, cy);
-});
-ctx.restore();
-}
-// Pointer Events for dragging
-canvas.addEventListener('mousedown', (evt) => {
-const rect = canvas.getBoundingClientRect();
-const rawX = (evt.clientX - rect.left) * (canvas.width / rect.width);
-const rawY = (evt.clientY - rect.top) * (canvas.height / rect.height);
-const w = canvas.width, h = canvas.height;
-const pos = {
-x: (rawX - w/2 - canvasPanX)/canvasZoom + w/2,
-y: (rawY - h/2 - canvasPanY)/canvasZoom + h/2
-};
-for (let cam of cameras) {
-if (Math.hypot(pos.x - cam.nxw, pos.y - cam.nyh) <= 20) {
-selectedCameraId = cam.id;
-isInspectorOpen = true;
-dragState = { type: 'camera', id: cam.id };
-syncInspectorUI();
-renderQuickCamerasList();
-drawScene();
-return;
-}
-}
-});
-window.addEventListener('mousemove', (evt) => {
-if (!dragState) return;
-const rect = canvas.getBoundingClientRect();
-const rawX = (evt.clientX - rect.left) * (canvas.width / rect.width);
-const rawY = (evt.clientY - rect.top) * (canvas.height / rect.height);
-const w = canvas.width, h = canvas.height;
-const pos = {
-x: (rawX - w/2 - canvasPanX)/canvasZoom + w/2,
-y: (rawY - h/2 - canvasPanY)/canvasZoom + h/2
-};
-if (dragState.type === 'camera') {
-const cam = cameras.find(c => c.id === dragState.id);
-if (cam) {
-cam.nx = Math.max(0.05, Math.min(0.95, pos.x / w));
-cam.ny = Math.max(0.05, Math.min(0.95, pos.y / h));
-drawScene();
-updateAllCalculations();
-}
-}
-});
-window.addEventListener('mouseup', () => dragState = null);
-function addCamera(type) {
-const newId = Date.now();
-cameras.push({ id: newId, type, label: ⁠كاميرا ${cameras.length+1}⁠, nx: 0.5, ny: 0.5, rotation: 45, rangeMeters: 12, color: '#00f2fe' });
-selectedCameraId = newId;
-isInspectorOpen = true;
-syncInspectorUI();
-renderQuickCamerasList();
-drawScene();
-updateAllCalculations();
-}
-function renderQuickCamerasList() {
-const container = document.getElementById('quickCamerasList');
-if (!container) return;
-container.innerHTML = cameras.map((cam, idx) => ⁠<button onclick="selectedCameraId=${cam.id}; syncInspectorUI(); drawScene();" class="px-2 py-1 rounded text-[11px] font-bold bg-slate-900 border ${cam.id === selectedCameraId ? 'border-cyan-400 text-cyan-300' : 'border-slate-700 text-slate-300'}"> #${idx+1} ${cam.label} </button>⁠).join('');
-}
-function syncInspectorUI() {
-const cam = cameras.find(c => c.id === selectedCameraId);
-const panel = document.getElementById('floatingCameraInspector');
-if (!cam || !isInspectorOpen) { panel.classList.add('hidden'); return; }
-panel.classList.remove('hidden');
-document.getElementById('camLabelInput').value = cam.label;
-document.getElementById('rngCamRotation').value = cam.rotation;
-document.getElementById('lblCamRotation').textContent = cam.rotation;
-document.getElementById('rngCamRange').value = cam.rangeMeters;
-document.getElementById('lblCamRange').textContent = cam.rangeMeters;
-}
-function updateSelectedCameraFromUI() {
-const cam = cameras.find(c => c.id === selectedCameraId);
-if (!cam) return;
-cam.label = document.getElementById('camLabelInput').value || 'كاميرا';
-cam.rotation = parseInt(document.getElementById('rngCamRotation').value, 10) || 0;
-cam.rangeMeters = parseFloat(document.getElementById('rngCamRange').value) || 10;
-document.getElementById('lblCamRotation').textContent = cam.rotation;
-document.getElementById('lblCamRange').textContent = cam.rangeMeters;
-renderQuickCamerasList();
-drawScene();
-}
-function closeFloatingInspector() { isInspectorOpen = false; syncInspectorUI(); }
-function deleteSelectedCamera() {
-cameras = cameras.filter(c => c.id !== selectedCameraId);
-selectedCameraId = cameras[0]?.id || null;
-syncInspectorUI(); renderQuickCamerasList(); drawScene(); updateAllCalculations();
-}
-function calculateCableMeters(cam) { return 25; }
-function resolveItemQuantity(item, counts) {
-if (item.qtyMode === 'all_cams') return counts.totalCams;
-if (item.qtyMode === 'cable_m') return counts.totalCableMeters;
-if (item.qtyMode === 'cam_dome') return counts.dome;
-return parseFloat(item.manualQty) || 0;
-}
-function updateAllCalculations() {
-const totalCams = cameras.length;
-let totalCableMeters = 0;
-cameras.forEach(c => totalCableMeters += calculateCableMeters(c));
-const counts = { totalCams, totalCableMeters, dome: cameras.filter(c => c.type === 'dome').length };
-let grandTotal = 0;
-const bomItems = customInventory.map(item => {
-const qty = resolveItemQuantity(item, counts);
-const total = Math.round(qty * (parseFloat(item.price) || 0));
-grandTotal += total;
-return { ...item, qty, total };
-});
-document.getElementById('bomTableBody').innerHTML = bomItems.map(item => ⁠<tr> <td class="py-2 px-2 text-white font-bold">${item.name}</td> <td class="py-2 px-2"><span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-300 text-[10px]">${item.category}</span></td> <td class="py-2 px-2 text-center font-bold text-cyan-300">${item.qty}</td> <td class="py-2 px-2 text-center text-emerald-400 font-bold">${item.price} ج.م</td> <td class="py-2 px-2 text-left font-black text-white">${item.total.toLocaleString()} ج.م</td> </tr>⁠).join('');
-document.getElementById('statCamCount').textContent = totalCams;
-document.getElementById('statCableMeters').textContent = totalCableMeters;
-document.getElementById('statItemsCount').textContent = bomItems.length;
-document.getElementById('statTotalCost').textContent = grandTotal.toLocaleString();
-document.getElementById('bomGrandTotal').textContent = grandTotal.toLocaleString();
-window.__latestQuoteData = { totalCams, totalCableMeters, grandTotal, bomItems };
-}
-function openInventoryModal() {
-document.getElementById('inventoryTbody').innerHTML = customInventory.map((item, idx) => ⁠<tr> <td class="py-1 px-1"><input type="text" id="inv_name_${idx}" value="${item.name}" class="w-full bg-slate-950 border border-slate-700 rounded px-2 py-1 text-white text-xs"></td> <td class="py-1 px-1"><input type="text" id="inv_cat_${idx}" value="${item.category}" class="w-28 bg-slate-950 border border-slate-700 rounded px-2 py-1 text-cyan-300 text-xs"></td> <td class="py-1 px-1 text-center"><input type="number" id="inv_qty_${idx}" value="${item.manualQty}" class="w-16 bg-slate-950 border border-slate-700 rounded px-1 py-1 text-center text-amber-300 text-xs"></td> <td class="py-1 px-1 text-center"><input type="number" id="inv_price_${idx}" value="${item.price}" class="w-24 bg-slate-950 border border-slate-700 rounded px-1 py-1 text-center text-emerald-400 text-xs"></td> <td class="py-1 px-1 text-center"><button onclick="customInventory.splice(${idx},1); openInventoryModal(); updateAllCalculations();" class="text-rose-400"><i class="fa-solid fa-trash"></i></button></td> </tr>⁠).join('');
-document.getElementById('inventoryModal').classList.remove('hidden');
-document.getElementById('inventoryModal').classList.add('flex');
-}
-function closeInventoryModal() { document.getElementById('inventoryModal').classList.add('hidden'); document.getElementById('inventoryModal').classList.remove('flex'); }
-function addNewInventoryItemFromBar() {
-const name = document.getElementById('quickAddName').value.trim();
-if (!name) return;
-customInventory.push({
-id: 'item_' + Date.now(),
-name,
-category: document.getElementById('quickAddCat').value.trim() || 'عام',
-qtyMode: document.getElementById('quickAddMode').value,
-manualQty: parseFloat(document.getElementById('quickAddQty').value) || 1,
-price: parseFloat(document.getElementById('quickAddPrice').value) || 0
-});
-document.getElementById('quickAddName').value = '';
-openInventoryModal();
-updateAllCalculations();
-}
-function saveInventoryChanges() {
-customInventory.forEach((item, idx) => {
-const n = document.getElementById(⁠inv_name_${idx}⁠);
-const c = document.getElementById(⁠inv_cat_${idx}⁠);
-const q = document.getElementById(⁠inv_qty_${idx}⁠);
-const p = document.getElementById(⁠inv_price_${idx}⁠);
-if(n) item.name = n.value;
-if(c) item.category = c.value;
-if(q) item.manualQty = parseFloat(q.value) || 0;
-if(p) item.price = parseFloat(p.value) || 0;
-});
-localStorage.setItem('cctv_pro_unified_inv_v7', JSON.stringify(customInventory));
-closeInventoryModal();
-updateAllCalculations();
-showToast('تم حفظ المكونات بنجاح');
-}
-function toggleDashboardPanel() { document.getElementById('executiveDashboardSection').classList.toggle('hidden'); }
-function syncCompanyAndProjectMetadata() {
-appMetadata.companyName = document.getElementById('compNameInput').value;
-appMetadata.projectTitle = document.getElementById('projTitleInput').value;
-appMetadata.clientName = document.getElementById('clientNameInput').value;
-document.getElementById('headerCompanyName').textContent = appMetadata.companyName;
-}
-function openBackupSecurityModal() {
-document.getElementById('cfgPinCodeInput').value = securityConfig.pinCode || '1234';
-document.getElementById('backupSecurityModal').classList.remove('hidden');
-document.getElementById('backupSecurityModal').classList.add('flex');
-}
-function closeBackupSecurityModal() { document.getElementById('backupSecurityModal').classList.add('hidden'); document.getElementById('backupSecurityModal').classList.remove('flex'); }
-function saveSecurityPinConfig() {
-securityConfig.pinCode = document.getElementById('cfgPinCodeInput').value.trim() || '1234';
-localStorage.setItem('cctv_pro_security_v9', JSON.stringify(securityConfig));
-showToast('تم حفظ الرقم السري بنجاح');
-closeBackupSecurityModal();
-}
-function exportFullBackupJSON() {
-const blob = new Blob([JSON.stringify({ appMetadata, customInventory, cameras, buildingElements }, null, 2)], { type: 'application/json' });
-const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'نسخة-احتياطية-كاميرات.json'; a.click();
-}
-function importFullBackupJSON(e) {
-const f = e.target.files[0]; if(!f) return;
-const r = new FileReader();
-r.onload = function(evt) {
-try {
-const data = JSON.parse(evt.target.result);
-if(data.customInventory) customInventory = data.customInventory;
-if(data.cameras) cameras = data.cameras;
-updateAllCalculations();
-showToast('تم استعادة النسخة الاحتياطية بنجاح');
-} catch(err) { showToast('ملف غير صالح'); }
-};
-r.readAsText(f);
-}
-function exportReportPrint() {
-const q = window.__latestQuoteData; if (!q) return;
-document.getElementById('printCompanyName').textContent = appMetadata.companyName;
-document.getElementById('printDate').textContent = ⁠التاريخ: ${new Date().toLocaleDateString('ar-EG')}⁠;
-document.getElementById('printProjectTitle').textContent = ⁠المشروع: ${appMetadata.projectTitle} - العميل: ${appMetadata.clientName}⁠;
-document.getElementById('printCanvasImg').src = canvas.toDataURL('image/png');
-document.getElementById('printBomBody').innerHTML = q.bomItems.map(i => ⁠<tr><td class="py-2 px-2">${i.name}</td><td class="py-2 px-2">${i.category}</td><td class="py-2 px-2 text-center">${i.qty}</td><td class="py-2 px-2 text-center">${i.price} ج.م</td><td class="py-2 px-2 text-left font-bold">${i.total.toLocaleString()} ج.م</td></tr>⁠).join('');
-document.getElementById('printGrandTotal').textContent = q.grandTotal.toLocaleString();
-window.print();
-}
-function sendWhatsAppQuote() {
-const q = window.__latestQuoteData; if (!q) return;
-let msg = ⁠*${appMetadata.companyName}* 📹🛡️\nعرض سعر فني ومالي لمشروع: *${appMetadata.projectTitle}*\n⁠;
-msg += ⁠• عدد الكاميرات: ${q.totalCams}\n• إجمالي التكلفة: *${q.grandTotal.toLocaleString()} ج.م*\nللتفاصيل تواصل معنا.⁠;
-window.open(⁠https://wa.me/?text=⁠ + encodeURIComponent(msg), '_blank');
-}
-function showToast(text) {
-const toast = document.getElementById('toastMsg');
-toast.textContent = text;
-toast.classList.remove('opacity-0', 'translate-y-4');
-setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2500);
-}
-window.onload = function() {
-resizeCanvas();
-renderBuildingElementsList();
-renderQuickCamerasList();
-syncInspectorUI();
-updateAllCalculations();
-lockScreenNow(); // يفتح مباشرة بشاشة تطلب الرقم السري 1234
-};
-</script>
+
+    <!-- ================================================================= -->
+    <!-- شاشة التفعيل والقفل المبسطة (تفتح عند الضغط على زر القفل أو التفعيل) -->
+    <!-- ================================================================= -->
+    <div id="securityLockOverlay" class="fixed inset-0 z-[100] bg-[#040811]/95 backdrop-blur-xl hidden items-center justify-center p-4 no-print">
+        <div class="glass-panel rounded-3xl max-w-md w-full p-6 border-2 border-cyan-500/50 shadow-2xl text-center space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 mx-auto flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                <i class="fa-solid fa-shield-halved text-slate-950 text-3xl"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-black text-white">تفعيل وفتح المنظومة الهندسية</h2>
+                <p class="text-xs text-slate-400 mt-1">أدخل كود التفعيل أو الرقم السري لفتح البرنامج</p>
+            </div>
+
+            <!-- Device ID Box -->
+            <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 flex items-center justify-between text-xs">
+                <span class="text-slate-400">بصمة الجهاز (Device ID):</span>
+                <div class="flex items-center gap-2">
+                    <strong id="lblDeviceIdLock" class="font-mono text-sm text-amber-400 tracking-wider">CCTV-1000</strong>
+                    <button type="button" onclick="copyDeviceId()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 text-[11px] font-bold">نسخ</button>
+                </div>
+            </div>
+
+            <!-- Activation / Password Input -->
+            <div class="space-y-3 text-right">
+                <div>
+                    <label class="block text-xs font-bold text-cyan-300 mb-1.5">🔑 خانة كود التفعيل أو الرقم السري:</label>
+                    <input type="text" id="inpLicenseKey" placeholder="اكتب 1234 أو كود التفعيل هنا..." onkeydown="if(event.key==='Enter') verifyLicenseOrPin()" class="w-full bg-slate-900 border-2 border-cyan-400 rounded-xl px-3.5 py-3 text-center font-mono font-black text-white text-base tracking-wider focus:outline-none focus:ring-2 focus:ring-cyan-300">
+                </div>
+                <button type="button" onclick="verifyLicenseOrPin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/25 transition active:scale-95">
+                    <i class="fa-solid fa-unlock-keyhole ml-1"></i> تفعيل وفتح النظام الآن
+                </button>
+                <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-2.5 text-center text-[11px] text-slate-300 space-y-1">
+                    <div>الرقم السري السريع للتجربة: <strong class="text-emerald-400 font-mono text-xs">1234</strong></div>
+                    <div>أو كود الماستر العام: <strong class="text-amber-300 font-mono text-xs">PRO-2026-9999</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- الشريط العلوي (Top Navigation & Live KPIs) -->
+    <!-- ================================================================= -->
+    <header class="glass-panel sticky top-0 z-40 border-b border-cyan-500/20 px-4 py-3 no-print">
+        <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                    <i class="fa-solid fa-video text-slate-950 text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 id="headerCompanyName" class="text-base sm:text-lg font-extrabold tracking-tight text-white">الشركة الهندسية للأنظمة الأمنية</h1>
+                        <span id="licenseStatusBadge" onclick="lockScreenNow()" class="cursor-pointer text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 hover:bg-emerald-500/30 transition" title="اضغط لمعاينة شاشة القفل والتفعيل">
+                            <i class="fa-solid fa-check-circle ml-1"></i>نسخة مفعلة PRO
+                        </span>
+                    </div>
+                    <p id="headerProjectSummary" class="text-xs text-slate-400">المشروع: تأمين المقر الإداري • العميل: شركة النور</p>
+                </div>
+            </div>
+
+            <!-- Live KPIs -->
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                    <i class="fa-solid fa-camera text-cyan-400"></i>
+                    <div>
+                        <div class="text-[10px] text-slate-400">الكاميرات</div>
+                        <div class="text-xs sm:text-sm font-bold text-white"><span id="statCamCount">0</span> كاميرا</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                    <i class="fa-solid fa-network-wired text-amber-400"></i>
+                    <div>
+                        <div class="text-[10px] text-slate-400">تمديد السلك</div>
+                        <div class="text-xs sm:text-sm font-bold text-white"><span id="statCableMeters">0</span> متر</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-yellow-400"></i>
+                    <div>
+                        <div class="text-[10px] text-slate-400">الباور المطلوب</div>
+                        <div class="text-xs sm:text-sm font-bold text-white"><span id="statPowerAmps">0</span> أمبير</div>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-950/60 border border-emerald-500/40 rounded-xl px-3.5 py-1.5 flex items-center gap-2">
+                    <i class="fa-solid fa-sack-dollar text-emerald-400 text-base"></i>
+                    <div>
+                        <div class="text-[10px] text-emerald-300">صافي المقايسة</div>
+                        <div class="text-sm sm:text-base font-black text-emerald-400"><span id="statTotalCost">0</span> <span class="text-xs">ج.م</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Action Buttons -->
+            <div class="flex flex-wrap items-center gap-1.5">
+                <button type="button" onclick="toggleDashboardPanel()" id="btnToggleDashboard" class="px-3 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-300 text-xs font-black flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>الداشبورد وبيانات الشركة</span>
+                </button>
+                <button type="button" onclick="openInventoryModal()" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 shadow-lg transition">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <span>إضافة وتعديل المكونات</span>
+                </button>
+                <button type="button" onclick="openBackupSecurityModal()" class="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black flex items-center gap-1.5 shadow-lg transition">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>التأمين والنسخ الاحتياطي</span>
+                </button>
+                <button type="button" onclick="lockScreenNow()" class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 text-xs font-black flex items-center gap-1 transition" title="قفل البرنامج أو تجربة التفعيل">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>قفل / تفعيل</span>
+                </button>
+                <button type="button" onclick="exportReportPrint()" class="px-3 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition">
+                    <i class="fa-solid fa-print"></i>
+                    <span>طباعة العرض</span>
+                </button>
+                <button type="button" onclick="sendWhatsAppQuote()" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition" title="إرسال المقايسة عبر واتساب">
+                    <i class="fa-brands fa-whatsapp text-base"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- قسم الداشبورد وبيانات الشركة والمشروع (مفتوح افتراضياً وقابل للطي) -->
+    <!-- ================================================================= -->
+    <section id="executiveDashboardSection" class="max-w-[1700px] w-full mx-auto px-3 sm:px-5 pt-4 no-print">
+        <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-cyan-500/35 neon-border space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-building-shield text-cyan-400 text-lg"></i>
+                    <h2 class="text-sm sm:text-base font-black text-white">لوحة القيادة وبيانات الشركة والمشروع (تظهر في الطباعة وعرض السعر)</h2>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" onclick="saveCurrentProjectToArchive()" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black flex items-center gap-1.5 transition shadow">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>حفظ المشروع في الأرشيف (<span id="savedProjectsCountBadge">0</span>)</span>
+                    </button>
+                    <button type="button" onclick="exportFullBackupJSON()" class="px-3 py-1.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 border border-cyan-500/40 text-xs font-black flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-download"></i>
+                        <span>تحميل نسخة احتياطية</span>
+                    </button>
+                    <button type="button" onclick="toggleDashboardPanel()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs font-bold">
+                        إخفاء اللوحة ▲
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
+                <!-- بيانات الشركة المنفذة -->
+                <div class="lg:col-span-5 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2.5">
+                    <div class="text-cyan-300 font-black pb-1 border-b border-slate-800 flex items-center justify-between">
+                        <span><i class="fa-solid fa-id-card ml-1"></i>بيانات الشركة المنفذة</span>
+                        <span class="text-[10px] text-slate-400">تُحفظ تلقائياً</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="sm:col-span-2">
+                            <label class="block text-slate-400 text-[10px] mb-0.5">اسم الشركة / المكتب الهندسي:</label>
+                            <input type="text" id="compNameInput" value="الشركة الهندسية للأنظمة الأمنية والمراقبة" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold focus:border-cyan-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">اسم المهندس / المسؤول:</label>
+                            <input type="text" id="compEngineerInput" value="م. أحمد محمود" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:border-cyan-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">رقم التليفون / الواتساب:</label>
+                            <input type="text" id="compPhoneInput" value="01001234567" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-mono font-bold focus:border-cyan-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">عنوان الشركة:</label>
+                            <input type="text" id="compAddressInput" value="القاهرة - مدينة نصر - شارع الطيران" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200 focus:border-cyan-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">فترة الضمان المعتمدة:</label>
+                            <input type="text" id="compWarrantyInput" value="ضمان شامل لمدة عامين ضد عيوب الصناعة" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-emerald-300 font-bold focus:border-cyan-400 focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بيانات المشروع والعميل -->
+                <div class="lg:col-span-5 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2.5">
+                    <div class="text-amber-300 font-black pb-1 border-b border-slate-800 flex items-center justify-between">
+                        <span><i class="fa-solid fa-user-tie ml-1"></i>بيانات المشروع والعميل</span>
+                        <span class="text-[10px] text-slate-400">خاصة بالمقايسة الحالية</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">اسم المشروع:</label>
+                            <input type="text" id="projTitleInput" value="تأمين المقر الإداري والمخازن" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold focus:border-amber-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">اسم العميل / الجهة:</label>
+                            <input type="text" id="clientNameInput" value="شركة النور للتجارة والتوكيلات" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold focus:border-amber-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">رقم موبايل العميل:</label>
+                            <input type="text" id="clientPhoneInput" value="01234567890" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-amber-300 font-mono focus:border-amber-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-[10px] mb-0.5">خصم خاص على المقايسة (ج.م):</label>
+                            <input type="number" id="projDiscountInput" value="0" min="0" oninput="syncCompanyAndProjectMetadata(); updateAllCalculations();" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-rose-400 font-bold focus:border-amber-400 focus:outline-none">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-slate-400 text-[10px] mb-0.5">عنوان موقع التركيب / ملاحظات:</label>
+                            <input type="text" id="projLocationInput" value="المنطقة الصناعية - التجمع الخامس" oninput="syncCompanyAndProjectMetadata()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200 focus:border-amber-400 focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التوصيات الهندسية التلقائية -->
+                <div class="lg:col-span-2 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-2 text-[11px]">
+                    <div class="space-y-2">
+                        <div class="text-emerald-300 font-black border-b border-slate-800 pb-1">
+                            <i class="fa-solid fa-microchip ml-1"></i>توصيات هندسية تلقائية
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">جهاز التسجيل:</span>
+                            <strong id="recDvrChannels" class="text-cyan-300">4 قنوات</strong>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">الباور سبلاي:</span>
+                            <strong id="recPowerSupply" class="text-amber-300">12V 5A</strong>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">مواسير PVC:</span>
+                            <strong id="recConduitPipes" class="text-purple-300">0 عود (3م)</strong>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400">بواطات تجميع:</span>
+                            <strong id="recJunctionBoxes" class="text-emerald-300">2 بواط</strong>
+                        </div>
+                    </div>
+                    <button type="button" onclick="openBackupSecurityModal()" class="w-full py-2 rounded-xl bg-purple-600/25 hover:bg-purple-600 text-purple-200 hover:text-white border border-purple-500/40 font-black text-xs transition">
+                        <i class="fa-solid fa-folder-open ml-1"></i> أرشيف المشاريع والتأمين
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- مساحة العمل الرئيسية (Main Workspace Grid) -->
+    <!-- ================================================================= -->
+    <main class="flex-1 max-w-[1700px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 no-print">
+
+        <!-- العمود الأيمن: إنشاء المبنى وإضافة الكاميرات (4 أعمدة) -->
+        <aside class="lg:col-span-4 space-y-4">
+
+            <!-- 1. تصميم المبنى والغرف والمساحات + زر القفل -->
+            <div class="glass-panel rounded-2xl p-4 neon-border">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span>1. تصميم المبنى والمساحات</span>
+                    </h2>
+                    <button type="button" onclick="toggleBuildingLock()" id="btnLockBuildingSidebar" class="px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500 hover:text-slate-950">
+                        <i class="fa-solid fa-lock-open" id="iconLockSidebar"></i>
+                        <span id="txtLockSidebar">قفل المبنى (لتثبيت الغرف)</span>
+                    </button>
+                </div>
+
+                <!-- أدوات إضافة وتعديل الغرف (تختفي عند قفل المبنى) -->
+                <div id="buildingEditorControls" class="space-y-3">
+                    <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+                        <div class="font-bold text-slate-300">إضافة مساحة جديدة للمخطط (اكتب الاسم بحرية):</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <input type="text" id="newRoomNameInput" placeholder="مثال: مخزن رئيسي / بوابة / حديقة..." class="sm:col-span-2 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold focus:border-cyan-400 focus:outline-none">
+                            <select id="newRoomTypeSelect" class="bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-cyan-300 font-bold">
+                                <option value="room">غرفة داخلية</option>
+                                <option value="outdoor">مساحة خارجية / سور</option>
+                                <option value="corridor">ممر / طرقة</option>
+                                <option value="gate">بوابة / مدخل</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-0.5">العرض (بكسل):</label>
+                                <input type="number" id="newRoomWidthInput" value="160" min="40" max="700" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-0.5">الارتفاع (بكسل):</label>
+                                <input type="number" id="newRoomHeightInput" value="110" min="30" max="500" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-white font-mono">
+                            </div>
+                        </div>
+                        <button type="button" onclick="addNewBuildingSpace()" class="w-full py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black transition shadow">
+                            <i class="fa-solid fa-plus ml-1"></i> إضافة المساحة للمخطط
+                        </button>
+                    </div>
+
+                    <!-- التحكم في الغرفة المحددة حالياً -->
+                    <div id="selectedRoomEditorBox" class="bg-slate-900/95 p-3 rounded-xl border border-cyan-500/40 space-y-2 text-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="font-black text-cyan-300">تحجيم وتعديل الغرفة المحددة:</span>
+                            <button type="button" onclick="deleteSelectedRoom()" class="text-rose-400 hover:text-rose-300 text-[11px] font-bold">
+                                <i class="fa-solid fa-trash-can ml-1"></i>حذف الغرفة
+                            </button>
+                        </div>
+                        <input type="text" id="editRoomNameInput" oninput="updateSelectedRoomFromUI()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-white font-bold">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-slate-400"><span>العرض:</span><span id="lblRoomW" class="text-cyan-300 font-mono">160</span></div>
+                                <input type="range" id="rngRoomW" min="40" max="600" value="160" oninput="updateSelectedRoomFromUI()" class="w-full">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[10px] text-slate-400"><span>الطول:</span><span id="lblRoomH" class="text-cyan-300 font-mono">110</span></div>
+                                <input type="range" id="rngRoomH" min="30" max="450" value="110" oninput="updateSelectedRoomFromUI()" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- قائمة غرف المبنى -->
+                    <div>
+                        <div class="text-[11px] text-slate-400 font-bold mb-1.5">المساحات المضافة (اضغط على أي غرفة لتعديل أبعادها):</div>
+                        <div id="buildingElementsList" class="space-y-1.5 max-h-[150px] overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+
+                <!-- لافتة تظهر عندما يكون المبنى مقفولاً -->
+                <div id="buildingLockedBanner" class="hidden p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500/40 text-center space-y-2.5">
+                    <div class="text-amber-400 font-black text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                        <span>تصميم المبنى والغرف مقفول ومثبّت الآن!</span>
+                    </div>
+                    <p class="text-[11px] text-slate-300">يمكنك الآن تحريك الكاميرات وتوجيه زواياها بحرية تامة دون تحريك أي غرفة بالخطأ.</p>
+                    <button type="button" onclick="toggleBuildingLock()" class="px-4 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition">
+                        <i class="fa-solid fa-lock-open ml-1"></i> فك قفل المبنى لتعديل الغرف
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. إضافة الكاميرات للمخطط -->
+            <div class="glass-panel rounded-2xl p-4 space-y-3">
+                <h2 class="text-sm font-extrabold text-cyan-300 flex items-center gap-2">
+                    <i class="fa-solid fa-camera-retro"></i>
+                    <span>2. إضافة كاميرات للمخطط</span>
+                </h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="addCamera('dome')" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-white group-hover:text-cyan-300">+ كاميرا داخلية Dome</span>
+                            <i class="fa-solid fa-bullseye text-cyan-400"></i>
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">زاوية عريضة 105° (2.8mm)</div>
+                    </button>
+
+                    <button type="button" onclick="addCamera('bullet')" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-white group-hover:text-emerald-300">+ كاميرا خارجية Bullet</span>
+                            <i class="fa-solid fa-video text-emerald-400"></i>
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">زاوية قياسية 82° (3.6mm)</div>
+                    </button>
+
+                    <button type="button" onclick="addCamera('zoom')" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-white group-hover:text-amber-300">+ كاميرا زووم بوابات</span>
+                            <i class="fa-solid fa-crosshairs text-amber-400"></i>
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">تركيز بعيد 50° (6mm)</div>
+                    </button>
+
+                    <button type="button" onclick="addCamera('ptz')" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-purple-400 text-right transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-white group-hover:text-purple-300">+ كاميرا متحركة PTZ</span>
+                            <i class="fa-solid fa-compass text-purple-400"></i>
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">تغطية شاملة 360°</div>
+                    </button>
+                </div>
+
+                <div class="pt-2 border-t border-slate-800">
+                    <div class="text-[11px] font-bold text-slate-400 mb-2">الكاميرات الموجودة بالمخطط (اضغط عليها لفتح إعداداتها جنب التصميم):</div>
+                    <div id="quickCamerasList" class="flex flex-wrap gap-1.5"></div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- العمود الأيسر: لوحة المخطط التفاعلي + إعدادات الكاميرا الجانبية + جدول المقايسة (8 أعمدة) -->
+        <section class="lg:col-span-8 flex flex-col gap-4">
+
+            <!-- لوحة المخطط الهندسي التفاعلي -->
+            <div class="glass-panel rounded-2xl p-3 sm:p-4 neon-border flex flex-col">
+                <!-- شريط أدوات المخطط والزوم وقفل المبنى -->
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <button type="button" onclick="toggleBuildingLock()" id="btnLockBuildingCanvas" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs text-emerald-300 font-black flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-lock-open"></i>
+                            <span>قفل المبنى (لتثبيت الغرف)</span>
+                        </button>
+                        <button type="button" onclick="toggleNightVisionMode()" id="btnNightVision" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-300 font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-moon text-amber-400"></i>
+                            <span>محاكاة الرؤية الليلية IR</span>
+                        </button>
+                        <label class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-cyan-300 font-bold cursor-pointer flex items-center gap-1.5">
+                            <i class="fa-solid fa-image"></i>
+                            <span>رفع صورة مخطط</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadFloorPlanImage(event)">
+                        </label>
+                    </div>
+
+                    <!-- أزرار الزوم وتكبير/تصغير وتحريك المخطط -->
+                    <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded-xl border border-slate-700 text-xs">
+                        <span class="text-slate-400 text-[11px] ml-1">الزوم:</span>
+                        <button type="button" onclick="zoomCanvas(1.18)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 font-black transition" title="تكبير +">+</button>
+                        <span id="lblZoomPercent" class="font-mono font-bold text-white px-1.5 text-[11px]">100%</span>
+                        <button type="button" onclick="zoomCanvas(0.84)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 font-black transition" title="تصغير -">-</button>
+                        <button type="button" onclick="resetZoom()" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold">إعادة ضبط</button>
+                    </div>
+                </div>
+
+                <!-- منطقة الرسم + شاشة إعدادات الكاميرا العائمة جنب التصميم مباشرة -->
+                <div class="relative w-full rounded-xl overflow-hidden border border-slate-700 bg-[#070d19]" id="canvasContainer">
+                    <canvas id="cctvCanvas" class="w-full block cursor-grab active:cursor-grabbing touch-none"></canvas>
+
+                    <!-- شاشة إعدادات الكاميرا جنب التصميم مباشرة (Floating HUD) -->
+                    <div id="floatingCameraInspector" class="floating-inspector absolute top-3 left-3 z-30 w-72 sm:w-80 rounded-2xl p-4 transition-all">
+                        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-800">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                                <span class="text-xs font-black text-white">إعدادات الكاميرا ومدى الرؤية</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button type="button" onclick="deleteSelectedCamera()" class="text-[11px] bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white px-2 py-0.5 rounded-lg font-bold transition">
+                                    <i class="fa-solid fa-trash-can ml-0.5"></i>حذف
+                                </button>
+                                <button type="button" onclick="closeFloatingInspector()" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">✕</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-slate-400 text-[10px] mb-0.5">اسم الكاميرا:</label>
+                                    <input type="text" id="camLabelInput" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-white font-bold focus:border-cyan-400 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-400 text-[10px] mb-0.5">نوع العدسة والزاوية:</label>
+                                    <select id="camTypeSelect" onchange="updateSelectedCameraType(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-cyan-300 font-bold">
+                                        <option value="dome">Dome عريضة 105°</option>
+                                        <option value="bullet">Bullet خارجية 82°</option>
+                                        <option value="zoom">Zoom بوابات 50°</option>
+                                        <option value="ptz">PTZ شاملة 360°</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- زاوية الدوران + أزرار توجيه سريعة -->
+                            <div>
+                                <div class="flex justify-between text-[11px] mb-1">
+                                    <span class="text-slate-300 font-bold">اتجاه دوران الكاميرا:</span>
+                                    <span class="font-mono font-bold text-cyan-400"><span id="lblCamRotation">45</span>°</span>
+                                </div>
+                                <input type="range" id="rngCamRotation" min="0" max="359" value="45" oninput="updateSelectedCameraFromUI()" class="w-full">
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button type="button" onclick="setQuickCamAngle(0)" class="py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] text-slate-300 font-bold">يمين 0°</button>
+                                    <button type="button" onclick="setQuickCamAngle(90)" class="py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] text-slate-300 font-bold">أسفل 90°</button>
+                                    <button type="button" onclick="setQuickCamAngle(180)" class="py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] text-slate-300 font-bold">يسار 180°</button>
+                                    <button type="button" onclick="setQuickCamAngle(270)" class="py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] text-slate-300 font-bold">أعلى 270°</button>
+                                </div>
+                            </div>
+
+                            <!-- مدى الرؤية بالمتر -->
+                            <div>
+                                <div class="flex justify-between text-[11px] mb-1">
+                                    <span class="text-slate-300 font-bold">مدى الرؤية والكشف:</span>
+                                    <span class="font-mono font-bold text-emerald-400"><span id="lblCamRange">14</span> متر</span>
+                                </div>
+                                <input type="range" id="rngCamRange" min="4" max="40" step="0.5" value="14" oninput="updateSelectedCameraFromUI()" class="w-full">
+                            </div>
+
+                            <!-- زاوية العدسة + طول السلك -->
+                            <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800">
+                                <div>
+                                    <label class="block text-slate-400 text-[10px] mb-0.5">عرض زاوية الرؤية (°):</label>
+                                    <input type="number" id="inpCamFov" min="20" max="360" value="105" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-center font-mono text-amber-300 font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-400 text-[10px] mb-0.5">السلك من DVR (متر):</label>
+                                    <input type="number" id="inpCamCable" min="1" max="300" value="0" placeholder="تلقائي" oninput="updateSelectedCameraFromUI()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-center font-mono text-emerald-400 font-bold" title="اتركه 0 للحساب الهندسي التلقائي">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- تنبيه صغير عند إغلاق نافذة الكاميرا -->
+                    <button type="button" onclick="reopenFloatingInspector()" id="floatingHintPill" class="hidden absolute top-3 left-3 z-20 bg-slate-950/90 hover:bg-slate-900 border border-cyan-500/40 rounded-xl px-3.5 py-2 text-xs text-cyan-300 font-black shadow-lg">
+                        <i class="fa-solid fa-sliders ml-1"></i> إظهار نافذة إعدادات الكاميرا
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. جدول المقايسة الموحد (كاميرات، هاردات، أسلاك، مواسير، إكسسوارات) -->
+            <div class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col justify-between border border-emerald-500/30">
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800">
+                        <div>
+                            <h2 class="text-sm sm:text-base font-extrabold text-emerald-300 flex items-center gap-2">
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                                <span>3. جدول مقايسة المكونات والبنود والأسعار (يدوي وتلقائي)</span>
+                            </h2>
+                            <p class="text-[11px] text-slate-400">يمكنك تعديل أي سعر أو كمية مباشرة من الجدول، أو إضافة أي بند جديد (هارد، سلك، مواسير، إكسسوارات)</p>
+                        </div>
+                        <button type="button" onclick="openInventoryModal()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-lg transition">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            <span>إضافة بند / هارد / سلك / مكون جديد</span>
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto">
+                        <table class="w-full text-xs text-right">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-slate-400 text-[11px] bg-slate-900/60">
+                                    <th class="py-2.5 px-2">اسم البند / المكون</th>
+                                    <th class="py-2.5 px-2">التصنيف</th>
+                                    <th class="py-2.5 px-2 text-center">طريقة الحساب</th>
+                                    <th class="py-2.5 px-2 text-center">الكمية</th>
+                                    <th class="py-2.5 px-2 text-center">سعر الوحدة (ج.م)</th>
+                                    <th class="py-2.5 px-2 text-left">الإجمالي</th>
+                                    <th class="py-2.5 px-2 text-center">حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bomTableBody" class="divide-y divide-slate-800/80"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-700 flex flex-wrap justify-between items-center gap-3">
+                    <div class="text-xs text-slate-400">
+                        إجمالي قبل الخصم: <strong id="bomSubtotal" class="text-white font-mono">0</strong> ج.م
+                        <span class="mx-2">|</span>
+                        الخصم: <strong id="bomDiscountVal" class="text-rose-400 font-mono">0</strong> ج.م
+                    </div>
+                    <div class="text-base sm:text-lg font-black text-emerald-400">
+                        <span>الصافي النهائي للمقايسة: </span>
+                        <span id="bomGrandTotal" class="font-mono text-xl">0</span> ج.م
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- نافذة إضافة وإدارة المكونات يدوياً بالكامل (UNIFIED INVENTORY MODAL) -->
+    <!-- ================================================================= -->
+    <div id="inventoryModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-5 no-print">
+        <div class="glass-panel rounded-2xl max-w-5xl w-full p-5 border-2 border-amber-500/40 shadow-2xl max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-3">
+                <div>
+                    <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
+                        <span>إدارة وإضافة المكونات يدوياً (كاميرات، هاردات بمساحاتها، أسلاك، مواسير، إكسسوارات)</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400">اكتب اسم البند والتصنيف والسعر بنفسك بحرية كاملة</p>
+                </div>
+                <button type="button" onclick="closeInventoryModal()" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">✕</button>
+            </div>
+
+            <!-- نموذج إضافة مكون جديد حر -->
+            <div class="bg-slate-900 p-3.5 rounded-xl border border-amber-500/30 mb-3 text-xs grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-4">
+                    <label class="block text-amber-300 font-bold text-[11px] mb-1">1. اكتب اسم البند أو الهارد أو الكاميرا:</label>
+                    <input type="text" id="quickAddName" placeholder="مثال: هارد WD Purple 4TB / ماسورة PVC / كاميرا..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-bold focus:border-amber-400 focus:outline-none">
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-cyan-300 font-bold text-[11px] mb-1">2. اكتب التصنيف (حر):</label>
+                    <input type="text" id="quickAddCat" list="categorySuggestions" placeholder="هاردات / كاميرات / أسلاك" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-cyan-300 font-bold focus:border-cyan-400 focus:outline-none">
+                    <datalist id="categorySuggestions">
+                        <option value="كاميرات مراقبة">
+                        <option value="هاردات تخزين">
+                        <option value="أجهزة تسجيل DVR/NVR">
+                        <option value="أسلاك وكابلات">
+                        <option value="مواسير وبواطات">
+                        <option value="إكسسوارات وباور">
+                        <option value="تركيب ومصنعية">
+                    </datalist>
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-slate-300 font-bold text-[11px] mb-1">3. طريقة حساب الكمية:</label>
+                    <select id="quickAddMode" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-white font-bold">
+                        <option value="manual">كمية يدوية ثابتة</option>
+                        <option value="all_cams">تلقائي بعدد كل الكاميرات</option>
+                        <option value="cam_dome">تلقائي بعدد كاميرات Dome</option>
+                        <option value="cam_bullet">تلقائي بعدد كاميرات Bullet</option>
+                        <option value="cam_zoom">تلقائي بعدد كاميرات الزووم</option>
+                        <option value="cam_ptz">تلقائي بعدد كاميرات PTZ</option>
+                        <option value="cable_m">تلقائي بأمتار السلك</option>
+                        <option value="conduit_pipes">تلقائي بأعواد المواسير (كل 3م)</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-1">
+                    <label class="block text-slate-300 font-bold text-[11px] mb-1">الكمية:</label>
+                    <input type="number" id="quickAddQty" value="1" min="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-center text-white font-bold">
+                </div>
+                <div class="sm:col-span-1">
+                    <label class="block text-emerald-300 font-bold text-[11px] mb-1">السعر:</label>
+                    <input type="number" id="quickAddPrice" value="1200" min="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-center text-emerald-400 font-bold">
+                </div>
+                <div class="sm:col-span-2">
+                    <button type="button" onclick="addNewInventoryItemFromBar()" class="w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black transition shadow-lg">
+                        <i class="fa-solid fa-plus ml-1"></i> أضف للمقايسة
+                    </button>
+                </div>
+            </div>
+
+            <!-- جدول تعديل البنود الحالية -->
+            <div class="flex-1 overflow-y-auto bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs">
+                <table class="w-full text-right">
+                    <thead>
+                        <tr class="text-slate-400 border-b border-slate-700 text-[11px]">
+                            <th class="py-2 px-2">اسم المكون / الهارد / البند</th>
+                            <th class="py-2 px-2">التصنيف (حر)</th>
+                            <th class="py-2 px-2">ربط الكمية</th>
+                            <th class="py-2 px-2 text-center">الكمية اليدوية</th>
+                            <th class="py-2 px-2 text-center">سعر الوحدة (ج.م)</th>
+                            <th class="py-2 px-2 text-center">حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTbody" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-between items-center pt-3 mt-2 border-t border-slate-800">
+                <span class="text-xs text-slate-400">كل التعديلات تحفظ تلقائياً في متصفحك</span>
+                <button type="button" onclick="saveInventoryChanges()" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-lg transition">
+                    <i class="fa-solid fa-check ml-1"></i> حفظ التعديلات وإغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- نافذة النسخ الاحتياطي، أرشيف المشاريع، وتأمين البرنامج (SECURITY MODAL) -->
+    <!-- ================================================================= -->
+    <div id="backupSecurityModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 no-print">
+        <div class="glass-panel rounded-2xl max-w-3xl w-full p-5 border-2 border-purple-500/40 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-700">
+                <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-purple-400"></i>
+                    <span>مركز التأمين، تفعيل النسخة، والنسخ الاحتياطي للمشاريع</span>
+                </h3>
+                <button type="button" onclick="closeBackupSecurityModal()" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">✕</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- 1. إعدادات الرقم السري وقفل التفعيل -->
+                <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="font-black text-emerald-300 text-sm flex items-center justify-between">
+                        <span><i class="fa-solid fa-key ml-1"></i>1. إعداد الرقم السري والتفعيل</span>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">سهل ومباشر</span>
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 mb-1">الرقم السري أو كود التفعيل المعتمد لفتح البرنامج:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="cfgPinCodeInput" value="1234" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-center font-mono font-black text-white text-sm">
+                            <button type="button" onclick="saveSecurityPinConfig()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black">حفظ الكود</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                        <label for="chkRequireLockOnStart" class="text-slate-300 font-bold cursor-pointer">طلب الكود تلقائياً عند فتح البرنامج:</label>
+                        <input type="checkbox" id="chkRequireLockOnStart" onchange="saveSecurityPinConfig()" class="w-4 h-4 accent-emerald-500 cursor-pointer">
+                    </div>
+                    <button type="button" onclick="closeBackupSecurityModal(); lockScreenNow();" class="w-full py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 font-black transition">
+                        <i class="fa-solid fa-lock ml-1"></i> تجربة شاشة القفل وإدخال الكود الآن
+                    </button>
+                </div>
+
+                <!-- 2. النسخ الاحتياطي الشامل JSON -->
+                <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="font-black text-cyan-300 text-sm">
+                            <i class="fa-solid fa-cloud-arrow-down ml-1"></i>2. النسخ الاحتياطي الشامل (Backup)
+                        </div>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            احفظ نسخة احتياطية من جميع أسعارك، مكوناتك، بيانات شركتك، والمشاريع المحفوظة في ملف واحد على جهازك.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <button type="button" onclick="exportFullBackupJSON()" class="py-2.5 px-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black flex items-center justify-center gap-1.5 transition">
+                            <i class="fa-solid fa-download"></i>
+                            <span>تصدير نسخة JSON</span>
+                        </button>
+                        <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black flex items-center justify-center gap-1.5 transition">
+                            <i class="fa-solid fa-upload"></i>
+                            <span>استيراد نسخة</span>
+                            <input type="file" accept=".json" class="hidden" onchange="importFullBackupJSON(event)">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. أرشيف المشاريع المحفوظة -->
+            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2.5 text-xs">
+                <div class="flex items-center justify-between">
+                    <span class="font-black text-amber-300 text-sm"><i class="fa-solid fa-folder-tree ml-1"></i>3. أرشيف المشاريع والمقايسات المحفوظة</span>
+                    <button type="button" onclick="saveCurrentProjectToArchive()" class="px-3 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black">+ حفظ المشروع الحالي</button>
+                </div>
+                <div id="archivedProjectsList" class="space-y-2 max-h-[180px] overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- صفحة الطباعة الرسمية للعميل (PRINTABLE QUOTATION SHEET) -->
+    <!-- ================================================================= -->
+    <section class="hidden print-only p-8 max-w-4xl mx-auto text-slate-900 bg-white">
+        <div class="border-b-2 border-slate-900 pb-4 mb-5 flex justify-between items-start">
+            <div>
+                <h1 id="printCompanyName" class="text-2xl font-black text-slate-900">الشركة الهندسية للأنظمة الأمنية</h1>
+                <p id="printCompanyDetails" class="text-xs text-slate-700 mt-1 font-bold"></p>
+                <p id="printWarranty" class="text-xs text-emerald-800 font-bold mt-1"></p>
+            </div>
+            <div class="text-left text-xs text-slate-700 space-y-1">
+                <div id="printDate" class="font-bold">التاريخ: --/--/----</div>
+                <div id="printProjectTitle" class="font-black text-sm text-slate-900"></div>
+                <div id="printClientName" class="font-bold"></div>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h3 class="text-sm font-black mb-2">المخطط الهندسي لتوزيع كاميرات المراقبة وزوايا التغطية:</h3>
+            <img id="printCanvasImg" src="" alt="CCTV Plan" class="w-full h-auto rounded-xl border-2 border-slate-300" />
+        </div>
+
+        <h3 class="text-sm font-black mb-2">جدول الكميات والمواصفات والأسعار (Bill of Materials):</h3>
+        <table class="w-full text-xs text-right border-collapse mb-4 border border-slate-400">
+            <thead>
+                <tr class="border-b-2 border-slate-800 font-black bg-slate-100">
+                    <th class="py-2 px-2 border border-slate-300">البند والمواصفات الفنية</th>
+                    <th class="py-2 px-2 border border-slate-300">التصنيف</th>
+                    <th class="py-2 px-2 border border-slate-300 text-center">الكمية</th>
+                    <th class="py-2 px-2 border border-slate-300 text-center">سعر الوحدة</th>
+                    <th class="py-2 px-2 border border-slate-300 text-left">الإجمالي</th>
+                </tr>
+            </thead>
+            <tbody id="printBomBody" class="divide-y divide-slate-300"></tbody>
+        </table>
+
+        <div class="flex justify-between items-center font-black text-base pt-3 border-t-2 border-slate-900">
+            <span>الصافي النهائي للمقايسة والتوريد:</span>
+            <span><span id="printGrandTotal">0</span> ج.م</span>
+        </div>
+    </section>
+
+    <!-- إشعار فوري (Toast) -->
+    <div id="toastMsg" class="fixed bottom-4 left-4 z-[120] px-4 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+        تم الحفظ بنجاح
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- الكود البرمجي الكامل (JavaScript Engine) -->
+    <!-- ================================================================= -->
+    <script>
+        // 1. بيانات الشركة والمشروع
+        let appMetadata = {
+            companyName: 'الشركة الهندسية للأنظمة الأمنية والمراقبة',
+            engineerName: 'م. أحمد محمود',
+            companyPhone: '01001234567',
+            companyAddress: 'القاهرة - مدينة نصر - شارع الطيران',
+            warranty: 'ضمان شامل لمدة عامين ضد عيوب الصناعة',
+            projectTitle: 'تأمين المقر الإداري والمخازن',
+            clientName: 'شركة النور للتجارة والتوكيلات',
+            clientPhone: '01234567890',
+            projectLocation: 'المنطقة الصناعية - التجمع الخامس',
+            discount: 0
+        };
+
+        // 2. إعدادات التأمين والتفعيل
+        let securityConfig = {
+            pinCode: '1234',
+            requireLockOnStart: false,
+            deviceId: localStorage.getItem('cctv_device_id_v9') || ('CCTV-' + Math.floor(1000 + Math.random() * 9000))
+        };
+        localStorage.setItem('cctv_device_id_v9', securityConfig.deviceId);
+
+        try {
+            const savedSec = localStorage.getItem('cctv_pro_security_v95');
+            if (savedSec) securityConfig = { ...securityConfig, ...JSON.parse(savedSec) };
+        } catch (e) {}
+
+        // 3. قائمة المكونات الموحدة (يدوية بالكامل وتشمل الهاردات والأسلاك والمواسير)
+        let customInventory = [
+            { id: 'dome', name: 'كاميرا داخلية Hikvision Dome 5MP (عدسة 2.8mm)', category: 'كاميرات مراقبة', qtyMode: 'cam_dome', manualQty: 1, price: 950 },
+            { id: 'bullet', name: 'كاميرا خارجية Hikvision Bullet 5MP (مقاومة للعوامل)', category: 'كاميرات مراقبة', qtyMode: 'cam_bullet', manualQty: 1, price: 1150 },
+            { id: 'zoom', name: 'كاميرا بوابات زووم 6mm بعيدة المدى', category: 'كاميرات مراقبة', qtyMode: 'cam_zoom', manualQty: 0, price: 1650 },
+            { id: 'ptz', name: 'كاميرا متحركة PTZ 360° زووم بصري', category: 'كاميرات مراقبة', qtyMode: 'cam_ptz', manualQty: 0, price: 4800 },
+            { id: 'dvr', name: 'جهاز تسجيل ذكي DVR 8 قنوات 5MP', category: 'أجهزة تسجيل', qtyMode: 'manual', manualQty: 1, price: 2850 },
+            { id: 'hdd2tb', name: 'هارد ديسك مراقبة أصلي WD Purple 2TB', category: 'هاردات تخزين', qtyMode: 'manual', manualQty: 1, price: 2650 },
+            { id: 'cable', name: 'متر سلك شيلد نحاس صافي RG59 + باور', category: 'أسلاك وكابلات', qtyMode: 'cable_m', manualQty: 50, price: 22 },
+            { id: 'conduit', name: 'ماسورة بلاستيك PVC صلبة (عود 3 متر)', category: 'مواسير وبواطات', qtyMode: 'conduit_pipes', manualQty: 10, price: 45 },
+            { id: 'bnc', name: 'طقم جاكات BNC + جاك باور + بواط 10×10 للكاميرا', category: 'إكسسوارات وباور', qtyMode: 'all_cams', manualQty: 4, price: 65 },
+            { id: 'psu', name: 'باور سبلاي مركزي 12V 10A مروحة تبريد', category: 'إكسسوارات وباور', qtyMode: 'manual', manualQty: 1, price: 650 },
+            { id: 'install', name: 'مصنعية تركيب وتمديد وبرمجة الكاميرا على الموبايل', category: 'تركيب ومصنعية', qtyMode: 'all_cams', manualQty: 4, price: 250 }
+        ];
+
+        try {
+            const savedInv = localStorage.getItem('cctv_pro_unified_inv_v95');
+            if (savedInv) customInventory = JSON.parse(savedInv);
+        } catch (e) {}
+
+        // 4. أرشيف المشاريع
+        let archivedProjects = [];
+        try {
+            const savedArch = localStorage.getItem('cctv_pro_archive_v95');
+            if (savedArch) archivedProjects = JSON.parse(savedArch);
+        } catch (e) {}
+
+        // 5. عناصر المبنى والغرف والكاميرات
+        let isBuildingLocked = false;
+        let isNightVision = false;
+        let canvasZoom = 1.0, canvasPanX = 0, canvasPanY = 0;
+        let backgroundPlanImg = null;
+
+        let buildingElements = [
+            { id: 101, type: 'room', name: 'صالة الاستقبال والمعرض', nx: 0.34, ny: 0.42, w: 230, h: 150 },
+            { id: 102, type: 'room', name: 'مكتب الإدارة والخزينة', nx: 0.68, ny: 0.32, w: 170, h: 110 },
+            { id: 103, type: 'room', name: 'المخزن الرئيسي', nx: 0.68, ny: 0.66, w: 190, h: 120 },
+            { id: 104, type: 'gate', name: 'البوابة الرئيسية والمدخل', nx: 0.16, ny: 0.78, w: 140, h: 55 }
+        ];
+        let selectedRoomId = 101;
+
+        let dvrUnit = { nx: 0.72, ny: 0.25, label: 'جهاز DVR' };
+        let cameras = [
+            { id: 1, type: 'dome', label: 'كاميرا الصالة 1', nx: 0.22, ny: 0.28, rotation: 35, fov: 105, rangeMeters: 14, customCable: 0, color: '#00f2fe' },
+            { id: 2, type: 'bullet', label: 'كاميرا البوابة 2', nx: 0.14, ny: 0.68, rotation: 15, fov: 82, rangeMeters: 18, customCable: 0, color: '#10b981' },
+            { id: 3, type: 'dome', label: 'كاميرا المخزن 3', nx: 0.56, ny: 0.58, rotation: 20, fov: 105, rangeMeters: 13, customCable: 0, color: '#f59e0b' }
+        ];
+        let selectedCameraId = 1;
+        let isInspectorOpen = true;
+        let dragState = null;
+
+        // =================================================================
+        // دوال التفعيل والقفل السهل
+        // =================================================================
+        function computeValidSerialForDevice(devId) {
+            const clean = (devId || '').trim().toUpperCase();
+            let sum = 2026;
+            for (let i = 0; i < clean.length; i++) sum += clean.charCodeAt(i) * (i + 7);
+            return `ACT-${(sum % 9000) + 1000}-PRO`;
+        }
+
+        function verifyLicenseOrPin() {
+            const entered = (document.getElementById('inpLicenseKey').value || '').trim().toUpperCase();
+            const expectedSerial = computeValidSerialForDevice(securityConfig.deviceId);
+            const savedPin = (securityConfig.pinCode || '1234').toUpperCase();
+
+            if (entered === savedPin || entered === '1234' || entered === 'PRO-2026-9999' || entered === expectedSerial) {
+                const overlay = document.getElementById('securityLockOverlay');
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                showToast('🔓 تم تفعيل وفتح المنظومة بنجاح!');
+            } else {
+                showToast('❌ الكود غير صحيح! جرب الرقم السري 1234 أو PRO-2026-9999');
+            }
+        }
+
+        function lockScreenNow() {
+            document.getElementById('lblDeviceIdLock').textContent = securityConfig.deviceId;
+            document.getElementById('inpLicenseKey').value = '';
+            const overlay = document.getElementById('securityLockOverlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+
+        function copyDeviceId() {
+            navigator.clipboard?.writeText(securityConfig.deviceId);
+            showToast('تم نسخ بصمة الجهاز: ' + securityConfig.deviceId);
+        }
+
+        function saveSecurityPinConfig() {
+            securityConfig.pinCode = document.getElementById('cfgPinCodeInput').value.trim() || '1234';
+            securityConfig.requireLockOnStart = document.getElementById('chkRequireLockOnStart').checked;
+            localStorage.setItem('cctv_pro_security_v95', JSON.stringify(securityConfig));
+            showToast('✅ تم حفظ إعدادات الحماية والرقم السري');
+        }
+
+        // =================================================================
+        // دوال تصميم المبنى والغرف وقفل المبنى
+        // =================================================================
+        function toggleBuildingLock() {
+            isBuildingLocked = !isBuildingLocked;
+            document.getElementById('buildingEditorControls').classList.toggle('hidden', isBuildingLocked);
+            document.getElementById('buildingLockedBanner').classList.toggle('hidden', !isBuildingLocked);
+
+            const sideBtn = document.getElementById('btnLockBuildingSidebar');
+            const canvBtn = document.getElementById('btnLockBuildingCanvas');
+
+            if (isBuildingLocked) {
+                sideBtn.innerHTML = '<i class="fa-solid fa-lock"></i><span>المبنى مقفول (فك القفل)</span>';
+                sideBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition bg-amber-500 text-slate-950 shadow';
+                canvBtn.innerHTML = '<i class="fa-solid fa-lock"></i><span>المبنى مقفول (فك القفل)</span>';
+                canvBtn.className = 'px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 text-xs font-black flex items-center gap-1.5 transition shadow';
+                showToast('🔒 تم قفل وتثبيت المبنى؛ حرك الكاميرات الآن بحرية تامة');
+            } else {
+                sideBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i><span>قفل المبنى (لتثبيت الغرف)</span>';
+                sideBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                canvBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i><span>قفل المبنى (لتثبيت الغرف)</span>';
+                canvBtn.className = 'px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs text-emerald-300 font-black flex items-center gap-1.5 transition';
+                showToast('🔓 تم فك قفل المبنى؛ يمكنك تحريك وتعديل الغرف الآن');
+            }
+            drawScene();
+        }
+
+        function addNewBuildingSpace() {
+            if (isBuildingLocked) return;
+            const nameInput = document.getElementById('newRoomNameInput');
+            const name = nameInput.value.trim() || ('مساحة ' + (buildingElements.length + 1));
+            const type = document.getElementById('newRoomTypeSelect').value;
+            const w = Math.max(40, parseInt(document.getElementById('newRoomWidthInput').value, 10) || 160);
+            const h = Math.max(30, parseInt(document.getElementById('newRoomHeightInput').value, 10) || 110);
+
+            const newId = Date.now();
+            buildingElements.push({ id: newId, type, name, nx: 0.5, ny: 0.5, w, h });
+            selectedRoomId = newId;
+            nameInput.value = '';
+            renderBuildingElementsList();
+            syncSelectedRoomUI();
+            drawScene();
+            showToast('✅ تمت إضافة "' + name + '" للمخطط');
+        }
+
+        function selectRoom(id) {
+            selectedRoomId = id;
+            renderBuildingElementsList();
+            syncSelectedRoomUI();
+            drawScene();
+        }
+
+        function syncSelectedRoomUI() {
+            const box = document.getElementById('selectedRoomEditorBox');
+            const rm = buildingElements.find(r => r.id === selectedRoomId);
+            if (!rm) {
+                box.classList.add('hidden');
+                return;
+            }
+            box.classList.remove('hidden');
+            document.getElementById('editRoomNameInput').value = rm.name;
+            document.getElementById('rngRoomW').value = rm.w;
+            document.getElementById('lblRoomW').textContent = rm.w;
+            document.getElementById('rngRoomH').value = rm.h;
+            document.getElementById('lblRoomH').textContent = rm.h;
+        }
+
+        function updateSelectedRoomFromUI() {
+            const rm = buildingElements.find(r => r.id === selectedRoomId);
+            if (!rm) return;
+            rm.name = document.getElementById('editRoomNameInput').value || 'مساحة';
+            rm.w = parseInt(document.getElementById('rngRoomW').value, 10) || 120;
+            rm.h = parseInt(document.getElementById('rngRoomH').value, 10) || 90;
+            document.getElementById('lblRoomW').textContent = rm.w;
+            document.getElementById('lblRoomH').textContent = rm.h;
+            renderBuildingElementsList();
+            drawScene();
+        }
+
+        function deleteSelectedRoom() {
+            if (!selectedRoomId) return;
+            buildingElements = buildingElements.filter(r => r.id !== selectedRoomId);
+            selectedRoomId = buildingElements[0]?.id || null;
+            renderBuildingElementsList();
+            syncSelectedRoomUI();
+            drawScene();
+            showToast('تم حذف المساحة من المخطط');
+        }
+
+        function renderBuildingElementsList() {
+            const container = document.getElementById('buildingElementsList');
+            if (!container) return;
+            container.innerHTML = buildingElements.map(el => `
+                <div onclick="selectRoom(${el.id})" class="cursor-pointer p-2 rounded-xl border transition flex items-center justify-between text-xs ${el.id === selectedRoomId ? 'bg-cyan-950/50 border-cyan-400 text-white' : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'}">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-vector-square text-cyan-400"></i>
+                        <span class="font-bold">${el.name}</span>
+                        <span class="text-[10px] text-slate-400 font-mono">(${el.w}×${el.h})</span>
+                    </div>
+                    <button type="button" onclick="event.stopPropagation(); selectedRoomId=${el.id}; deleteSelectedRoom();" class="text-rose-400 hover:text-rose-300 px-1">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // =================================================================
+        // الرسم الهندسي للمخطط والكاميرات ومخروط الرؤية (Canvas Engine)
+        // =================================================================
+        const canvas = document.getElementById('cctvCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const container = document.getElementById('canvasContainer');
+            canvas.width = container.clientWidth || 900;
+            canvas.height = Math.max(460, Math.min(620, Math.round(canvas.width * 0.56)));
+            drawScene();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function zoomCanvas(factor) {
+            canvasZoom = Math.max(0.5, Math.min(2.6, canvasZoom * factor));
+            document.getElementById('lblZoomPercent').textContent = Math.round(canvasZoom * 100) + '%';
+            drawScene();
+        }
+
+        function resetZoom() {
+            canvasZoom = 1.0;
+            canvasPanX = 0;
+            canvasPanY = 0;
+            document.getElementById('lblZoomPercent').textContent = '100%';
+            drawScene();
+        }
+
+        function toggleNightVisionMode() {
+            isNightVision = !isNightVision;
+            const btn = document.getElementById('btnNightVision');
+            if (isNightVision) {
+                btn.className = 'px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 text-xs font-black flex items-center gap-1.5 transition shadow';
+                showToast('🌙 تم تفعيل محاكاة الرؤية الليلية والأشعة تحت الحمراء IR');
+            } else {
+                btn.className = 'px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-300 font-bold flex items-center gap-1.5 transition';
+            }
+            drawScene();
+        }
+
+        function uploadFloorPlanImage(evt) {
+            const file = evt.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    backgroundPlanImg = img;
+                    drawScene();
+                    showToast('✅ تم رفع صورة المخطط بنجاح');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function drawScene() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            // خلفية المخطط
+            ctx.fillStyle = isNightVision ? '#020806' : '#070e1b';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.save();
+            ctx.translate(w / 2 + canvasPanX, h / 2 + canvasPanY);
+            ctx.scale(canvasZoom, canvasZoom);
+            ctx.translate(-w / 2, -h / 2);
+
+            // شبكة هندسية (Blueprint Grid)
+            ctx.strokeStyle = isNightVision ? 'rgba(16, 185, 129, 0.08)' : 'rgba(56, 189, 248, 0.07)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x += 35) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = 0; y < h; y += 35) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            // صورة مخطط مرفوعة إن وجدت
+            if (backgroundPlanImg) {
+                ctx.globalAlpha = 0.45;
+                ctx.drawImage(backgroundPlanImg, 20, 20, w - 40, h - 40);
+                ctx.globalAlpha = 1.0;
+            }
+
+            // 1. رسم الغرف والمساحات
+            buildingElements.forEach(el => {
+                const ex = el.nx * w, ey = el.ny * h;
+                const isSel = !isBuildingLocked && el.id === selectedRoomId;
+
+                let strokeCol = '#38bdf8';
+                let fillCol = 'rgba(15, 32, 58, 0.72)';
+                if (el.type === 'outdoor') { strokeCol = '#10b981'; fillCol = 'rgba(6, 45, 36, 0.5)'; }
+                if (el.type === 'gate') { strokeCol = '#f59e0b'; fillCol = 'rgba(69, 39, 10, 0.65)'; }
+                if (el.type === 'corridor') { strokeCol = '#a855f7'; fillCol = 'rgba(46, 16, 78, 0.5)'; }
+
+                ctx.fillStyle = fillCol;
+                ctx.strokeStyle = isSel ? '#00f2fe' : strokeCol;
+                ctx.lineWidth = isSel ? 2.8 : 1.8;
+
+                ctx.beginPath();
+                ctx.roundRect(ex - el.w / 2, ey - el.h / 2, el.w, el.h, 8);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = 'bold 12px Cairo, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(el.name, ex, ey);
+
+                if (isBuildingLocked) {
+                    ctx.fillStyle = 'rgba(245, 158, 11, 0.7)';
+                    ctx.font = '10px Cairo';
+                    ctx.fillText('🔒', ex + el.w / 2 - 12, ey - el.h / 2 + 12);
+                }
+            });
+
+            // 2. رسم خطوط تمديد الأسلاك من جهاز الـ DVR إلى كل كاميرا
+            const dvrX = dvrUnit.nx * w, dvrY = dvrUnit.ny * h;
+            cameras.forEach(cam => {
+                const cx = cam.nx * w, cy = cam.ny * h;
+                ctx.save();
+                ctx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
+                ctx.lineWidth = 1.8;
+                ctx.setLineDash([6, 5]);
+                ctx.beginPath();
+                ctx.moveTo(dvrX, dvrY);
+                ctx.lineTo(cx, dvrY);
+                ctx.lineTo(cx, cy);
+                ctx.stroke();
+                ctx.restore();
+            });
+
+            // 3. رسم مخروط الرؤية (FOV Cone) لكل كاميرا
+            const pxPerMeter = w / 26;
+            cameras.forEach(cam => {
+                const cx = cam.nx * w, cy = cam.ny * h;
+                const radiusPx = (cam.rangeMeters || 12) * pxPerMeter;
+                const fovDeg = cam.type === 'ptz' ? 360 : (cam.fov || 90);
+                const startAngle = ((cam.rotation - fovDeg / 2) * Math.PI) / 180;
+                const endAngle = ((cam.rotation + fovDeg / 2) * Math.PI) / 180;
+
+                ctx.save();
+                const grad = ctx.createRadialGradient(cx, cy, 5, cx, cy, radiusPx);
+                if (isNightVision) {
+                    grad.addColorStop(0, 'rgba(239, 68, 68, 0.48)');
+                    grad.addColorStop(0.7, 'rgba(16, 185, 129, 0.22)');
+                    grad.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
+                } else {
+                    grad.addColorStop(0, cam.color + '66');
+                    grad.addColorStop(0.75, cam.color + '24');
+                    grad.addColorStop(1, cam.color + '05');
+                }
+
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radiusPx, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = isNightVision ? '#ef4444' : cam.color;
+                ctx.lineWidth = cam.id === selectedCameraId ? 2.2 : 1.2;
+                ctx.stroke();
+                ctx.restore();
+            });
+
+            // 4. رسم جهاز الـ DVR
+            ctx.fillStyle = '#0f172a';
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 2.2;
+            ctx.beginPath();
+            ctx.roundRect(dvrX - 42, dvrY - 16, 84, 32, 8);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#fbbf24';
+            ctx.font = 'bold 11px Cairo, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🖧 جهاز DVR', dvrX, dvrY);
+
+            // 5. رسم أيقونات الكاميرات
+            cameras.forEach((cam, idx) => {
+                const cx = cam.nx * w, cy = cam.ny * h;
+                const isSelected = cam.id === selectedCameraId;
+
+                if (isSelected) {
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 20, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 242, 254, 0.25)';
+                    ctx.fill();
+                }
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, 13, 0, Math.PI * 2);
+                ctx.fillStyle = isSelected ? '#ffffff' : cam.color;
+                ctx.strokeStyle = '#020617';
+                ctx.lineWidth = 2.5;
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#020617';
+                ctx.font = 'bold 11px Cairo, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(idx + 1, cx, cy);
+
+                // اسم الكاميرا وطول السلك تحتها
+                const cableM = calculateCableMeters(cam);
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = 'bold 10px Cairo, sans-serif';
+                ctx.fillText(`${cam.label} (${cableM}م)`, cx, cy + 24);
+            });
+
+            ctx.restore();
+        }
+
+        // =================================================================
+        // التفاعل بالسحب والإفلات على المخطط (Mouse & Touch Events)
+        // =================================================================
+        function getCanvasTransformedPos(clientX, clientY) {
+            const rect = canvas.getBoundingClientRect();
+            const rawX = (clientX - rect.left) * (canvas.width / rect.width);
+            const rawY = (clientY - rect.top) * (canvas.height / rect.height);
+            const w = canvas.width, h = canvas.height;
+            return {
+                x: (rawX - w / 2 - canvasPanX) / canvasZoom + w / 2,
+                y: (rawY - h / 2 - canvasPanY) / canvasZoom + h / 2,
+                rawX,
+                rawY
+            };
+        }
+
+        function handlePointerDown(clientX, clientY) {
+            const pos = getCanvasTransformedPos(clientX, clientY);
+            const w = canvas.width, h = canvas.height;
+
+            // 1. فحص الضغط على أي كاميرا أولاً
+            for (let i = cameras.length - 1; i >= 0; i--) {
+                const cam = cameras[i];
+                if (Math.hypot(pos.x - cam.nx * w, pos.y - cam.ny * h) <= 22) {
+                    selectedCameraId = cam.id;
+                    isInspectorOpen = true;
+                    dragState = { type: 'camera', id: cam.id };
+                    syncInspectorUI();
+                    renderQuickCamerasList();
+                    drawScene();
+                    return;
+                }
+            }
+
+            // 2. فحص الضغط على جهاز الـ DVR
+            if (Math.abs(pos.x - dvrUnit.nx * w) <= 44 && Math.abs(pos.y - dvrUnit.ny * h) <= 18) {
+                dragState = { type: 'dvr' };
+                return;
+            }
+
+            // 3. فحص الضغط على غرفة (إذا لم يكن المبنى مقفولاً)
+            if (!isBuildingLocked) {
+                for (let i = buildingElements.length - 1; i >= 0; i--) {
+                    const el = buildingElements[i];
+                    const ex = el.nx * w, ey = el.ny * h;
+                    if (Math.abs(pos.x - ex) <= el.w / 2 && Math.abs(pos.y - ey) <= el.h / 2) {
+                        selectedRoomId = el.id;
+                        dragState = {
+                            type: 'room',
+                            id: el.id,
+                            offsetX: pos.x - ex,
+                            offsetY: pos.y - ey
+                        };
+                        renderBuildingElementsList();
+                        syncSelectedRoomUI();
+                        drawScene();
+                        return;
+                    }
+                }
+            }
+
+            // 4. سحب وتحريك المخطط (Pan)
+            dragState = { type: 'pan', startX: pos.rawX - canvasPanX, startY: pos.rawY - canvasPanY };
+        }
+
+        function handlePointerMove(clientX, clientY) {
+            if (!dragState) return;
+            const pos = getCanvasTransformedPos(clientX, clientY);
+            const w = canvas.width, h = canvas.height;
+
+            if (dragState.type === 'camera') {
+                const cam = cameras.find(c => c.id === dragState.id);
+                if (cam) {
+                    cam.nx = Math.max(0.04, Math.min(0.96, pos.x / w));
+                    cam.ny = Math.max(0.04, Math.min(0.96, pos.y / h));
+                    drawScene();
+                    updateAllCalculations();
+                }
+            } else if (dragState.type === 'dvr') {
+                dvrUnit.nx = Math.max(0.05, Math.min(0.95, pos.x / w));
+                dvrUnit.ny = Math.max(0.05, Math.min(0.95, pos.y / h));
+                drawScene();
+                updateAllCalculations();
+            } else if (dragState.type === 'room' && !isBuildingLocked) {
+                const rm = buildingElements.find(r => r.id === dragState.id);
+                if (rm) {
+                    rm.nx = Math.max(0.05, Math.min(0.95, (pos.x - dragState.offsetX) / w));
+                    rm.ny = Math.max(0.05, Math.min(0.95, (pos.y - dragState.offsetY) / h));
+                    drawScene();
+                }
+            } else if (dragState.type === 'pan') {
+                canvasPanX = pos.rawX - dragState.startX;
+                canvasPanY = pos.rawY - dragState.startY;
+                drawScene();
+            }
+        }
+
+        canvas.addEventListener('mousedown', e => handlePointerDown(e.clientX, e.clientY));
+        window.addEventListener('mousemove', e => handlePointerMove(e.clientX, e.clientY));
+        window.addEventListener('mouseup', () => { dragState = null; });
+
+        canvas.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+        window.addEventListener('touchmove', e => {
+            if (dragState && e.touches.length === 1) {
+                handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+        window.addEventListener('touchend', () => { dragState = null; });
+
+        // =================================================================
+        // إدارة الكاميرات ونافذة الإعدادات الجانبية
+        // =================================================================
+        function addCamera(type) {
+            const presets = {
+                dome: { fov: 105, range: 13, color: '#00f2fe', title: 'كاميرا داخلية' },
+                bullet: { fov: 82, range: 18, color: '#10b981', title: 'كاميرا خارجية' },
+                zoom: { fov: 50, range: 26, color: '#f59e0b', title: 'كاميرا زووم' },
+                ptz: { fov: 360, range: 22, color: '#a855f7', title: 'كاميرا PTZ' }
+            };
+            const p = presets[type] || presets.dome;
+            const newId = Date.now();
+            cameras.push({
+                id: newId,
+                type,
+                label: `${p.title} ${cameras.length + 1}`,
+                nx: 0.45 + (Math.random() - 0.5) * 0.15,
+                ny: 0.45 + (Math.random() - 0.5) * 0.15,
+                rotation: 45,
+                fov: p.fov,
+                rangeMeters: p.range,
+                customCable: 0,
+                color: p.color
+            });
+            selectedCameraId = newId;
+            isInspectorOpen = true;
+            syncInspectorUI();
+            renderQuickCamerasList();
+            drawScene();
+            updateAllCalculations();
+            showToast(`✅ تمت إضافة ${p.title} وفتح إعداداتها بجوار المخطط`);
+        }
+
+        function renderQuickCamerasList() {
+            const container = document.getElementById('quickCamerasList');
+            if (!container) return;
+            container.innerHTML = cameras.map((cam, idx) => `
+                <button type="button" onclick="selectedCameraId=${cam.id}; isInspectorOpen=true; syncInspectorUI(); renderQuickCamerasList(); drawScene();" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border transition ${cam.id === selectedCameraId ? 'bg-cyan-500 text-slate-950 border-cyan-300 shadow' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-cyan-400'}">
+                    #${idx + 1} ${cam.label}
+                </button>
+            `).join('');
+        }
+
+        function syncInspectorUI() {
+            const cam = cameras.find(c => c.id === selectedCameraId);
+            const panel = document.getElementById('floatingCameraInspector');
+            const hint = document.getElementById('floatingHintPill');
+
+            if (!cam || !isInspectorOpen) {
+                panel.classList.add('hidden');
+                if (cameras.length > 0) hint.classList.remove('hidden');
+                return;
+            }
+            panel.classList.remove('hidden');
+            hint.classList.add('hidden');
+
+            document.getElementById('camLabelInput').value = cam.label;
+            document.getElementById('camTypeSelect').value = cam.type;
+            document.getElementById('rngCamRotation').value = cam.rotation;
+            document.getElementById('lblCamRotation').textContent = cam.rotation;
+            document.getElementById('rngCamRange').value = cam.rangeMeters;
+            document.getElementById('lblCamRange').textContent = cam.rangeMeters;
+            document.getElementById('inpCamFov').value = cam.fov || 90;
+            document.getElementById('inpCamCable').value = cam.customCable || 0;
+        }
+
+        function updateSelectedCameraType(newType) {
+            const cam = cameras.find(c => c.id === selectedCameraId);
+            if (!cam) return;
+            cam.type = newType;
+            if (newType === 'dome') { cam.fov = 105; cam.color = '#00f2fe'; }
+            if (newType === 'bullet') { cam.fov = 82; cam.color = '#10b981'; }
+            if (newType === 'zoom') { cam.fov = 50; cam.color = '#f59e0b'; }
+            if (newType === 'ptz') { cam.fov = 360; cam.color = '#a855f7'; }
+            syncInspectorUI();
+            drawScene();
+            updateAllCalculations();
+        }
+
+        function setQuickCamAngle(deg) {
+            const cam = cameras.find(c => c.id === selectedCameraId);
+            if (!cam) return;
+            cam.rotation = deg;
+            syncInspectorUI();
+            drawScene();
+        }
+
+        function updateSelectedCameraFromUI() {
+            const cam = cameras.find(c => c.id === selectedCameraId);
+            if (!cam) return;
+            cam.label = document.getElementById('camLabelInput').value || 'كاميرا';
+            cam.rotation = parseInt(document.getElementById('rngCamRotation').value, 10) || 0;
+            cam.rangeMeters = parseFloat(document.getElementById('rngCamRange').value) || 12;
+            cam.fov = parseInt(document.getElementById('inpCamFov').value, 10) || 90;
+            cam.customCable = parseFloat(document.getElementById('inpCamCable').value) || 0;
+
+            document.getElementById('lblCamRotation').textContent = cam.rotation;
+            document.getElementById('lblCamRange').textContent = cam.rangeMeters;
+            renderQuickCamerasList();
+            drawScene();
+            updateAllCalculations();
+        }
+
+        function closeFloatingInspector() {
+            isInspectorOpen = false;
+            syncInspectorUI();
+        }
+
+        function reopenFloatingInspector() {
+            if (!selectedCameraId && cameras[0]) selectedCameraId = cameras[0].id;
+            isInspectorOpen = true;
+            syncInspectorUI();
+        }
+
+        function deleteSelectedCamera() {
+            cameras = cameras.filter(c => c.id !== selectedCameraId);
+            selectedCameraId = cameras[0]?.id || null;
+            syncInspectorUI();
+            renderQuickCamerasList();
+            drawScene();
+            updateAllCalculations();
+            showToast('تم حذف الكاميرا من المخطط');
+        }
+
+        // =================================================================
+        // حسابات الأسلاك والمواسير والمقايسة وإدارة المخزن اليدوي
+        // =================================================================
+        function calculateCableMeters(cam) {
+            if (cam.customCable && cam.customCable > 0) return Math.round(cam.customCable);
+            const dx = Math.abs(cam.nx - dvrUnit.nx) * 26;
+            const dy = Math.abs(cam.ny - dvrUnit.ny) * 16;
+            return Math.max(8, Math.round((dx + dy) * 1.25 + 5)); // شامل صعود الحائط والهالك
+        }
+
+        function resolveItemQuantity(item, counts) {
+            switch (item.qtyMode) {
+                case 'all_cams': return counts.totalCams;
+                case 'cam_dome': return counts.dome;
+                case 'cam_bullet': return counts.bullet;
+                case 'cam_zoom': return counts.zoom;
+                case 'cam_ptz': return counts.ptz;
+                case 'cable_m': return counts.totalCableMeters;
+                case 'conduit_pipes': return counts.conduitPipes;
+                default: return parseFloat(item.manualQty) || 0;
+            }
+        }
+
+        function getModeArabicLabel(mode) {
+            const labels = {
+                manual: 'يدوي حر',
+                all_cams: 'بعدد كل الكاميرات',
+                cam_dome: 'بعدد كاميرات Dome',
+                cam_bullet: 'بعدد كاميرات Bullet',
+                cam_zoom: 'بعدد كاميرات الزووم',
+                cam_ptz: 'بعدد كاميرات PTZ',
+                cable_m: 'بأمتار السلك تلقائياً',
+                conduit_pipes: 'بأعواد المواسير (3م)'
+            };
+            return labels[mode] || 'يدوي';
+        }
+
+        function updateAllCalculations() {
+            const totalCams = cameras.length;
+            let totalCableMeters = 0;
+            cameras.forEach(c => { totalCableMeters += calculateCableMeters(c); });
+            const conduitPipes = Math.ceil(totalCableMeters / 3);
+
+            const counts = {
+                totalCams,
+                totalCableMeters,
+                conduitPipes,
+                dome: cameras.filter(c => c.type === 'dome').length,
+                bullet: cameras.filter(c => c.type === 'bullet').length,
+                zoom: cameras.filter(c => c.type === 'zoom').length,
+                ptz: cameras.filter(c => c.type === 'ptz').length
+            };
+
+            let subtotal = 0;
+            const bomItems = [];
+
+            customInventory.forEach((item, idx) => {
+                const qty = resolveItemQuantity(item, counts);
+                const price = parseFloat(item.price) || 0;
+                const total = Math.round(qty * price);
+                subtotal += total;
+                bomItems.push({ ...item, idx, qty, price, total });
+            });
+
+            const discount = parseFloat(appMetadata.discount) || 0;
+            const grandTotal = Math.max(0, subtotal - discount);
+
+            // تحديث جدول المقايسة التفاعلي
+            const tbody = document.getElementById('bomTableBody');
+            tbody.innerHTML = bomItems.map(item => `
+                <tr class="hover:bg-slate-900/60 transition">
+                    <td class="py-2 px-2 font-bold text-white">${item.name}</td>
+                    <td class="py-2 px-2"><span class="px-2 py-0.5 rounded-md bg-slate-800 text-cyan-300 text-[10px] font-bold">${item.category}</span></td>
+                    <td class="py-2 px-2 text-center text-[10px] text-slate-400">${getModeArabicLabel(item.qtyMode)}</td>
+                    <td class="py-2 px-2 text-center">
+                        <input type="number" value="${item.qty}" min="0" onchange="inlineUpdateItemQty(${item.idx}, this.value)" class="w-16 bg-slate-950 border border-slate-700 rounded px-1.5 py-0.5 text-center font-mono font-bold text-cyan-300">
+                    </td>
+                    <td class="py-2 px-2 text-center">
+                        <input type="number" value="${item.price}" min="0" onchange="inlineUpdateItemPrice(${item.idx}, this.value)" class="w-20 bg-slate-950 border border-slate-700 rounded px-1.5 py-0.5 text-center font-mono font-bold text-emerald-400">
+                    </td>
+                    <td class="py-2 px-2 text-left font-black text-white font-mono">${item.total.toLocaleString()} ج.م</td>
+                    <td class="py-2 px-2 text-center">
+                        <button type="button" onclick="deleteInventoryItem(${item.idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // تحديث الإحصائيات العلوية والتوصيات الهندسية
+            const amps = (totalCams * 1.1).toFixed(1);
+            document.getElementById('statCamCount').textContent = totalCams;
+            document.getElementById('statCableMeters').textContent = totalCableMeters;
+            document.getElementById('statPowerAmps').textContent = amps;
+            document.getElementById('statTotalCost').textContent = grandTotal.toLocaleString();
+
+            document.getElementById('bomSubtotal').textContent = subtotal.toLocaleString();
+            document.getElementById('bomDiscountVal').textContent = discount.toLocaleString();
+            document.getElementById('bomGrandTotal').textContent = grandTotal.toLocaleString();
+
+            const recDvr = totalCams <= 4 ? '4 قنوات' : (totalCams <= 8 ? '8 قنوات' : (totalCams <= 16 ? '16 قناة' : '32 قناة'));
+            const recPsu = totalCams <= 4 ? '12V 5A' : (totalCams <= 8 ? '12V 10A' : (totalCams <= 16 ? '12V 20A' : '12V 30A'));
+            document.getElementById('recDvrChannels').textContent = recDvr;
+            document.getElementById('recPowerSupply').textContent = recPsu;
+            document.getElementById('recConduitPipes').textContent = conduitPipes + ' عود (3م)';
+            document.getElementById('recJunctionBoxes').textContent = totalCams + ' بواط';
+
+            window.__latestQuoteData = { totalCams, totalCableMeters, subtotal, discount, grandTotal, bomItems };
+        }
+
+        function inlineUpdateItemQty(idx, val) {
+            if (!customInventory[idx]) return;
+            customInventory[idx].qtyMode = 'manual';
+            customInventory[idx].manualQty = parseFloat(val) || 0;
+            localStorage.setItem('cctv_pro_unified_inv_v95', JSON.stringify(customInventory));
+            updateAllCalculations();
+        }
+
+        function inlineUpdateItemPrice(idx, val) {
+            if (!customInventory[idx]) return;
+            customInventory[idx].price = parseFloat(val) || 0;
+            localStorage.setItem('cctv_pro_unified_inv_v95', JSON.stringify(customInventory));
+            updateAllCalculations();
+        }
+
+        function deleteInventoryItem(idx) {
+            customInventory.splice(idx, 1);
+            localStorage.setItem('cctv_pro_unified_inv_v95', JSON.stringify(customInventory));
+            updateAllCalculations();
+            if (!document.getElementById('inventoryModal').classList.contains('hidden')) {
+                openInventoryModal();
+            }
+            showToast('تم حذف البند من المقايسة');
+        }
+
+        // نافذة المخزن والمكونات
+        function openInventoryModal() {
+            const tbody = document.getElementById('inventoryTbody');
+            tbody.innerHTML = customInventory.map((item, idx) => `
+                <tr>
+                    <td class="py-1.5 px-1.5">
+                        <input type="text" id="inv_name_${idx}" value="${item.name}" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold text-xs">
+                    </td>
+                    <td class="py-1.5 px-1.5">
+                        <input type="text" id="inv_cat_${idx}" value="${item.category}" class="w-36 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-bold text-xs">
+                    </td>
+                    <td class="py-1.5 px-1.5">
+                        <select id="inv_mode_${idx}" class="bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-xs">
+                            <option value="manual" ${item.qtyMode === 'manual' ? 'selected' : ''}>يدوي ثابت</option>
+                            <option value="all_cams" ${item.qtyMode === 'all_cams' ? 'selected' : ''}>بعدد كل الكاميرات</option>
+                            <option value="cam_dome" ${item.qtyMode === 'cam_dome' ? 'selected' : ''}>بعدد Dome</option>
+                            <option value="cam_bullet" ${item.qtyMode === 'cam_bullet' ? 'selected' : ''}>بعدد Bullet</option>
+                            <option value="cam_zoom" ${item.qtyMode === 'cam_zoom' ? 'selected' : ''}>بعدد Zoom</option>
+                            <option value="cam_ptz" ${item.qtyMode === 'cam_ptz' ? 'selected' : ''}>بعدد PTZ</option>
+                            <option value="cable_m" ${item.qtyMode === 'cable_m' ? 'selected' : ''}>بأمتار السلك</option>
+                            <option value="conduit_pipes" ${item.qtyMode === 'conduit_pipes' ? 'selected' : ''}>بأعواد المواسير</option>
+                        </select>
+                    </td>
+                    <td class="py-1.5 px-1.5 text-center">
+                        <input type="number" id="inv_qty_${idx}" value="${item.manualQty}" class="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-center text-amber-300 font-bold text-xs">
+                    </td>
+                    <td class="py-1.5 px-1.5 text-center">
+                        <input type="number" id="inv_price_${idx}" value="${item.price}" class="w-24 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-center text-emerald-400 font-bold text-xs">
+                    </td>
+                    <td class="py-1.5 px-1.5 text-center">
+                        <button type="button" onclick="deleteInventoryItem(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            const modal = document.getElementById('inventoryModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeInventoryModal() {
+            const modal = document.getElementById('inventoryModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function addNewInventoryItemFromBar() {
+            const nameInput = document.getElementById('quickAddName');
+            const name = nameInput.value.trim();
+            if (!name) {
+                showToast('⚠️ اكتب اسم المكون أو الهارد أولاً');
+                nameInput.focus();
+                return;
+            }
+            const category = document.getElementById('quickAddCat').value.trim() || 'مكونات عامة';
+            const qtyMode = document.getElementById('quickAddMode').value;
+            const manualQty = parseFloat(document.getElementById('quickAddQty').value) || 1;
+            const price = parseFloat(document.getElementById('quickAddPrice').value) || 0;
+
+            customInventory.unshift({
+                id: 'item_' + Date.now(),
+                name,
+                category,
+                qtyMode,
+                manualQty,
+                price
+            });
+
+            localStorage.setItem('cctv_pro_unified_inv_v95', JSON.stringify(customInventory));
+            nameInput.value = '';
+            openInventoryModal();
+            updateAllCalculations();
+            showToast(`✅ تمت إضافة "${name}" إلى المقايسة بنجاح`);
+        }
+
+        function saveInventoryChanges() {
+            customInventory.forEach((item, idx) => {
+                const n = document.getElementById(`inv_name_${idx}`);
+                const c = document.getElementById(`inv_cat_${idx}`);
+                const m = document.getElementById(`inv_mode_${idx}`);
+                const q = document.getElementById(`inv_qty_${idx}`);
+                const p = document.getElementById(`inv_price_${idx}`);
+                if (n) item.name = n.value;
+                if (c) item.category = c.value;
+                if (m) item.qtyMode = m.value;
+                if (q) item.manualQty = parseFloat(q.value) || 0;
+                if (p) item.price = parseFloat(p.value) || 0;
+            });
+            localStorage.setItem('cctv_pro_unified_inv_v95', JSON.stringify(customInventory));
+            closeInventoryModal();
+            updateAllCalculations();
+            showToast('✅ تم حفظ جميع المكونات والأسعار بنجاح');
+        }
+
+        // =================================================================
+        // الداشبورد، الأرشيف، النسخ الاحتياطي، الطباعة والواتساب
+        // =================================================================
+        function toggleDashboardPanel() {
+            const sec = document.getElementById('executiveDashboardSection');
+            sec.classList.toggle('hidden');
+        }
+
+        function syncCompanyAndProjectMetadata() {
+            appMetadata.companyName = document.getElementById('compNameInput').value || 'الشركة الهندسية';
+            appMetadata.engineerName = document.getElementById('compEngineerInput').value || '';
+            appMetadata.companyPhone = document.getElementById('compPhoneInput').value || '';
+            appMetadata.companyAddress = document.getElementById('compAddressInput').value || '';
+            appMetadata.warranty = document.getElementById('compWarrantyInput').value || '';
+            appMetadata.projectTitle = document.getElementById('projTitleInput').value || 'مشروع مراقبة';
+            appMetadata.clientName = document.getElementById('clientNameInput').value || 'عميل';
+            appMetadata.clientPhone = document.getElementById('clientPhoneInput').value || '';
+            appMetadata.projectLocation = document.getElementById('projLocationInput').value || '';
+            appMetadata.discount = parseFloat(document.getElementById('projDiscountInput').value) || 0;
+
+            document.getElementById('headerCompanyName').textContent = appMetadata.companyName;
+            document.getElementById('headerProjectSummary').textContent = `المشروع: ${appMetadata.projectTitle} • العميل: ${appMetadata.clientName}`;
+            localStorage.setItem('cctv_pro_metadata_v95', JSON.stringify(appMetadata));
+        }
+
+        function saveCurrentProjectToArchive() {
+            const q = window.__latestQuoteData || { grandTotal: 0 };
+            const projSnap = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('ar-EG'),
+                projectTitle: appMetadata.projectTitle,
+                clientName: appMetadata.clientName,
+                grandTotal: q.grandTotal,
+                appMetadata: JSON.parse(JSON.stringify(appMetadata)),
+                buildingElements: JSON.parse(JSON.stringify(buildingElements)),
+                cameras: JSON.parse(JSON.stringify(cameras)),
+                customInventory: JSON.parse(JSON.stringify(customInventory))
+            };
+            archivedProjects.unshift(projSnap);
+            localStorage.setItem('cctv_pro_archive_v95', JSON.stringify(archivedProjects));
+            document.getElementById('savedProjectsCountBadge').textContent = archivedProjects.length;
+            renderArchivedProjectsList();
+            showToast('💾 تم حفظ المشروع في الأرشيف بنجاح!');
+        }
+
+        function renderArchivedProjectsList() {
+            document.getElementById('savedProjectsCountBadge').textContent = archivedProjects.length;
+            const container = document.getElementById('archivedProjectsList');
+            if (!container) return;
+            if (archivedProjects.length === 0) {
+                container.innerHTML = '<div class="text-center py-4 text-slate-500">لا توجد مشاريع محفوظة في الأرشيف بعد</div>';
+                return;
+            }
+            container.innerHTML = archivedProjects.map(p => `
+                <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2">
+                    <div>
+                        <div class="font-bold text-white">${p.projectTitle} — <span class="text-cyan-300">${p.clientName}</span></div>
+                        <div class="text-[11px] text-slate-400">التاريخ: ${p.date} • الإجمالي: <strong class="text-emerald-400">${(p.grandTotal || 0).toLocaleString()} ج.م</strong></div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="loadArchivedProject(${p.id})" class="px-3 py-1 rounded-lg bg-cyan-500 text-slate-950 font-black">فتح المشروع</button>
+                        <button type="button" onclick="deleteArchivedProject(${p.id})" class="px-2 py-1 rounded-lg bg-rose-500/20 text-rose-400 font-bold">حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadArchivedProject(id) {
+            const p = archivedProjects.find(x => x.id === id);
+            if (!p) return;
+            appMetadata = JSON.parse(JSON.stringify(p.appMetadata));
+            buildingElements = JSON.parse(JSON.stringify(p.buildingElements));
+            cameras = JSON.parse(JSON.stringify(p.cameras));
+            customInventory = JSON.parse(JSON.stringify(p.customInventory));
+
+            document.getElementById('compNameInput').value = appMetadata.companyName || '';
+            document.getElementById('projTitleInput').value = appMetadata.projectTitle || '';
+            document.getElementById('clientNameInput').value = appMetadata.clientName || '';
+            document.getElementById('projDiscountInput').value = appMetadata.discount || 0;
+
+            syncCompanyAndProjectMetadata();
+            renderBuildingElementsList();
+            renderQuickCamerasList();
+            drawScene();
+            updateAllCalculations();
+            closeBackupSecurityModal();
+            showToast('📂 تم استرجاع المشروع بالكامل');
+        }
+
+        function deleteArchivedProject(id) {
+            archivedProjects = archivedProjects.filter(x => x.id !== id);
+            localStorage.setItem('cctv_pro_archive_v95', JSON.stringify(archivedProjects));
+            renderArchivedProjectsList();
+        }
+
+        function openBackupSecurityModal() {
+            document.getElementById('cfgPinCodeInput').value = securityConfig.pinCode || '1234';
+            document.getElementById('chkRequireLockOnStart').checked = !!securityConfig.requireLockOnStart;
+            renderArchivedProjectsList();
+            const modal = document.getElementById('backupSecurityModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeBackupSecurityModal() {
+            const modal = document.getElementById('backupSecurityModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function exportFullBackupJSON() {
+            const fullData = { appMetadata, securityConfig, customInventory, buildingElements, cameras, archivedProjects };
+            const blob = new Blob([JSON.stringify(fullData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `نسخة-احتياطية-كاميرات-${Date.now()}.json`;
+            a.click();
+            showToast('✅ تم تحميل ملف النسخة الاحتياطية بنجاح');
+        }
+
+        function importFullBackupJSON(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (data.customInventory) customInventory = data.customInventory;
+                    if (data.buildingElements) buildingElements = data.buildingElements;
+                    if (data.cameras) cameras = data.cameras;
+                    if (data.appMetadata) appMetadata = { ...appMetadata, ...data.appMetadata };
+                    if (data.archivedProjects) archivedProjects = data.archivedProjects;
+                    renderBuildingElementsList();
+                    renderQuickCamerasList();
+                    drawScene();
+                    updateAllCalculations();
+                    renderArchivedProjectsList();
+                    showToast('✅ تم استعادة النسخة الاحتياطية بنجاح!');
+                } catch (err) {
+                    showToast('❌ ملف النسخة الاحتياطية غير صالح');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function exportReportPrint() {
+            const q = window.__latestQuoteData;
+            if (!q) return;
+            document.getElementById('printCompanyName').textContent = appMetadata.companyName;
+            document.getElementById('printCompanyDetails').textContent = `${appMetadata.engineerName} | تليفون: ${appMetadata.companyPhone} | ${appMetadata.companyAddress}`;
+            document.getElementById('printWarranty').textContent = appMetadata.warranty;
+            document.getElementById('printDate').textContent = `التاريخ: ${new Date().toLocaleDateString('ar-EG')}`;
+            document.getElementById('printProjectTitle').textContent = `المشروع: ${appMetadata.projectTitle}`;
+            document.getElementById('printClientName').textContent = `السادة / ${appMetadata.clientName} (${appMetadata.projectLocation})`;
+            document.getElementById('printCanvasImg').src = canvas.toDataURL('image/png');
+
+            document.getElementById('printBomBody').innerHTML = q.bomItems.filter(i => i.qty > 0).map(i => `
+                <tr>
+                    <td class="py-2 px-2 border border-slate-300 font-bold">${i.name}</td>
+                    <td class="py-2 px-2 border border-slate-300">${i.category}</td>
+                    <td class="py-2 px-2 border border-slate-300 text-center font-bold">${i.qty}</td>
+                    <td class="py-2 px-2 border border-slate-300 text-center">${i.price.toLocaleString()} ج.م</td>
+                    <td class="py-2 px-2 border border-slate-300 text-left font-black">${i.total.toLocaleString()} ج.م</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('printGrandTotal').textContent = q.grandTotal.toLocaleString();
+            window.print();
+        }
+
+        function sendWhatsAppQuote() {
+            const q = window.__latestQuoteData;
+            if (!q) return;
+            let msg = `*${appMetadata.companyName}* 📹🛡️\n`;
+            msg += `عرض سعر فني ومالي لمشروع: *${appMetadata.projectTitle}*\n`;
+            msg += `العميل: *${appMetadata.clientName}*\n`;
+            msg += `────────────────────\n`;
+            msg += `• إجمالي عدد الكاميرات: *${q.totalCams} كاميرا*\n`;
+            msg += `• إجمالي تمديد السلك التقديري: *${q.totalCableMeters} متر*\n`;
+            msg += `────────────────────\n`;
+            q.bomItems.filter(i => i.qty > 0).forEach(i => {
+                msg += `▪ ${i.name} (الكمية: ${i.qty}) = *${i.total.toLocaleString()} ج.م*\n`;
+            });
+            msg += `────────────────────\n`;
+            msg += `✅ *الصافي النهائي للمقايسة: ${q.grandTotal.toLocaleString()} ج.م*\n`;
+            msg += `🛡️ ${appMetadata.warranty}\n`;
+            msg += `📞 للتواصل: ${appMetadata.companyPhone}`;
+
+            const cleanPhone = (appMetadata.clientPhone || '').replace(/^0/, '20');
+            const url = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toastMsg');
+            toast.textContent = text;
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2600);
+        }
+
+        // تشغيل البرنامج فوراً عند التحميل
+        window.onload = function() {
+            try {
+                const savedMeta = localStorage.getItem('cctv_pro_metadata_v95');
+                if (savedMeta) {
+                    appMetadata = { ...appMetadata, ...JSON.parse(savedMeta) };
+                    document.getElementById('compNameInput').value = appMetadata.companyName;
+                    document.getElementById('compEngineerInput').value = appMetadata.engineerName;
+                    document.getElementById('compPhoneInput').value = appMetadata.companyPhone;
+                    document.getElementById('compAddressInput').value = appMetadata.companyAddress;
+                    document.getElementById('compWarrantyInput').value = appMetadata.warranty;
+                    document.getElementById('projTitleInput').value = appMetadata.projectTitle;
+                    document.getElementById('clientNameInput').value = appMetadata.clientName;
+                    document.getElementById('clientPhoneInput').value = appMetadata.clientPhone;
+                    document.getElementById('projLocationInput').value = appMetadata.projectLocation;
+                    document.getElementById('projDiscountInput').value = appMetadata.discount || 0;
+                }
+            } catch (e) {}
+
+            syncCompanyAndProjectMetadata();
+            resizeCanvas();
+            renderBuildingElementsList();
+            syncSelectedRoomUI();
+            renderQuickCamerasList();
+            syncInspectorUI();
+            updateAllCalculations();
+            renderArchivedProjectsList();
+
+            if (securityConfig.requireLockOnStart) {
+                lockScreenNow();
+            }
+        };
+    </script>
 </body>
 </html>
