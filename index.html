@@ -1,178 +1,639 @@
-/* ===== PATCH v9.6 ===== */
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مُخطط وحاسبة أنظمة كاميرات المراقبة | Smart CCTV Planner PRO v9.6</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:hidden}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:#0b1322}::-webkit-scrollbar-thumb{background:#1e3256;border-radius:4px}
+.glass{background:rgba(15,25,45,.88);backdrop-filter:blur(14px);border:1px solid rgba(56,189,248,.22);border-radius:16px}
+.hud{background:rgba(8,15,28,.95);backdrop-filter:blur(16px);border:1.5px solid rgba(0,242,254,.5);box-shadow:0 15px 35px rgba(0,0,0,.8)}
+.box{background:rgba(15,23,42,.9);border:1px solid #1e293b;border-radius:14px;padding:12px}
+.inp{width:100%;background:#020617;border:1px solid #334155;border-radius:8px;padding:6px 10px;color:#fff;font-size:12px}
+.inp:focus{outline:none;border-color:#22d3ee}
+.lbl{display:block;color:#94a3b8;font-size:10px;margin-bottom:2px}
+.btn{padding:7px 12px;border-radius:12px;font-size:12px;font-weight:900;transition:.15s;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:scale(.96)}
+.b-cy{background:#06b6d4;color:#020617}.b-cy:hover{background:#22d3ee}
+.b-am{background:#f59e0b;color:#020617}.b-am:hover{background:#fbbf24}
+.b-em{background:#10b981;color:#020617}.b-em:hover{background:#34d399}
+.b-pu{background:#9333ea;color:#fff}.b-pu:hover{background:#a855f7}
+.b-ro{background:rgba(244,63,94,.2);color:#fda4af;border:1px solid rgba(244,63,94,.4)}.b-ro:hover{background:#f43f5e;color:#fff}
+.b-gr{background:#0f172a;color:#cbd5e1;border:1px solid #334155}.b-gr:hover{border-color:#22d3ee}
+.kpi{background:rgba(15,23,42,.9);border:1px solid #334155;border-radius:12px;padding:6px 12px;font-size:12px}
+.kpi small{display:block;font-size:10px;color:#94a3b8}
+.hid{display:none!important}
+.print-only{display:none}
+@media print{body{background:#fff!important;color:#0f172a!important}.no-print{display:none!important}.print-only{display:block!important}}
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- شاشة القفل -->
+<div id="lockOverlay" class="fixed inset-0 z-[100] bg-[#040811]/95 backdrop-blur-xl hid items-center justify-center p-4 no-print">
+ <div class="glass max-w-sm w-full p-6 text-center space-y-4 border-2 border-cyan-500/50">
+  <i class="fa-solid fa-shield-halved text-cyan-400 text-4xl"></i>
+  <h2 class="text-lg font-black">فتح المنظومة</h2>
+  <input type="password" id="inpPin" placeholder="اكتب الرقم السري..." onkeydown="if(event.key==='Enter')verifyPin()" class="inp text-center text-base" style="padding:12px">
+  <button class="btn b-cy w-full justify-center" onclick="verifyPin()"><i class="fa-solid fa-unlock-keyhole"></i> فتح</button>
+ </div>
+</div>
+
+<!-- الشريط العلوي -->
+<header class="glass sticky top-0 z-40 px-4 py-3 no-print" style="border-radius:0">
+ <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-3">
+  <div class="flex items-center gap-3">
+   <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center"><i class="fa-solid fa-video text-slate-950 text-xl"></i></div>
+   <div><h1 id="hdrCompany" class="text-base font-extrabold">الشركة الهندسية</h1><p id="hdrProject" class="text-xs text-slate-400"></p></div>
+  </div>
+  <div class="flex flex-wrap gap-2">
+   <div class="kpi"><small>الكاميرات</small><b id="kCams">0</b></div>
+   <div class="kpi"><small>السلك (م)</small><b id="kCable">0</b></div>
+   <div class="kpi"><small>الباور (أمبير)</small><b id="kAmps">0</b></div>
+   <div class="kpi" style="border-color:#10b98166"><small class="text-emerald-300">صافي المقايسة</small><b id="kTotal" class="text-emerald-400">0</b> ج.م</div>
+  </div>
+  <div class="flex flex-wrap gap-1.5">
+   <button class="btn b-gr" onclick="toggleDash()"><i class="fa-solid fa-gauge-high"></i> بيانات الشركة</button>
+   <button class="btn b-am" onclick="openInv()"><i class="fa-solid fa-boxes-stacked"></i> المكونات</button>
+   <button class="btn b-pu" onclick="openSec()"><i class="fa-solid fa-shield-halved"></i> التأمين والنسخ</button>
+   <button class="btn b-ro" onclick="lockNow()"><i class="fa-solid fa-lock"></i> قفل</button>
+   <button class="btn b-cy" onclick="printQuote()"><i class="fa-solid fa-print"></i> طباعة</button>
+   <button class="btn b-em" onclick="sendWA()"><i class="fa-brands fa-whatsapp"></i></button>
+  </div>
+ </div>
+</header>
+
+<!-- لوحة بيانات الشركة -->
+<section id="dash" class="max-w-[1700px] w-full mx-auto px-3 sm:px-5 pt-4 no-print">
+ <div class="glass p-4 space-y-3">
+  <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800">
+   <h2 class="text-sm font-black"><i class="fa-solid fa-building-shield text-cyan-400"></i> بيانات الشركة والمشروع (تظهر في الطباعة)</h2>
+   <div class="flex gap-2">
+    <button class="btn b-em" onclick="saveToArchive()"><i class="fa-solid fa-floppy-disk"></i> حفظ في الأرشيف (<span id="archCount">0</span>)</button>
+    <button class="btn b-gr" onclick="toggleDash()">إخفاء ▲</button>
+   </div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 text-xs">
+   <div class="box lg:col-span-5 grid grid-cols-2 gap-2">
+    <div class="col-span-2 font-black text-cyan-300">بيانات الشركة</div>
+    <div class="col-span-2"><label class="lbl">اسم الشركة</label><input id="mCompany" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">المهندس / المسؤول</label><input id="mEngineer" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">التليفون / واتساب</label><input id="mPhone" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">العنوان</label><input id="mAddress" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">الضمان</label><input id="mWarranty" class="inp" oninput="syncMeta()"></div>
+   </div>
+   <div class="box lg:col-span-5 grid grid-cols-2 gap-2">
+    <div class="col-span-2 font-black text-amber-300">بيانات المشروع والعميل</div>
+    <div><label class="lbl">اسم المشروع</label><input id="mProject" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">اسم العميل</label><input id="mClient" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">موبايل العميل</label><input id="mClientPhone" class="inp" oninput="syncMeta()"></div>
+    <div><label class="lbl">خصم (ج.م)</label><input type="number" id="mDiscount" min="0" class="inp" oninput="syncMeta()"></div>
+    <div class="col-span-2"><label class="lbl">موقع التركيب</label><input id="mLocation" class="inp" oninput="syncMeta()"></div>
+   </div>
+   <div class="box lg:col-span-2 space-y-1.5 text-[11px]">
+    <div class="font-black text-emerald-300">توصيات تلقائية</div>
+    <div class="flex justify-between"><span class="text-slate-400">DVR:</span><b id="rDvr" class="text-cyan-300"></b></div>
+    <div class="flex justify-between"><span class="text-slate-400">باور:</span><b id="rPsu" class="text-amber-300"></b></div>
+    <div class="flex justify-between"><span class="text-slate-400">مواسير:</span><b id="rPipes" class="text-purple-300"></b></div>
+    <div class="flex justify-between"><span class="text-slate-400">بواطات:</span><b id="rBoxes" class="text-emerald-300"></b></div>
+   </div>
+   <div class="box lg:col-span-12 grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
+    <div><label class="lbl">عرض المخطط الحقيقي (متر)</label><input type="number" id="mPlanW" min="5" class="inp" onchange="syncMeta()"></div>
+    <div><label class="lbl">بت ريت الكاميرا (Mbps)</label><input type="number" id="mMbps" min="0.5" step="0.5" class="inp" onchange="syncMeta()"></div>
+    <div><label class="lbl">أيام التسجيل</label><input type="number" id="mDays" min="1" class="inp" onchange="syncMeta()"></div>
+    <div class="box" style="border-color:#10b98155"><div class="text-[10px] text-slate-400">التخزين المطلوب</div><b id="rStorage" class="text-emerald-300">—</b></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- مساحة العمل -->
+<main class="flex-1 max-w-[1700px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 no-print">
+ <aside class="lg:col-span-4 space-y-4">
+  <div class="glass p-4 space-y-3">
+   <div class="flex items-center justify-between">
+    <h2 class="text-sm font-extrabold text-cyan-300"><i class="fa-solid fa-map-location-dot"></i> 1. تصميم المبنى</h2>
+    <button id="btnLock" class="btn b-gr" onclick="toggleLock()"></button>
+   </div>
+   <div id="roomTools" class="space-y-3 text-xs">
+    <div class="box space-y-2">
+     <div class="grid grid-cols-3 gap-2">
+      <input id="nrName" placeholder="اسم المساحة..." class="inp col-span-2">
+      <select id="nrType" class="inp"><option value="room">غرفة</option><option value="outdoor">خارجية</option><option value="corridor">ممر</option><option value="gate">بوابة</option></select>
+     </div>
+     <div class="grid grid-cols-2 gap-2">
+      <div><label class="lbl">العرض</label><input type="number" id="nrW" value="160" class="inp"></div>
+      <div><label class="lbl">الارتفاع</label><input type="number" id="nrH" value="110" class="inp"></div>
+     </div>
+     <button class="btn b-cy w-full justify-center" onclick="addRoom()"><i class="fa-solid fa-plus"></i> إضافة للمخطط</button>
+    </div>
+    <div id="roomEditor" class="box space-y-2" style="border-color:#06b6d466">
+     <div class="flex justify-between"><b class="text-cyan-300">تعديل المحددة</b><button class="text-rose-400 font-bold" onclick="deleteRoom(selRoom)"><i class="fa-solid fa-trash-can"></i> حذف</button></div>
+     <input id="erName" class="inp" oninput="editRoom()">
+     <div class="grid grid-cols-2 gap-2">
+      <div><div class="flex justify-between text-[10px] text-slate-400"><span>العرض</span><span id="erWl"></span></div><input type="range" id="erW" min="40" max="600" class="w-full" oninput="editRoom()"></div>
+      <div><div class="flex justify-between text-[10px] text-slate-400"><span>الطول</span><span id="erHl"></span></div><input type="range" id="erH" min="30" max="450" class="w-full" oninput="editRoom()"></div>
+     </div>
+    </div>
+    <div id="roomList" class="space-y-1.5 max-h-[150px] overflow-y-auto"></div>
+   </div>
+   <div id="lockedBanner" class="hid box text-center space-y-2" style="border-color:#f59e0b66">
+    <div class="text-amber-400 font-black text-xs"><i class="fa-solid fa-lock"></i> المبنى مقفول — حرّك الكاميرات بحرية</div>
+    <button class="btn b-am" onclick="toggleLock()"><i class="fa-solid fa-lock-open"></i> فك القفل</button>
+   </div>
+  </div>
+
+  <div class="glass p-4 space-y-3">
+   <h2 class="text-sm font-extrabold text-cyan-300"><i class="fa-solid fa-camera-retro"></i> 2. إضافة كاميرات</h2>
+   <div class="grid grid-cols-2 gap-2 text-xs">
+    <button class="btn b-gr justify-between" onclick="addCamera('dome')">+ Dome داخلية <small class="text-slate-400">105°</small></button>
+    <button class="btn b-gr justify-between" onclick="addCamera('bullet')">+ Bullet خارجية <small class="text-slate-400">82°</small></button>
+    <button class="btn b-gr justify-between" onclick="addCamera('zoom')">+ زووم بوابات <small class="text-slate-400">50°</small></button>
+    <button class="btn b-gr justify-between" onclick="addCamera('ptz')">+ PTZ <small class="text-slate-400">360°</small></button>
+   </div>
+   <div class="pt-2 border-t border-slate-800"><div class="text-[11px] font-bold text-slate-400 mb-2">الكاميرات (اضغط لفتح الإعدادات):</div><div id="camList" class="flex flex-wrap gap-1.5"></div></div>
+  </div>
+ </aside>
+
+ <section class="lg:col-span-8 flex flex-col gap-4">
+  <div class="glass p-3">
+   <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
+    <div class="flex flex-wrap gap-1.5">
+     <button id="btnNight" class="btn b-gr" onclick="toggleNight()"><i class="fa-solid fa-moon text-amber-400"></i> رؤية ليلية IR</button>
+     <label class="btn b-gr"><i class="fa-solid fa-image"></i> رفع صورة مخطط<input type="file" accept="image/*" class="hid" onchange="uploadPlan(event)"></label>
+    </div>
+    <div class="flex items-center gap-1.5 text-xs">
+     <button class="btn b-gr" onclick="zoomBy(1.18)">+</button><b id="zoomLbl" class="font-mono w-10 text-center">100%</b><button class="btn b-gr" onclick="zoomBy(.84)">-</button><button class="btn b-gr" onclick="resetZoom()">ضبط</button>
+    </div>
+   </div>
+   <div class="relative w-full rounded-xl overflow-hidden border border-slate-700 bg-[#070d19]" id="cv-wrap">
+    <canvas id="cv" class="w-full block cursor-grab touch-none"></canvas>
+    <div id="hud" class="hud absolute top-3 left-3 z-30 w-72 rounded-2xl p-3 text-xs space-y-2.5">
+     <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+      <b>إعدادات الكاميرا</b>
+      <div class="flex gap-1"><button class="btn b-ro" style="padding:2px 8px" onclick="deleteCamera()"><i class="fa-solid fa-trash-can"></i></button><button class="btn b-gr" style="padding:2px 8px" onclick="hudOpen=false;syncHud()">✕</button></div>
+     </div>
+     <div class="grid grid-cols-2 gap-2">
+      <div><label class="lbl">الاسم</label><input id="cLabel" class="inp" oninput="editCam()"></div>
+      <div><label class="lbl">النوع</label><select id="cType" class="inp" onchange="changeCamType(this.value)"><option value="dome">Dome 105°</option><option value="bullet">Bullet 82°</option><option value="zoom">Zoom 50°</option><option value="ptz">PTZ 360°</option></select></div>
+     </div>
+     <div>
+      <div class="flex justify-between text-[11px]"><span class="font-bold">الاتجاه</span><b class="text-cyan-400"><span id="cRotL"></span>°</b></div>
+      <input type="range" id="cRot" min="0" max="359" class="w-full" oninput="editCam()">
+      <div class="grid grid-cols-4 gap-1"><button class="btn b-gr" style="padding:2px" onclick="setRot(0)">0°</button><button class="btn b-gr" style="padding:2px" onclick="setRot(90)">90°</button><button class="btn b-gr" style="padding:2px" onclick="setRot(180)">180°</button><button class="btn b-gr" style="padding:2px" onclick="setRot(270)">270°</button></div>
+     </div>
+     <div>
+      <div class="flex justify-between text-[11px]"><span class="font-bold">المدى</span><b class="text-emerald-400"><span id="cRangeL"></span> م</b></div>
+      <input type="range" id="cRange" min="4" max="40" step="0.5" class="w-full" oninput="editCam()">
+     </div>
+     <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800">
+      <div><label class="lbl">زاوية الرؤية °</label><input type="number" id="cFov" min="20" max="360" class="inp text-center" oninput="editCam()"></div>
+      <div><label class="lbl">السلك (م) 0=تلقائي</label><input type="number" id="cCable" min="0" max="300" class="inp text-center" oninput="editCam()"></div>
+     </div>
+    </div>
+    <button id="hudPill" class="hid absolute top-3 left-3 z-20 btn b-gr" onclick="hudOpen=true;syncHud()"><i class="fa-solid fa-sliders"></i> إعدادات الكاميرا</button>
+   </div>
+  </div>
+
+  <div class="glass p-4 border border-emerald-500/30">
+   <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
+    <h2 class="text-sm font-extrabold text-emerald-300"><i class="fa-solid fa-file-invoice-dollar"></i> 3. جدول المقايسة</h2>
+    <button class="btn b-am" onclick="openInv()"><i class="fa-solid fa-plus-circle"></i> إضافة بند</button>
+   </div>
+   <div class="overflow-auto max-h-[300px]">
+    <table class="w-full text-xs text-right">
+     <thead><tr class="text-slate-400 text-[11px] bg-slate-900/60"><th class="p-2">البند</th><th class="p-2">التصنيف</th><th class="p-2 text-center">الحساب</th><th class="p-2 text-center">الكمية</th><th class="p-2 text-center">السعر</th><th class="p-2 text-left">الإجمالي</th><th></th></tr></thead>
+     <tbody id="bomBody" class="divide-y divide-slate-800"></tbody>
+    </table>
+   </div>
+   <div class="mt-3 pt-3 border-t border-slate-700 flex flex-wrap justify-between items-center gap-2">
+    <div class="text-xs text-slate-400">قبل الخصم: <b id="bSub" class="text-white">0</b> | الخصم: <b id="bDisc" class="text-rose-400">0</b></div>
+    <div class="text-lg font-black text-emerald-400">الصافي: <span id="bGrand">0</span> ج.م</div>
+   </div>
+  </div>
+ </section>
+</main>
+
+<!-- نافذة المكونات -->
+<div id="invModal" class="fixed inset-0 z-50 bg-slate-950/85 hid items-center justify-center p-3 no-print">
+ <div class="glass max-w-5xl w-full p-5 border-2 border-amber-500/40 max-h-[92vh] flex flex-col">
+  <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-3"><h3 class="font-extrabold"><i class="fa-solid fa-boxes-stacked text-amber-400"></i> إدارة المكونات</h3><button class="btn b-gr" onclick="closeInv()">✕</button></div>
+  <div class="box mb-3 text-xs grid grid-cols-2 sm:grid-cols-12 gap-2 items-end" style="border-color:#f59e0b55">
+   <div class="sm:col-span-4"><label class="lbl">اسم البند</label><input id="qaName" class="inp" placeholder="هارد WD Purple 4TB..."></div>
+   <div class="sm:col-span-2"><label class="lbl">التصنيف</label><input id="qaCat" class="inp" list="cats"><datalist id="cats"><option value="كاميرات مراقبة"><option value="هاردات تخزين"><option value="أجهزة تسجيل"><option value="أسلاك وكابلات"><option value="مواسير وبواطات"><option value="إكسسوارات وباور"><option value="تركيب ومصنعية"></datalist></div>
+   <div class="sm:col-span-2"><label class="lbl">طريقة الكمية</label><select id="qaMode" class="inp"></select></div>
+   <div class="sm:col-span-1"><label class="lbl">الكمية</label><input type="number" id="qaQty" value="1" min="0" class="inp text-center"></div>
+   <div class="sm:col-span-1"><label class="lbl">السعر</label><input type="number" id="qaPrice" value="1200" min="0" class="inp text-center"></div>
+   <div class="sm:col-span-2"><button class="btn b-em w-full justify-center" onclick="addInvItem()">+ أضف</button></div>
+  </div>
+  <div class="flex-1 overflow-auto box text-xs">
+   <table class="w-full text-right"><thead><tr class="text-slate-400 text-[11px]"><th class="p-1">البند</th><th class="p-1">التصنيف</th><th class="p-1">ربط الكمية</th><th class="p-1">كمية يدوية</th><th class="p-1">السعر</th><th></th></tr></thead><tbody id="invBody"></tbody></table>
+  </div>
+  <div class="flex justify-between items-center pt-3 mt-2 border-t border-slate-800"><span class="text-xs text-slate-400">يُحفظ تلقائياً في متصفحك</span><button class="btn b-am" onclick="saveInv(true)"><i class="fa-solid fa-check"></i> حفظ وإغلاق</button></div>
+ </div>
+</div>
+
+<!-- نافذة التأمين والأرشيف -->
+<div id="secModal" class="fixed inset-0 z-50 bg-slate-950/85 hid items-center justify-center p-4 no-print">
+ <div class="glass max-w-3xl w-full p-5 border-2 border-purple-500/40 space-y-4 max-h-[90vh] overflow-y-auto text-xs">
+  <div class="flex items-center justify-between pb-3 border-b border-slate-700"><h3 class="font-extrabold text-base"><i class="fa-solid fa-shield-halved text-purple-400"></i> التأمين والنسخ الاحتياطي</h3><button class="btn b-gr" onclick="closeSec()">✕</button></div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+   <div class="box space-y-3">
+    <div class="font-black text-emerald-300 text-sm">الرقم السري</div>
+    <div class="flex gap-2"><input type="password" id="cfgPin" class="inp text-center" placeholder="رقم جديد (4 خانات+)"><button class="btn b-em" onclick="savePin()">حفظ</button></div>
+    <label class="flex items-center justify-between cursor-pointer"><span>طلب الرقم عند فتح البرنامج</span><input type="checkbox" id="cfgLock" onchange="savePin()" class="w-4 h-4"></label>
+    <p class="text-[10px] text-slate-500">الرقم الافتراضي 1234 — غيّره. ملحوظة: القفل حماية بسيطة داخل المتصفح وليس ترخيصاً.</p>
+   </div>
+   <div class="box space-y-3">
+    <div class="font-black text-cyan-300 text-sm">نسخة احتياطية JSON</div>
+    <div class="grid grid-cols-2 gap-2">
+     <button class="btn b-cy justify-center" onclick="exportBackup()"><i class="fa-solid fa-download"></i> تصدير</button>
+     <label class="btn b-am justify-center"><i class="fa-solid fa-upload"></i> استيراد<input type="file" accept=".json" class="hid" onchange="importBackup(event)"></label>
+    </div>
+   </div>
+  </div>
+  <div class="box space-y-2">
+   <div class="flex items-center justify-between"><b class="text-amber-300 text-sm">أرشيف المشاريع</b><button class="btn b-em" onclick="saveToArchive()">+ حفظ الحالي</button></div>
+   <div id="archList" class="space-y-2 max-h-[200px] overflow-y-auto"></div>
+  </div>
+ </div>
+</div>
+
+<!-- صفحة الطباعة -->
+<section class="print-only p-8 max-w-4xl mx-auto text-slate-900 bg-white">
+ <div class="border-b-2 border-slate-900 pb-4 mb-5 flex justify-between items-start">
+  <div><h1 id="pCompany" class="text-2xl font-black"></h1><p id="pDetails" class="text-xs mt-1 font-bold"></p><p id="pWarranty" class="text-xs text-emerald-800 font-bold mt-1"></p></div>
+  <div class="text-left text-xs space-y-1"><div id="pDate" class="font-bold"></div><div id="pProject" class="font-black text-sm"></div><div id="pClient" class="font-bold"></div></div>
+ </div>
+ <h3 class="text-sm font-black mb-2">المخطط الهندسي لتوزيع الكاميرات:</h3>
+ <img id="pImg" alt="" class="w-full h-auto rounded-xl border-2 border-slate-300 mb-5">
+ <h3 class="text-sm font-black mb-2">جدول الكميات والأسعار:</h3>
+ <table class="w-full text-xs text-right border-collapse mb-4 border border-slate-400">
+  <thead><tr class="font-black bg-slate-100"><th class="p-2 border border-slate-300">البند</th><th class="p-2 border border-slate-300">التصنيف</th><th class="p-2 border border-slate-300 text-center">الكمية</th><th class="p-2 border border-slate-300 text-center">السعر</th><th class="p-2 border border-slate-300 text-left">الإجمالي</th></tr></thead>
+  <tbody id="pBody"></tbody>
+ </table>
+ <div class="flex justify-between font-black text-base pt-3 border-t-2 border-slate-900"><span>الصافي النهائي:</span><span><span id="pGrand">0</span> ج.م</span></div>
+</section>
+
+<div id="toast" class="fixed bottom-4 left-4 z-[120] px-4 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs shadow-2xl transition-all duration-300 opacity-0 pointer-events-none translate-y-4"></div>
+
+<script>
+/* ===================== أدوات ===================== */
+const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"'`]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c]));
 const num=v=>Number.isFinite(parseFloat(v))?parseFloat(v):0;
-const MODES=['manual','all_cams','cam_dome','cam_bullet','cam_zoom','cam_ptz','cable_m','conduit_pipes'];
-const COLORS={dome:'#00f2fe',bullet:'#10b981',zoom:'#f59e0b',ptz:'#a855f7'};
-const planW=()=>Math.max(5,num(appMetadata.planWidthM)||26);
-const saveInv=()=>localStorage.setItem('cctv_pro_unified_inv_v95',JSON.stringify(customInventory));
-const persistSec=()=>{delete securityConfig.pinCode;localStorage.setItem('cctv_pro_security_v95',JSON.stringify(securityConfig));};
-function persistAll(){saveInv();localStorage.setItem('cctv_pro_archive_v95',JSON.stringify(archivedProjects));localStorage.setItem('cctv_pro_metadata_v95',JSON.stringify(appMetadata));}
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+let toastT;
+function toast(t){const e=$('toast');e.textContent=t;e.classList.remove('opacity-0','translate-y-4');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.add('opacity-0','translate-y-4'),2600)}
+function show(id,on){const e=$(id);e.classList.toggle('hid',!on);e.classList.toggle('flex',on&&/Modal|Overlay/.test(id))}
 
-/* تنضيف أي بيانات داخلة (استيراد/أرشيف) */
-const cleanItem=i=>({id:String(i.id??''),name:String(i.name??''),category:String(i.category??''),qtyMode:MODES.includes(i.qtyMode)?i.qtyMode:'manual',manualQty:num(i.manualQty),price:num(i.price),override:(i.override==null||i.override==='')?null:num(i.override)});
+const MODES={manual:'يدوي ثابت',all_cams:'بعدد كل الكاميرات',cam_dome:'بعدد Dome',cam_bullet:'بعدد Bullet',cam_zoom:'بعدد Zoom',cam_ptz:'بعدد PTZ',cable_m:'بأمتار السلك',conduit_pipes:'بأعواد المواسير'};
+const CAM={dome:{fov:105,range:13,color:'#00f2fe',title:'كاميرا داخلية',watt:5},bullet:{fov:82,range:18,color:'#10b981',title:'كاميرا خارجية',watt:8},zoom:{fov:50,range:26,color:'#f59e0b',title:'كاميرا زووم',watt:10},ptz:{fov:360,range:22,color:'#a855f7',title:'كاميرا PTZ',watt:30}};
+
+/* تنضيف أي بيانات داخلة (استيراد / أرشيف / localStorage) */
+const cleanItem=i=>({id:String(i.id??Date.now()),name:String(i.name??''),category:String(i.category??''),qtyMode:MODES[i.qtyMode]?i.qtyMode:'manual',manualQty:num(i.manualQty),price:num(i.price),override:(i.override==null||i.override==='')?null:num(i.override)});
 const cleanRoom=r=>({id:num(r.id)||Date.now(),type:['room','outdoor','corridor','gate'].includes(r.type)?r.type:'room',name:String(r.name??''),nx:num(r.nx),ny:num(r.ny),w:num(r.w)||100,h:num(r.h)||80});
-const cleanCam=c=>{const t=COLORS[c.type]?c.type:'dome';return{id:num(c.id)||Date.now(),type:t,label:String(c.label??''),nx:num(c.nx),ny:num(c.ny),rotation:num(c.rotation),fov:num(c.fov)||90,rangeMeters:num(c.rangeMeters)||12,customCable:num(c.customCable),color:COLORS[t]};};
+const cleanCam=c=>{const t=CAM[c.type]?c.type:'dome';return{id:num(c.id)||Date.now(),type:t,label:String(c.label??''),nx:num(c.nx),ny:num(c.ny),rotation:num(c.rotation),fov:num(c.fov)||90,rangeMeters:num(c.rangeMeters)||12,customCable:num(c.customCable),color:CAM[t].color}};
 const cleanProj=p=>({id:num(p.id)||Date.now(),date:String(p.date??''),projectTitle:String(p.projectTitle??''),clientName:String(p.clientName??''),grandTotal:num(p.grandTotal),appMetadata:(p.appMetadata&&typeof p.appMetadata==='object')?p.appMetadata:{},buildingElements:(p.buildingElements||[]).map(cleanRoom),cameras:(p.cameras||[]).map(cleanCam),customInventory:(p.customInventory||[]).map(cleanItem)});
 
-/* ===== 1+2: الحماية (PIN متخزن كـ hash، شيلنا الكودات الظاهرة وكود السيريال) ===== */
-async function sha(s){if(!(window.crypto&&crypto.subtle))return 'p:'+s;const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('cctv|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
-async function verifyLicenseOrPin(){
-  const v=document.getElementById('inpLicenseKey').value.trim();
-  const ok=securityConfig.pinHash?(await sha(v))===securityConfig.pinHash:v==='1234';
-  if(ok){const o=document.getElementById('securityLockOverlay');o.classList.add('hidden');o.classList.remove('flex');showToast('🔓 تم فتح المنظومة');}
-  else showToast('❌ الرقم السري غير صحيح');
+/* ===================== البيانات ===================== */
+const DEF_META={companyName:'الشركة الهندسية للأنظمة الأمنية والمراقبة',engineerName:'م. أحمد محمود',companyPhone:'01001234567',companyAddress:'القاهرة - مدينة نصر',warranty:'ضمان شامل لمدة عامين ضد عيوب الصناعة',projectTitle:'تأمين المقر الإداري والمخازن',clientName:'شركة النور للتجارة',clientPhone:'01234567890',projectLocation:'التجمع الخامس',discount:0,planWidthM:26,storage:{mbps:4,days:15}};
+const DEF_INV=[
+ {id:'dome',name:'كاميرا داخلية Hikvision Dome 5MP (2.8mm)',category:'كاميرات مراقبة',qtyMode:'cam_dome',manualQty:1,price:950},
+ {id:'bullet',name:'كاميرا خارجية Hikvision Bullet 5MP',category:'كاميرات مراقبة',qtyMode:'cam_bullet',manualQty:1,price:1150},
+ {id:'zoom',name:'كاميرا بوابات زووم 6mm بعيدة المدى',category:'كاميرات مراقبة',qtyMode:'cam_zoom',manualQty:0,price:1650},
+ {id:'ptz',name:'كاميرا متحركة PTZ 360° زووم بصري',category:'كاميرات مراقبة',qtyMode:'cam_ptz',manualQty:0,price:4800},
+ {id:'dvr',name:'جهاز تسجيل DVR 8 قنوات 5MP',category:'أجهزة تسجيل',qtyMode:'manual',manualQty:1,price:2850},
+ {id:'hdd',name:'هارد مراقبة WD Purple 2TB',category:'هاردات تخزين',qtyMode:'manual',manualQty:1,price:2650},
+ {id:'cable',name:'متر سلك شيلد نحاس RG59 + باور',category:'أسلاك وكابلات',qtyMode:'cable_m',manualQty:50,price:22},
+ {id:'conduit',name:'ماسورة PVC صلبة (عود 3 متر)',category:'مواسير وبواطات',qtyMode:'conduit_pipes',manualQty:10,price:45},
+ {id:'bnc',name:'طقم جاكات BNC + جاك باور + بواط 10×10',category:'إكسسوارات وباور',qtyMode:'all_cams',manualQty:4,price:65},
+ {id:'psu',name:'باور سبلاي مركزي 12V 10A',category:'إكسسوارات وباور',qtyMode:'manual',manualQty:1,price:650},
+ {id:'install',name:'مصنعية تركيب وتمديد وبرمجة',category:'تركيب ومصنعية',qtyMode:'all_cams',manualQty:4,price:250}];
+const DEF_ROOMS=[
+ {id:101,type:'room',name:'صالة الاستقبال والمعرض',nx:.34,ny:.42,w:230,h:150},
+ {id:102,type:'room',name:'مكتب الإدارة والخزينة',nx:.68,ny:.32,w:170,h:110},
+ {id:103,type:'room',name:'المخزن الرئيسي',nx:.68,ny:.66,w:190,h:120},
+ {id:104,type:'gate',name:'البوابة والمدخل',nx:.16,ny:.78,w:140,h:55}];
+const DEF_CAMS=[
+ {id:1,type:'dome',label:'كاميرا الصالة 1',nx:.22,ny:.28,rotation:35,fov:105,rangeMeters:14,customCable:0},
+ {id:2,type:'bullet',label:'كاميرا البوابة 2',nx:.14,ny:.68,rotation:15,fov:82,rangeMeters:18,customCable:0},
+ {id:3,type:'dome',label:'كاميرا المخزن 3',nx:.56,ny:.58,rotation:20,fov:105,rangeMeters:13,customCable:0}];
+
+let appMeta={...DEF_META,...load('cctv_pro_metadata_v95',{})};
+appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})};
+let inventory=load('cctv_pro_unified_inv_v95',DEF_INV).map(cleanItem);
+let archive=load('cctv_pro_archive_v95',[]).map(cleanProj);
+const work=load('cctv_pro_work_v96',null);
+let rooms=(work?.rooms||DEF_ROOMS).map(cleanRoom);
+let cameras=(work?.cameras||DEF_CAMS).map(cleanCam);
+let dvr=work?.dvr||{nx:.72,ny:.25};
+let security=load('cctv_pro_security_v95',{});
+let selRoom=rooms[0]?.id??null, selCam=cameras[0]?.id??null;
+let locked=false,night=false,zoom=1,panX=0,panY=0,bg=null,hudOpen=true,drag=null,lastQuote=null;
+
+/* ===================== القفل (PIN بـ hash) ===================== */
+async function sha(s){if(!(window.crypto&&crypto.subtle))return'p:'+s;const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('cctv|'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function verifyPin(){
+ const v=$('inpPin').value.trim();
+ const ok=security.pinHash?(await sha(v))===security.pinHash:v==='1234';
+ if(ok){show('lockOverlay',false);toast('🔓 تم الفتح')}else toast('❌ الرقم السري غير صحيح');
 }
-async function saveSecurityPinConfig(){
-  const i=document.getElementById('cfgPinCodeInput'),v=i.value.trim();
-  if(v){if(v.length<4){showToast('⚠️ الرقم السري 4 خانات على الأقل');return;}securityConfig.pinHash=await sha(v);i.value='';}
-  securityConfig.requireLockOnStart=document.getElementById('chkRequireLockOnStart').checked;
-  persistSec();showToast('✅ تم حفظ إعدادات الحماية');
+function lockNow(){$('inpPin').value='';show('lockOverlay',true);$('inpPin').focus()}
+async function savePin(){
+ const v=$('cfgPin').value.trim();
+ if(v){if(v.length<4){toast('⚠️ 4 خانات على الأقل');return}security.pinHash=await sha(v);$('cfgPin').value=''}
+ security.requireLockOnStart=$('cfgLock').checked;
+ store('cctv_pro_security_v95',{pinHash:security.pinHash,requireLockOnStart:security.requireLockOnStart});
+ toast('✅ تم حفظ إعدادات الحماية');
 }
-function openBackupSecurityModal(){
-  const i=document.getElementById('cfgPinCodeInput');i.type='password';i.value='';i.placeholder='اكتب رقم جديد لتغييره';
-  document.getElementById('chkRequireLockOnStart').checked=!!securityConfig.requireLockOnStart;
-  renderArchivedProjectsList();
-  const m=document.getElementById('backupSecurityModal');m.classList.remove('hidden');m.classList.add('flex');
+function openSec(){$('cfgPin').value='';$('cfgLock').checked=!!security.requireLockOnStart;renderArchive();show('secModal',true)}
+function closeSec(){show('secModal',false)}
+
+/* ===================== بيانات الشركة والمشروع ===================== */
+function fillMeta(){
+ const m=appMeta,s=(id,v)=>$(id).value=v??'';
+ s('mCompany',m.companyName);s('mEngineer',m.engineerName);s('mPhone',m.companyPhone);s('mAddress',m.companyAddress);s('mWarranty',m.warranty);
+ s('mProject',m.projectTitle);s('mClient',m.clientName);s('mClientPhone',m.clientPhone);s('mLocation',m.projectLocation);s('mDiscount',m.discount||0);
+ s('mPlanW',m.planWidthM);s('mMbps',m.storage.mbps);s('mDays',m.storage.days);
 }
-function exportFullBackupJSON(){
-  const d={appMetadata,customInventory,buildingElements,cameras,archivedProjects};
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:'application/json'}));
-  a.download=`نسخة-احتياطية-كاميرات-${Date.now()}.json`;a.click();showToast('✅ تم تحميل النسخة الاحتياطية');
+function syncMeta(){
+ const g=id=>$(id).value;
+ Object.assign(appMeta,{companyName:g('mCompany')||'الشركة',engineerName:g('mEngineer'),companyPhone:g('mPhone'),companyAddress:g('mAddress'),warranty:g('mWarranty'),projectTitle:g('mProject')||'مشروع مراقبة',clientName:g('mClient')||'عميل',clientPhone:g('mClientPhone'),projectLocation:g('mLocation'),discount:num(g('mDiscount')),planWidthM:Math.max(5,num(g('mPlanW'))||26),storage:{mbps:num(g('mMbps'))||4,days:num(g('mDays'))||15}});
+ $('hdrCompany').textContent=appMeta.companyName;
+ $('hdrProject').textContent=`المشروع: ${appMeta.projectTitle} • العميل: ${appMeta.clientName}`;
+ store('cctv_pro_metadata_v95',appMeta);
+ draw();calc();
+}
+function toggleDash(){$('dash').classList.toggle('hid')}
+
+/* ===================== المبنى والغرف ===================== */
+function toggleLock(){
+ locked=!locked;
+ $('roomTools').classList.toggle('hid',locked);$('lockedBanner').classList.toggle('hid',!locked);
+ $('btnLock').innerHTML=locked?'<i class="fa-solid fa-lock"></i> مقفول':'<i class="fa-solid fa-lock-open"></i> قفل المبنى';
+ toast(locked?'🔒 تم تثبيت المبنى':'🔓 تم فك القفل');draw();
+}
+function addRoom(){
+ if(locked)return;
+ const name=$('nrName').value.trim()||('مساحة '+(rooms.length+1));
+ const id=Date.now();
+ rooms.push({id,type:$('nrType').value,name,nx:.5,ny:.5,w:Math.max(40,num($('nrW').value)||160),h:Math.max(30,num($('nrH').value)||110)});
+ selRoom=id;$('nrName').value='';renderRooms();draw();toast('✅ تمت إضافة "'+name+'"');
+}
+function selectRoom(id){selRoom=id;renderRooms();draw()}
+function deleteRoom(id){rooms=rooms.filter(r=>r.id!==id);if(selRoom===id)selRoom=rooms[0]?.id??null;renderRooms();draw()}
+function editRoom(){
+ const r=rooms.find(x=>x.id===selRoom);if(!r)return;
+ r.name=$('erName').value||'مساحة';r.w=num($('erW').value)||120;r.h=num($('erH').value)||90;
+ $('erWl').textContent=r.w;$('erHl').textContent=r.h;renderRoomList();draw();
+}
+function renderRooms(){
+ const r=rooms.find(x=>x.id===selRoom);
+ $('roomEditor').classList.toggle('hid',!r);
+ if(r){$('erName').value=r.name;$('erW').value=r.w;$('erH').value=r.h;$('erWl').textContent=r.w;$('erHl').textContent=r.h}
+ renderRoomList();
+}
+function renderRoomList(){
+ $('roomList').innerHTML=rooms.map(el=>`<div onclick="selectRoom(${el.id})" class="cursor-pointer p-2 rounded-xl border flex items-center justify-between ${el.id===selRoom?'bg-cyan-950/50 border-cyan-400':'bg-slate-950 border-slate-800'}"><span><i class="fa-solid fa-vector-square text-cyan-400"></i> <b>${esc(el.name)}</b> <small class="text-slate-400 font-mono">(${el.w}×${el.h})</small></span><button onclick="event.stopPropagation();deleteRoom(${el.id})" class="text-rose-400"><i class="fa-solid fa-trash"></i></button></div>`).join('');
 }
 
-/* ===== 4: تعديل الكمية بدون ما يفقد الربط التلقائي ===== */
-function resolveItemQuantity(item,c){
-  if(item.override!=null&&item.override!=='')return num(item.override);
-  switch(item.qtyMode){case 'all_cams':return c.totalCams;case 'cam_dome':return c.dome;case 'cam_bullet':return c.bullet;case 'cam_zoom':return c.zoom;case 'cam_ptz':return c.ptz;case 'cable_m':return c.totalCableMeters;case 'conduit_pipes':return c.conduitPipes;default:return num(item.manualQty);}
-}
-function inlineUpdateItemQty(idx,val){if(!customInventory[idx])return;customInventory[idx].override=num(val);saveInv();updateAllCalculations();}
-function resetItemQty(idx){if(!customInventory[idx])return;customInventory[idx].override=null;saveInv();updateAllCalculations();}
-function inlineUpdateItemPrice(idx,val){if(!customInventory[idx])return;customInventory[idx].price=num(val);saveInv();updateAllCalculations();}
+/* ===================== الرسم ===================== */
+const cv=$('cv'),ctx=cv.getContext('2d');
+function resize(){const w=$('cv-wrap').clientWidth||900;cv.width=w;cv.height=Math.max(460,Math.min(620,Math.round(w*.56)));draw()}
+window.addEventListener('resize',resize);
+function zoomBy(f){zoom=Math.max(.5,Math.min(2.6,zoom*f));$('zoomLbl').textContent=Math.round(zoom*100)+'%';draw()}
+function resetZoom(){zoom=1;panX=panY=0;$('zoomLbl').textContent='100%';draw()}
+function toggleNight(){night=!night;$('btnNight').className='btn '+(night?'b-em':'b-gr');draw()}
+function uploadPlan(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const i=new Image();i.onload=()=>{bg=i;draw();toast('✅ تم رفع المخطط')};i.src=ev.target.result};r.readAsDataURL(f)}
+const planW=()=>Math.max(5,num(appMeta.planWidthM)||26);
+let saveT;
+function saveWork(){clearTimeout(saveT);saveT=setTimeout(()=>store('cctv_pro_work_v96',{rooms,cameras,dvr}),400)}
 
-/* ===== 8: مقياس حقيقي للمخطط ===== */
-function calculateCableMeters(cam){
-  if(cam.customCable>0)return Math.round(cam.customCable);
-  const dx=Math.abs(cam.nx-dvrUnit.nx)*planW(),dy=Math.abs(cam.ny-dvrUnit.ny)*planW()*(canvas.height/canvas.width);
-  return Math.max(8,Math.round((dx+dy)*1.25+5));
-}
-const _origDraw=drawScene;
-drawScene=function(){const k=26/planW(),s=cameras.map(c=>c.rangeMeters);cameras.forEach(c=>c.rangeMeters*=k);try{_origDraw();}finally{cameras.forEach((c,i)=>c.rangeMeters=s[i]);}};
-
-/* ===== 7: أمبير حسب النوع + حاسبة التخزين + الحسابات والجدول ===== */
-function updateAllCalculations(){
-  const totalCams=cameras.length;let cable=0;cameras.forEach(c=>cable+=calculateCableMeters(c));
-  const cnt=t=>cameras.filter(c=>c.type===t).length;
-  const counts={totalCams,totalCableMeters:cable,conduitPipes:Math.ceil(cable/3),dome:cnt('dome'),bullet:cnt('bullet'),zoom:cnt('zoom'),ptz:cnt('ptz')};
-  let subtotal=0;const bom=[];
-  customInventory.forEach((it,idx)=>{const qty=resolveItemQuantity(it,counts),price=num(it.price),total=Math.round(qty*price);subtotal+=total;bom.push({...it,idx,qty,price,total});});
-  const discount=num(appMetadata.discount),grand=Math.max(0,subtotal-discount);
-  const modeLbl={manual:'يدوي حر',all_cams:'بعدد كل الكاميرات',cam_dome:'بعدد Dome',cam_bullet:'بعدد Bullet',cam_zoom:'بعدد Zoom',cam_ptz:'بعدد PTZ',cable_m:'بأمتار السلك',conduit_pipes:'بأعواد المواسير'};
-  document.getElementById('bomTableBody').innerHTML=bom.map(i=>`<tr class="hover:bg-slate-900/60 transition">
-    <td class="py-2 px-2 font-bold text-white">${esc(i.name)}</td>
-    <td class="py-2 px-2"><span class="px-2 py-0.5 rounded-md bg-slate-800 text-cyan-300 text-[10px] font-bold">${esc(i.category)}</span></td>
-    <td class="py-2 px-2 text-center text-[10px] text-slate-400">${i.override!=null?'<span class="text-amber-300">معدّل يدوياً</span>':esc(modeLbl[i.qtyMode]||'يدوي')}</td>
-    <td class="py-2 px-2 text-center"><input type="number" value="${i.qty}" min="0" onchange="inlineUpdateItemQty(${i.idx},this.value)" class="w-16 bg-slate-950 border border-slate-700 rounded px-1.5 py-0.5 text-center font-mono font-bold text-cyan-300">${i.override!=null?`<button type="button" onclick="resetItemQty(${i.idx})" title="رجوع للحساب التلقائي" class="text-amber-300 mr-1">↺</button>`:''}</td>
-    <td class="py-2 px-2 text-center"><input type="number" value="${i.price}" min="0" onchange="inlineUpdateItemPrice(${i.idx},this.value)" class="w-20 bg-slate-950 border border-slate-700 rounded px-1.5 py-0.5 text-center font-mono font-bold text-emerald-400"></td>
-    <td class="py-2 px-2 text-left font-black text-white font-mono">${i.total.toLocaleString()} ج.م</td>
-    <td class="py-2 px-2 text-center"><button type="button" onclick="deleteInventoryItem(${i.idx})" class="text-rose-400"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('');
-  const W={dome:5,bullet:8,zoom:10,ptz:30};
-  const watts=cameras.reduce((s,c)=>s+(W[c.type]||6),0),amps=watts/12*1.25;
-  const psu=[5,10,15,20,30,40,60].find(a=>a>=amps)||Math.ceil(amps);
-  const T=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  T('statCamCount',totalCams);T('statCableMeters',cable);T('statPowerAmps',amps.toFixed(1));T('statTotalCost',grand.toLocaleString());
-  T('bomSubtotal',subtotal.toLocaleString());T('bomDiscountVal',discount.toLocaleString());T('bomGrandTotal',grand.toLocaleString());
-  T('recDvrChannels',totalCams<=4?'4 قنوات':totalCams<=8?'8 قنوات':totalCams<=16?'16 قناة':'32 قناة');
-  T('recPowerSupply','12V '+psu+'A');T('recConduitPipes',counts.conduitPipes+' عود (3م)');T('recJunctionBoxes',totalCams+' بواط');
-  const st=appMetadata.storage||{mbps:4,days:15};
-  const tb=totalCams*num(st.mbps)*10.8*num(st.days)/1000*1.1;
-  const disk=[2,4,6,8,10,12].find(d=>d>=tb);
-  T('recStorage',totalCams?`${tb.toFixed(1)} TB ← ${disk?('1 × '+disk+'TB'):(Math.ceil(tb/8)+' × 8TB')}`:'—');
-  window.__latestQuoteData={totalCams,totalCableMeters:cable,subtotal,discount,grandTotal:grand,bomItems:bom};
-}
-function applyExtras(){
-  appMetadata.planWidthM=Math.max(5,num(document.getElementById('planWidthInput').value)||26);
-  appMetadata.storage={mbps:num(document.getElementById('stMbps').value)||4,days:num(document.getElementById('stDays').value)||15};
-  persistAll();drawScene();updateAllCalculations();
-}
-function injectExtras(){
-  const g=document.querySelector('#executiveDashboardSection .grid');if(!g||document.getElementById('planWidthInput'))return;
-  const d=document.createElement('div');
-  d.className='lg:col-span-12 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2.5 items-end text-xs';
-  const f=(l,id,v)=>`<div><label class="block text-slate-400 text-[10px] mb-0.5">${l}</label><input type="number" id="${id}" value="${v}" min="1" onchange="applyExtras()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono"></div>`;
-  d.innerHTML=f('عرض المخطط الحقيقي (متر)','planWidthInput',26)+f('بت ريت الكاميرا (Mbps)','stMbps',4)+f('أيام التسجيل','stDays',15)+
-   '<div class="bg-slate-950 border border-emerald-500/30 rounded-lg px-2.5 py-1.5"><div class="text-[10px] text-slate-400">التخزين المطلوب</div><strong id="recStorage" class="text-emerald-300">—</strong></div>';
-  g.appendChild(d);
+function draw(){
+ const w=cv.width,h=cv.height;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle=night?'#020806':'#070e1b';ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.translate(w/2+panX,h/2+panY);ctx.scale(zoom,zoom);ctx.translate(-w/2,-h/2);
+ ctx.strokeStyle=night?'rgba(16,185,129,.08)':'rgba(56,189,248,.07)';ctx.lineWidth=1;
+ for(let x=0;x<w;x+=35){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+ for(let y=0;y<h;y+=35){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+ if(bg){ctx.globalAlpha=.45;ctx.drawImage(bg,20,20,w-40,h-40);ctx.globalAlpha=1}
+ const rc={room:['#38bdf8','rgba(15,32,58,.72)'],outdoor:['#10b981','rgba(6,45,36,.5)'],gate:['#f59e0b','rgba(69,39,10,.65)'],corridor:['#a855f7','rgba(46,16,78,.5)']};
+ rooms.forEach(el=>{
+  const ex=el.nx*w,ey=el.ny*h,sel=!locked&&el.id===selRoom,c=rc[el.type]||rc.room;
+  ctx.fillStyle=c[1];ctx.strokeStyle=sel?'#00f2fe':c[0];ctx.lineWidth=sel?2.8:1.8;
+  ctx.beginPath();ctx.roundRect(ex-el.w/2,ey-el.h/2,el.w,el.h,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#f8fafc';ctx.font='bold 12px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(el.name,ex,ey);
+ });
+ const dx=dvr.nx*w,dy=dvr.ny*h;
+ cameras.forEach(c=>{ctx.save();ctx.strokeStyle='rgba(251,191,36,.55)';ctx.lineWidth=1.8;ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(dx,dy);ctx.lineTo(c.nx*w,dy);ctx.lineTo(c.nx*w,c.ny*h);ctx.stroke();ctx.restore()});
+ const ppm=w/planW();
+ cameras.forEach(c=>{
+  const cx=c.nx*w,cy=c.ny*h,rad=c.rangeMeters*ppm,fov=c.type==='ptz'?360:c.fov;
+  const a0=(c.rotation-fov/2)*Math.PI/180,a1=(c.rotation+fov/2)*Math.PI/180;
+  ctx.save();const g=ctx.createRadialGradient(cx,cy,5,cx,cy,rad);
+  if(night){g.addColorStop(0,'rgba(239,68,68,.48)');g.addColorStop(.7,'rgba(16,185,129,.22)');g.addColorStop(1,'rgba(16,185,129,.02)')}
+  else{g.addColorStop(0,c.color+'66');g.addColorStop(.75,c.color+'24');g.addColorStop(1,c.color+'05')}
+  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,rad,a0,a1);ctx.closePath();ctx.fill();
+  ctx.strokeStyle=night?'#ef4444':c.color;ctx.lineWidth=c.id===selCam?2.2:1.2;ctx.stroke();ctx.restore();
+ });
+ ctx.fillStyle='#0f172a';ctx.strokeStyle='#fbbf24';ctx.lineWidth=2.2;ctx.beginPath();ctx.roundRect(dx-42,dy-16,84,32,8);ctx.fill();ctx.stroke();
+ ctx.fillStyle='#fbbf24';ctx.font='bold 11px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('جهاز DVR',dx,dy);
+ cameras.forEach((c,i)=>{
+  const cx=c.nx*w,cy=c.ny*h,s=c.id===selCam;
+  if(s){ctx.beginPath();ctx.arc(cx,cy,20,0,7);ctx.fillStyle='rgba(0,242,254,.25)';ctx.fill()}
+  ctx.beginPath();ctx.arc(cx,cy,13,0,7);ctx.fillStyle=s?'#fff':c.color;ctx.strokeStyle='#020617';ctx.lineWidth=2.5;ctx.fill();ctx.stroke();
+  ctx.fillStyle='#020617';ctx.font='bold 11px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(i+1,cx,cy);
+  ctx.fillStyle='#e2e8f0';ctx.font='bold 10px Cairo,sans-serif';ctx.fillText(`${c.label} (${cableOf(c)}م)`,cx,cy+24);
+ });
+ ctx.restore();saveWork();
 }
 
-/* ===== 3: كل الـ render بـ esc ===== */
-function renderBuildingElementsList(){
-  const c=document.getElementById('buildingElementsList');if(!c)return;
-  c.innerHTML=buildingElements.map(el=>`<div onclick="selectRoom(${num(el.id)})" class="cursor-pointer p-2 rounded-xl border transition flex items-center justify-between text-xs ${el.id===selectedRoomId?'bg-cyan-950/50 border-cyan-400 text-white':'bg-slate-950 border-slate-800 text-slate-300'}"><div class="flex items-center gap-2"><i class="fa-solid fa-vector-square text-cyan-400"></i><span class="font-bold">${esc(el.name)}</span><span class="text-[10px] text-slate-400 font-mono">(${num(el.w)}×${num(el.h)})</span></div><button type="button" onclick="event.stopPropagation();selectedRoomId=${num(el.id)};deleteSelectedRoom();" class="text-rose-400 px-1"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+/* ===================== السحب والتفاعل ===================== */
+function pos(cx,cy){
+ const r=cv.getBoundingClientRect(),rx=(cx-r.left)*(cv.width/r.width),ry=(cy-r.top)*(cv.height/r.height),w=cv.width,h=cv.height;
+ return{x:(rx-w/2-panX)/zoom+w/2,y:(ry-h/2-panY)/zoom+h/2,rx,ry};
 }
-function renderQuickCamerasList(){
-  const c=document.getElementById('quickCamerasList');if(!c)return;
-  c.innerHTML=cameras.map((cam,i)=>`<button type="button" onclick="selectedCameraId=${num(cam.id)};isInspectorOpen=true;syncInspectorUI();renderQuickCamerasList();drawScene();" class="px-2.5 py-1.5 rounded-xl text-xs font-bold border transition ${cam.id===selectedCameraId?'bg-cyan-500 text-slate-950 border-cyan-300':'bg-slate-900 border-slate-700 text-slate-300'}">#${i+1} ${esc(cam.label)}</button>`).join('');
+function down(cx,cy){
+ const p=pos(cx,cy),w=cv.width,h=cv.height;
+ for(let i=cameras.length-1;i>=0;i--){const c=cameras[i];
+  if(Math.hypot(p.x-c.nx*w,p.y-c.ny*h)<=22){selCam=c.id;hudOpen=true;drag={t:'cam',id:c.id};syncHud();renderCams();draw();return}}
+ if(Math.abs(p.x-dvr.nx*w)<=44&&Math.abs(p.y-dvr.ny*h)<=18){drag={t:'dvr'};return}
+ if(!locked)for(let i=rooms.length-1;i>=0;i--){const el=rooms[i],ex=el.nx*w,ey=el.ny*h;
+  if(Math.abs(p.x-ex)<=el.w/2&&Math.abs(p.y-ey)<=el.h/2){selRoom=el.id;drag={t:'room',id:el.id,ox:p.x-ex,oy:p.y-ey};renderRooms();draw();return}}
+ drag={t:'pan',sx:p.rx-panX,sy:p.ry-panY};
 }
-function renderArchivedProjectsList(){
-  const b=document.getElementById('savedProjectsCountBadge');if(b)b.textContent=archivedProjects.length;
-  const c=document.getElementById('archivedProjectsList');if(!c)return;
-  c.innerHTML=archivedProjects.length?archivedProjects.map(p=>`<div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2"><div><div class="font-bold text-white">${esc(p.projectTitle)} — <span class="text-cyan-300">${esc(p.clientName)}</span></div><div class="text-[11px] text-slate-400">${esc(p.date)} • <strong class="text-emerald-400">${num(p.grandTotal).toLocaleString()} ج.م</strong></div></div><div class="flex gap-1.5"><button type="button" onclick="loadArchivedProject(${num(p.id)})" class="px-3 py-1 rounded-lg bg-cyan-500 text-slate-950 font-black">فتح</button><button type="button" onclick="deleteArchivedProject(${num(p.id)})" class="px-2 py-1 rounded-lg bg-rose-500/20 text-rose-400 font-bold">حذف</button></div></div>`).join(''):'<div class="text-center py-4 text-slate-500">لا توجد مشاريع محفوظة</div>';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function move(cx,cy){
+ if(!drag)return;const p=pos(cx,cy),w=cv.width,h=cv.height;
+ if(drag.t==='cam'){const c=cameras.find(x=>x.id===drag.id);if(c){c.nx=clamp(p.x/w,.04,.96);c.ny=clamp(p.y/h,.04,.96);draw();calc()}}
+ else if(drag.t==='dvr'){dvr.nx=clamp(p.x/w,.05,.95);dvr.ny=clamp(p.y/h,.05,.95);draw();calc()}
+ else if(drag.t==='room'&&!locked){const r=rooms.find(x=>x.id===drag.id);if(r){r.nx=clamp((p.x-drag.ox)/w,.05,.95);r.ny=clamp((p.y-drag.oy)/h,.05,.95);draw()}}
+ else if(drag.t==='pan'){panX=p.rx-drag.sx;panY=p.ry-drag.sy;draw()}
 }
-function openInventoryModal(){
-  document.getElementById('inventoryTbody').innerHTML=customInventory.map((it,i)=>`<tr>
-   <td class="py-1.5 px-1.5"><input type="text" id="inv_name_${i}" value="${esc(it.name)}" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-bold text-xs"></td>
-   <td class="py-1.5 px-1.5"><input type="text" id="inv_cat_${i}" value="${esc(it.category)}" class="w-36 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-300 font-bold text-xs"></td>
-   <td class="py-1.5 px-1.5"><select id="inv_mode_${i}" class="bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-xs">${MODES.map(m=>`<option value="${m}" ${it.qtyMode===m?'selected':''}>${m}</option>`).join('')}</select></td>
-   <td class="py-1.5 px-1.5 text-center"><input type="number" id="inv_qty_${i}" value="${num(it.manualQty)}" class="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-center text-amber-300 font-bold text-xs"></td>
-   <td class="py-1.5 px-1.5 text-center"><input type="number" id="inv_price_${i}" value="${num(it.price)}" class="w-24 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-center text-emerald-400 font-bold text-xs"></td>
-   <td class="py-1.5 px-1.5 text-center"><button type="button" onclick="deleteInventoryItem(${i})" class="text-rose-400 p-1"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('');
-  const m=document.getElementById('inventoryModal');m.classList.remove('hidden');m.classList.add('flex');
+cv.addEventListener('mousedown',e=>down(e.clientX,e.clientY));
+window.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
+window.addEventListener('mouseup',()=>drag=null);
+cv.addEventListener('touchstart',e=>{if(e.touches.length===1)down(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+window.addEventListener('touchmove',e=>{if(drag&&e.touches.length===1)move(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+window.addEventListener('touchend',()=>drag=null);
+
+/* ===================== الكاميرات ===================== */
+function addCamera(type){
+ const p=CAM[type],id=Date.now();
+ cameras.push({id,type,label:`${p.title} ${cameras.length+1}`,nx:.45+(Math.random()-.5)*.15,ny:.45+(Math.random()-.5)*.15,rotation:45,fov:p.fov,rangeMeters:p.range,customCable:0,color:p.color});
+ selCam=id;hudOpen=true;syncHud();renderCams();draw();calc();toast('✅ تمت إضافة '+p.title);
 }
-function exportReportPrint(){
-  const q=window.__latestQuoteData;if(!q)return;
-  const T=(id,v)=>document.getElementById(id).textContent=v;
-  T('printCompanyName',appMetadata.companyName);
-  T('printCompanyDetails',`${appMetadata.engineerName} | تليفون: ${appMetadata.companyPhone} | ${appMetadata.companyAddress}`);
-  T('printWarranty',appMetadata.warranty);T('printDate','التاريخ: '+new Date().toLocaleDateString('ar-EG'));
-  T('printProjectTitle','المشروع: '+appMetadata.projectTitle);T('printClientName',`السادة / ${appMetadata.clientName} (${appMetadata.projectLocation})`);
-  document.getElementById('printCanvasImg').src=canvas.toDataURL('image/png');
-  document.getElementById('printBomBody').innerHTML=q.bomItems.filter(i=>i.qty>0).map(i=>`<tr><td class="py-2 px-2 border border-slate-300 font-bold">${esc(i.name)}</td><td class="py-2 px-2 border border-slate-300">${esc(i.category)}</td><td class="py-2 px-2 border border-slate-300 text-center font-bold">${i.qty}</td><td class="py-2 px-2 border border-slate-300 text-center">${i.price.toLocaleString()} ج.م</td><td class="py-2 px-2 border border-slate-300 text-left font-black">${i.total.toLocaleString()} ج.م</td></tr>`).join('');
-  T('printGrandTotal',q.grandTotal.toLocaleString());window.print();
+function renderCams(){
+ $('camList').innerHTML=cameras.map((c,i)=>`<button onclick="selCam=${c.id};hudOpen=true;syncHud();renderCams();draw()" class="btn ${c.id===selCam?'b-cy':'b-gr'}">#${i+1} ${esc(c.label)}</button>`).join('');
+}
+function syncHud(){
+ const c=cameras.find(x=>x.id===selCam);
+ $('hud').classList.toggle('hid',!(c&&hudOpen));$('hudPill').classList.toggle('hid',!(c&&!hudOpen));
+ if(!c||!hudOpen)return;
+ $('cLabel').value=c.label;$('cType').value=c.type;$('cRot').value=c.rotation;$('cRotL').textContent=c.rotation;
+ $('cRange').value=c.rangeMeters;$('cRangeL').textContent=c.rangeMeters;$('cFov').value=c.fov;$('cCable').value=c.customCable||0;
+}
+function editCam(){
+ const c=cameras.find(x=>x.id===selCam);if(!c)return;
+ c.label=$('cLabel').value||'كاميرا';c.rotation=num($('cRot').value);c.rangeMeters=num($('cRange').value)||12;c.fov=num($('cFov').value)||90;c.customCable=num($('cCable').value);
+ $('cRotL').textContent=c.rotation;$('cRangeL').textContent=c.rangeMeters;renderCams();draw();calc();
+}
+function changeCamType(t){const c=cameras.find(x=>x.id===selCam);if(!c)return;c.type=t;c.fov=CAM[t].fov;c.color=CAM[t].color;syncHud();draw();calc()}
+function setRot(d){const c=cameras.find(x=>x.id===selCam);if(!c)return;c.rotation=d;syncHud();draw()}
+function deleteCamera(){cameras=cameras.filter(c=>c.id!==selCam);selCam=cameras[0]?.id??null;syncHud();renderCams();draw();calc();toast('تم حذف الكاميرا')}
+
+/* ===================== الحسابات والمقايسة ===================== */
+function cableOf(c){
+ if(c.customCable>0)return Math.round(c.customCable);
+ const dx=Math.abs(c.nx-dvr.nx)*planW(),dy=Math.abs(c.ny-dvr.ny)*planW()*(cv.height/cv.width);
+ return Math.max(8,Math.round((dx+dy)*1.25+5));
+}
+function qtyOf(it,k){
+ if(it.override!=null)return num(it.override);
+ return({all_cams:k.total,cam_dome:k.dome,cam_bullet:k.bullet,cam_zoom:k.zoom,cam_ptz:k.ptz,cable_m:k.cable,conduit_pipes:k.pipes})[it.qtyMode]??num(it.manualQty);
+}
+function calc(){
+ const cnt=t=>cameras.filter(c=>c.type===t).length;
+ const cable=cameras.reduce((s,c)=>s+cableOf(c),0),total=cameras.length;
+ const k={total,cable,pipes:Math.ceil(cable/3),dome:cnt('dome'),bullet:cnt('bullet'),zoom:cnt('zoom'),ptz:cnt('ptz')};
+ let sub=0;const bom=inventory.map((it,idx)=>{const qty=qtyOf(it,k),price=num(it.price),t=Math.round(qty*price);sub+=t;return{...it,idx,qty,price,total:t}});
+ const disc=num(appMeta.discount),grand=Math.max(0,sub-disc);
+ $('bomBody').innerHTML=bom.map(i=>`<tr class="hover:bg-slate-900/60">
+  <td class="p-2 font-bold">${esc(i.name)}</td>
+  <td class="p-2"><span class="px-2 py-0.5 rounded-md bg-slate-800 text-cyan-300 text-[10px] font-bold">${esc(i.category)}</span></td>
+  <td class="p-2 text-center text-[10px] text-slate-400">${i.override!=null?'<span class="text-amber-300">معدّل يدوياً</span>':MODES[i.qtyMode]}</td>
+  <td class="p-2 text-center"><input type="number" value="${i.qty}" min="0" onchange="setQty(${i.idx},this.value)" class="inp text-center font-mono" style="width:64px">${i.override!=null?`<button onclick="resetQty(${i.idx})" title="رجوع للتلقائي" class="text-amber-300 mr-1">↺</button>`:''}</td>
+  <td class="p-2 text-center"><input type="number" value="${i.price}" min="0" onchange="setPrice(${i.idx},this.value)" class="inp text-center font-mono text-emerald-400" style="width:80px"></td>
+  <td class="p-2 text-left font-black font-mono">${i.total.toLocaleString()} ج.م</td>
+  <td class="p-2"><button onclick="delInv(${i.idx})" class="text-rose-400"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('');
+ const watts=cameras.reduce((s,c)=>s+(CAM[c.type]?.watt||6),0),amps=watts/12*1.25;
+ const psu=[5,10,15,20,30,40,60].find(a=>a>=amps)||Math.ceil(amps);
+ const T=(id,v)=>$(id).textContent=v;
+ T('kCams',total);T('kCable',cable);T('kAmps',amps.toFixed(1));T('kTotal',grand.toLocaleString());
+ T('bSub',sub.toLocaleString());T('bDisc',disc.toLocaleString());T('bGrand',grand.toLocaleString());
+ T('rDvr',total<=4?'4 قنوات':total<=8?'8 قنوات':total<=16?'16 قناة':'32 قناة');T('rPsu','12V '+psu+'A');
+ T('rPipes',k.pipes+' عود');T('rBoxes',total+' بواط');
+ const tb=total*appMeta.storage.mbps*10.8*appMeta.storage.days/1000*1.1,disk=[2,4,6,8,10,12].find(d=>d>=tb);
+ T('rStorage',total?`${tb.toFixed(1)} TB ← ${disk?'1×'+disk+'TB':Math.ceil(tb/8)+'×8TB'}`:'—');
+ lastQuote={total,cable,sub,discount:disc,grand,bom};
+}
+function setQty(i,v){inventory[i].override=num(v);store('cctv_pro_unified_inv_v95',inventory);calc()}
+function resetQty(i){inventory[i].override=null;store('cctv_pro_unified_inv_v95',inventory);calc()}
+function setPrice(i,v){inventory[i].price=num(v);store('cctv_pro_unified_inv_v95',inventory);calc()}
+
+/* ===================== المكونات ===================== */
+function renderInv(){
+ $('invBody').innerHTML=inventory.map((it,i)=>`<tr>
+  <td class="p-1"><input id="in_${i}" value="${esc(it.name)}" class="inp"></td>
+  <td class="p-1"><input id="ic_${i}" value="${esc(it.category)}" class="inp" style="width:140px"></td>
+  <td class="p-1"><select id="im_${i}" class="inp">${Object.entries(MODES).map(([m,l])=>`<option value="${m}" ${it.qtyMode===m?'selected':''}>${l}</option>`).join('')}</select></td>
+  <td class="p-1"><input type="number" id="iq_${i}" value="${it.manualQty}" class="inp text-center" style="width:80px"></td>
+  <td class="p-1"><input type="number" id="ip_${i}" value="${it.price}" class="inp text-center" style="width:96px"></td>
+  <td class="p-1"><button onclick="delInv(${i})" class="text-rose-400"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('');
+}
+function collectInv(){
+ if($('invModal').classList.contains('hid'))return;
+ inventory.forEach((it,i)=>{const n=$('in_'+i);if(!n)return;
+  it.name=n.value;it.category=$('ic_'+i).value;it.qtyMode=$('im_'+i).value;it.manualQty=num($('iq_'+i).value);it.price=num($('ip_'+i).value)});
+}
+function openInv(){$('qaMode').innerHTML=Object.entries(MODES).map(([m,l])=>`<option value="${m}">${l}</option>`).join('');renderInv();show('invModal',true)}
+function closeInv(){show('invModal',false)}
+function saveInv(close){collectInv();store('cctv_pro_unified_inv_v95',inventory);if(close){closeInv();toast('✅ تم حفظ المكونات')}calc()}
+function addInvItem(){
+ const name=$('qaName').value.trim();if(!name){toast('⚠️ اكتب اسم البند');return}
+ collectInv();
+ inventory.unshift(cleanItem({id:'item_'+Date.now(),name,category:$('qaCat').value.trim()||'مكونات عامة',qtyMode:$('qaMode').value,manualQty:num($('qaQty').value)||1,price:num($('qaPrice').value)}));
+ store('cctv_pro_unified_inv_v95',inventory);$('qaName').value='';renderInv();calc();toast('✅ تمت إضافة "'+name+'"');
+}
+function delInv(i){collectInv();inventory.splice(i,1);store('cctv_pro_unified_inv_v95',inventory);renderInv();calc();toast('تم حذف البند')}
+
+/* ===================== الأرشيف والنسخ الاحتياطي ===================== */
+function persistAll(){store('cctv_pro_unified_inv_v95',inventory);store('cctv_pro_archive_v95',archive);store('cctv_pro_metadata_v95',appMeta);store('cctv_pro_work_v96',{rooms,cameras,dvr})}
+function refreshAll(){fillMeta();syncMeta();renderRooms();renderCams();syncHud();renderArchive();draw();calc()}
+function saveToArchive(){
+ archive.unshift(cleanProj({id:Date.now(),date:new Date().toLocaleDateString('ar-EG'),projectTitle:appMeta.projectTitle,clientName:appMeta.clientName,grandTotal:lastQuote?.grand||0,appMetadata:JSON.parse(JSON.stringify(appMeta)),buildingElements:rooms,cameras,customInventory:inventory}));
+ store('cctv_pro_archive_v95',archive);renderArchive();toast('💾 تم الحفظ في الأرشيف');
+}
+function renderArchive(){
+ $('archCount').textContent=archive.length;
+ $('archList').innerHTML=archive.length?archive.map(p=>`<div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2"><div><div class="font-bold">${esc(p.projectTitle)} — <span class="text-cyan-300">${esc(p.clientName)}</span></div><div class="text-[11px] text-slate-400">${esc(p.date)} • <b class="text-emerald-400">${p.grandTotal.toLocaleString()} ج.م</b></div></div><div class="flex gap-1.5"><button class="btn b-cy" onclick="openProject(${p.id})">فتح</button><button class="btn b-ro" onclick="delProject(${p.id})">حذف</button></div></div>`).join(''):'<div class="text-center py-4 text-slate-500">لا توجد مشاريع محفوظة</div>';
+}
+function openProject(id){
+ const p=archive.find(x=>x.id===id);if(!p)return;
+ appMeta={...DEF_META,...p.appMetadata};appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})};
+ rooms=p.buildingElements.map(cleanRoom);cameras=p.cameras.map(cleanCam);inventory=p.customInventory.map(cleanItem);
+ selCam=cameras[0]?.id??null;selRoom=rooms[0]?.id??null;persistAll();refreshAll();closeSec();toast('📂 تم استرجاع المشروع كاملاً');
+}
+function delProject(id){archive=archive.filter(x=>x.id!==id);store('cctv_pro_archive_v95',archive);renderArchive()}
+function exportBackup(){
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({appMetadata:appMeta,customInventory:inventory,buildingElements:rooms,cameras,archivedProjects:archive},null,2)],{type:'application/json'}));
+ a.download=`backup-cctv-${Date.now()}.json`;a.click();toast('✅ تم تحميل النسخة الاحتياطية');
+}
+function importBackup(e){
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=ev=>{try{
+  const d=JSON.parse(ev.target.result);
+  if(Array.isArray(d.customInventory))inventory=d.customInventory.map(cleanItem);
+  if(Array.isArray(d.buildingElements))rooms=d.buildingElements.map(cleanRoom);
+  if(Array.isArray(d.cameras))cameras=d.cameras.map(cleanCam);
+  if(Array.isArray(d.archivedProjects))archive=d.archivedProjects.map(cleanProj);
+  if(d.appMetadata&&typeof d.appMetadata==='object'){appMeta={...appMeta,...d.appMetadata};appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})}}
+  selCam=cameras[0]?.id??null;selRoom=rooms[0]?.id??null;persistAll();refreshAll();toast('✅ تم استعادة النسخة وحفظها');
+ }catch(err){toast('❌ ملف غير صالح')}};
+ r.readAsText(f);e.target.value='';
 }
 
-/* ===== 5+6: استيراد وفتح أرشيف كاملين ===== */
-function fillMetaInputs(){
-  const m=appMetadata,s=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v??'';};
-  s('compNameInput',m.companyName);s('compEngineerInput',m.engineerName);s('compPhoneInput',m.companyPhone);s('compAddressInput',m.companyAddress);s('compWarrantyInput',m.warranty);
-  s('projTitleInput',m.projectTitle);s('clientNameInput',m.clientName);s('clientPhoneInput',m.clientPhone);s('projLocationInput',m.projectLocation);s('projDiscountInput',m.discount||0);
-  s('planWidthInput',planW());s('stMbps',(m.storage||{}).mbps||4);s('stDays',(m.storage||{}).days||15);
+/* ===================== الطباعة والواتساب ===================== */
+function printQuote(){
+ const q=lastQuote;if(!q)return;const T=(id,v)=>$(id).textContent=v;
+ T('pCompany',appMeta.companyName);T('pDetails',`${appMeta.engineerName} | تليفون: ${appMeta.companyPhone} | ${appMeta.companyAddress}`);T('pWarranty',appMeta.warranty);
+ T('pDate','التاريخ: '+new Date().toLocaleDateString('ar-EG'));T('pProject','المشروع: '+appMeta.projectTitle);T('pClient',`السادة / ${appMeta.clientName} (${appMeta.projectLocation})`);
+ $('pImg').src=cv.toDataURL('image/png');
+ $('pBody').innerHTML=q.bom.filter(i=>i.qty>0).map(i=>`<tr><td class="p-2 border border-slate-300 font-bold">${esc(i.name)}</td><td class="p-2 border border-slate-300">${esc(i.category)}</td><td class="p-2 border border-slate-300 text-center font-bold">${i.qty}</td><td class="p-2 border border-slate-300 text-center">${i.price.toLocaleString()} ج.م</td><td class="p-2 border border-slate-300 text-left font-black">${i.total.toLocaleString()} ج.م</td></tr>`).join('');
+ T('pGrand',q.grand.toLocaleString());window.print();
 }
-function refreshAll(){fillMetaInputs();syncCompanyAndProjectMetadata();renderBuildingElementsList();syncSelectedRoomUI();renderQuickCamerasList();syncInspectorUI();drawScene();updateAllCalculations();renderArchivedProjectsList();}
-function importFullBackupJSON(e){
-  const f=e.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=ev=>{try{
-    const d=JSON.parse(ev.target.result);
-    if(Array.isArray(d.customInventory))customInventory=d.customInventory.map(cleanItem);
-    if(Array.isArray(d.buildingElements))buildingElements=d.buildingElements.map(cleanRoom);
-    if(Array.isArray(d.cameras))cameras=d.cameras.map(cleanCam);
-    if(Array.isArray(d.archivedProjects))archivedProjects=d.archivedProjects.map(cleanProj);
-    if(d.appMetadata&&typeof d.appMetadata==='object')appMetadata={...appMetadata,...d.appMetadata};
-    selectedCameraId=cameras[0]?.id??null;selectedRoomId=buildingElements[0]?.id??null;
-    persistAll();refreshAll();showToast('✅ تم استعادة النسخة وحفظها');
-  }catch(err){showToast('❌ ملف النسخة غير صالح');}};
-  r.readAsText(f);e.target.value='';
-}
-function loadArchivedProject(id){
-  const p=archivedProjects.find(x=>x.id===id);if(!p)return;
-  appMetadata={...appMetadata,...p.appMetadata};
-  buildingElements=p.buildingElements.map(cleanRoom);cameras=p.cameras.map(cleanCam);customInventory=p.customInventory.map(cleanItem);
-  selectedCameraId=cameras[0]?.id??null;selectedRoomId=buildingElements[0]?.id??null;
-  persistAll();refreshAll();closeBackupSecurityModal();showToast('📂 تم استرجاع المشروع بالكامل');
+function sendWA(){
+ const q=lastQuote;if(!q)return;
+ let m=`*${appMeta.companyName}*\nعرض سعر لمشروع: *${appMeta.projectTitle}*\nالعميل: *${appMeta.clientName}*\n────────────\n• الكاميرات: *${q.total}*\n• السلك التقديري: *${q.cable} متر*\n────────────\n`;
+ q.bom.filter(i=>i.qty>0).forEach(i=>m+=`▪ ${i.name} (${i.qty}) = *${i.total.toLocaleString()} ج.م*\n`);
+ m+=`────────────\n✅ *الصافي: ${q.grand.toLocaleString()} ج.م*\n🛡️ ${appMeta.warranty}\n📞 ${appMeta.companyPhone}`;
+ const ph=(appMeta.clientPhone||'').replace(/\D/g,'').replace(/^0/,'20');
+ window.open(`https://wa.me/${ph}?text=${encodeURIComponent(m)}`,'_blank');
 }
 
-/* ===== تهيئة ===== */
-injectExtras();
-(async()=>{if(securityConfig.pinCode){securityConfig.pinHash=await sha(securityConfig.pinCode);persistSec();}})();
-document.querySelectorAll('#securityLockOverlay div').forEach(d=>{if(d.children.length&&d.textContent.includes('PRO-2026'))d.remove();});
-document.getElementById('inpLicenseKey').placeholder='اكتب الرقم السري...';
-window.addEventListener('load',()=>{customInventory=customInventory.map(cleanItem);cameras=cameras.map(cleanCam);buildingElements=buildingElements.map(cleanRoom);refreshAll();});
+/* ===================== التشغيل ===================== */
+(async()=>{
+ if(security.pinCode){security.pinHash=await sha(security.pinCode);delete security.pinCode;store('cctv_pro_security_v95',{pinHash:security.pinHash,requireLockOnStart:security.requireLockOnStart})}
+ resize();refreshAll();
+ $('btnLock').innerHTML='<i class="fa-solid fa-lock-open"></i> قفل المبنى';
+ if(security.requireLockOnStart)lockNow();
+})();
+</script>
+</body>
+</html>
