@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مُخطط وحاسبة أنظمة كاميرات المراقبة | Smart CCTV Planner PRO v9.6</title>
+<title>مُخطط وحاسبة أنظمة كاميرات المراقبة | Smart CCTV Planner PRO v9.7</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -101,8 +101,10 @@ body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:
     <div class="flex justify-between"><span class="text-slate-400">مواسير:</span><b id="rPipes" class="text-purple-300"></b></div>
     <div class="flex justify-between"><span class="text-slate-400">بواطات:</span><b id="rBoxes" class="text-emerald-300"></b></div>
    </div>
-   <div class="box lg:col-span-12 grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
-    <div><label class="lbl">عرض المخطط الحقيقي (متر)</label><input type="number" id="mPlanW" min="5" class="inp" onchange="syncMeta()"></div>
+   <div class="box lg:col-span-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 items-end">
+    <div><label class="lbl">عرض المخطط (متر)</label><input type="number" id="mPlanW" min="5" class="inp" onchange="syncMeta()"></div>
+    <div><label class="lbl">ارتفاع المخطط (متر)</label><input type="number" id="mPlanH" min="3" class="inp" onchange="syncMeta()"></div>
+    <div><label class="lbl">ارتفاع الدور (متر)</label><input type="number" id="mFloorH" min="2" step="0.1" class="inp" onchange="syncMeta()"></div>
     <div><label class="lbl">بت ريت الكاميرا (Mbps)</label><input type="number" id="mMbps" min="0.5" step="0.5" class="inp" onchange="syncMeta()"></div>
     <div><label class="lbl">أيام التسجيل</label><input type="number" id="mDays" min="1" class="inp" onchange="syncMeta()"></div>
     <div class="box" style="border-color:#10b98155"><div class="text-[10px] text-slate-400">التخزين المطلوب</div><b id="rStorage" class="text-emerald-300">—</b></div>
@@ -126,8 +128,8 @@ body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:
       <select id="nrType" class="inp"><option value="room">غرفة</option><option value="outdoor">خارجية</option><option value="corridor">ممر</option><option value="gate">بوابة</option></select>
      </div>
      <div class="grid grid-cols-2 gap-2">
-      <div><label class="lbl">العرض</label><input type="number" id="nrW" value="160" class="inp"></div>
-      <div><label class="lbl">الارتفاع</label><input type="number" id="nrH" value="110" class="inp"></div>
+      <div><label class="lbl">العرض (م)</label><input type="number" id="nrW" value="5" min="1" step="0.5" class="inp"></div>
+      <div><label class="lbl">الطول (م)</label><input type="number" id="nrH" value="4" min="1" step="0.5" class="inp"></div>
      </div>
      <button class="btn b-cy w-full justify-center" onclick="addRoom()"><i class="fa-solid fa-plus"></i> إضافة للمخطط</button>
     </div>
@@ -135,8 +137,13 @@ body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:
      <div class="flex justify-between"><b class="text-cyan-300">تعديل المحددة</b><button class="text-rose-400 font-bold" onclick="deleteRoom(selRoom)"><i class="fa-solid fa-trash-can"></i> حذف</button></div>
      <input id="erName" class="inp" oninput="editRoom()">
      <div class="grid grid-cols-2 gap-2">
-      <div><div class="flex justify-between text-[10px] text-slate-400"><span>العرض</span><span id="erWl"></span></div><input type="range" id="erW" min="40" max="600" class="w-full" oninput="editRoom()"></div>
-      <div><div class="flex justify-between text-[10px] text-slate-400"><span>الطول</span><span id="erHl"></span></div><input type="range" id="erH" min="30" max="450" class="w-full" oninput="editRoom()"></div>
+      <div><div class="flex justify-between text-[10px] text-slate-400"><span>العرض</span><span id="erWl"></span></div><input type="range" id="erW" min="1" max="40" step="0.5" class="w-full" oninput="editRoom()"></div>
+      <div><div class="flex justify-between text-[10px] text-slate-400"><span>الطول</span><span id="erHl"></span></div><input type="range" id="erH" min="1" max="30" step="0.5" class="w-full" oninput="editRoom()"></div>
+     </div>
+     <label class="flex items-center justify-between cursor-pointer"><span>الحوائط تحجب رؤية الكاميرات</span><input type="checkbox" id="erSolid" onchange="editRoom()" class="w-4 h-4"></label>
+     <div class="grid grid-cols-2 gap-2 items-end">
+      <div><label class="lbl">مكان الباب / الفتحة</label><select id="erDoor" class="inp" onchange="editRoom()"><option value="none">بدون</option><option value="top">أعلى</option><option value="bottom">أسفل</option><option value="left">يسار</option><option value="right">يمين</option></select></div>
+      <div id="erDoorRow"><label class="lbl">عرض الباب (م)</label><input type="number" id="erDoorW" min="0.6" max="6" step="0.1" class="inp" oninput="editRoom()"></div>
      </div>
     </div>
     <div id="roomList" class="space-y-1.5 max-h-[150px] overflow-y-auto"></div>
@@ -155,15 +162,17 @@ body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:
     <button class="btn b-gr justify-between" onclick="addCamera('zoom')">+ زووم بوابات <small class="text-slate-400">50°</small></button>
     <button class="btn b-gr justify-between" onclick="addCamera('ptz')">+ PTZ <small class="text-slate-400">360°</small></button>
    </div>
-   <div class="pt-2 border-t border-slate-800"><div class="text-[11px] font-bold text-slate-400 mb-2">الكاميرات (اضغط لفتح الإعدادات):</div><div id="camList" class="flex flex-wrap gap-1.5"></div></div>
+   <div class="pt-2 border-t border-slate-800"><div class="text-[11px] font-bold text-slate-400 mb-2">كاميرات هذا الدور (اضغط لفتح الإعدادات):</div><div id="camList" class="flex flex-wrap gap-1.5"></div></div>
   </div>
  </aside>
 
  <section class="lg:col-span-8 flex flex-col gap-4">
   <div class="glass p-3">
+   <div id="floorBar" class="flex flex-wrap items-center gap-1.5 mb-3 pb-2 border-b border-slate-800"></div>
    <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
     <div class="flex flex-wrap gap-1.5">
      <button id="btnNight" class="btn b-gr" onclick="toggleNight()"><i class="fa-solid fa-moon text-amber-400"></i> رؤية ليلية IR</button>
+     <button id="btnBlind" class="btn b-ro" onclick="toggleBlind()"><i class="fa-solid fa-eye-slash"></i> النقاط العمياء</button>
      <label class="btn b-gr"><i class="fa-solid fa-image"></i> رفع صورة مخطط<input type="file" accept="image/*" class="hid" onchange="uploadPlan(event)"></label>
     </div>
     <div class="flex items-center gap-1.5 text-xs">
@@ -197,6 +206,7 @@ body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:
     </div>
     <button id="hudPill" class="hid absolute top-3 left-3 z-20 btn b-gr" onclick="hudOpen=true;syncHud()"><i class="fa-solid fa-sliders"></i> إعدادات الكاميرا</button>
    </div>
+   <div id="covPanel" class="box mt-3 text-xs space-y-1.5"></div>
   </div>
 
   <div class="glass p-4 border border-emerald-500/30">
@@ -270,7 +280,7 @@ body{font-family:'Cairo',sans-serif;background:#060b14;color:#e2e8f0;overflow-x:
   <div class="text-left text-xs space-y-1"><div id="pDate" class="font-bold"></div><div id="pProject" class="font-black text-sm"></div><div id="pClient" class="font-bold"></div></div>
  </div>
  <h3 class="text-sm font-black mb-2">المخطط الهندسي لتوزيع الكاميرات:</h3>
- <img id="pImg" alt="" class="w-full h-auto rounded-xl border-2 border-slate-300 mb-5">
+ <div id="pImgs" class="mb-5"></div>
  <h3 class="text-sm font-black mb-2">جدول الكميات والأسعار:</h3>
  <table class="w-full text-xs text-right border-collapse mb-4 border border-slate-400">
   <thead><tr class="font-black bg-slate-100"><th class="p-2 border border-slate-300">البند</th><th class="p-2 border border-slate-300">التصنيف</th><th class="p-2 border border-slate-300 text-center">الكمية</th><th class="p-2 border border-slate-300 text-center">السعر</th><th class="p-2 border border-slate-300 text-left">الإجمالي</th></tr></thead>
@@ -296,13 +306,18 @@ const MODES={manual:'يدوي ثابت',all_cams:'بعدد كل الكاميرا
 const CAM={dome:{fov:105,range:13,color:'#00f2fe',title:'كاميرا داخلية',watt:5},bullet:{fov:82,range:18,color:'#10b981',title:'كاميرا خارجية',watt:8},zoom:{fov:50,range:26,color:'#f59e0b',title:'كاميرا زووم',watt:10},ptz:{fov:360,range:22,color:'#a855f7',title:'كاميرا PTZ',watt:30}};
 
 /* تنضيف أي بيانات داخلة (استيراد / أرشيف / localStorage) */
+const OLD_PPM=900/26,clampN=(v,a,b)=>Math.max(a,Math.min(b,v));
+let seq=0;const uid=()=>Date.now()*100+(seq++%100);
 const cleanItem=i=>({id:String(i.id??Date.now()),name:String(i.name??''),category:String(i.category??''),qtyMode:MODES[i.qtyMode]?i.qtyMode:'manual',manualQty:num(i.manualQty),price:num(i.price),override:(i.override==null||i.override==='')?null:num(i.override)});
-const cleanRoom=r=>({id:num(r.id)||Date.now(),type:['room','outdoor','corridor','gate'].includes(r.type)?r.type:'room',name:String(r.name??''),nx:num(r.nx),ny:num(r.ny),w:num(r.w)||100,h:num(r.h)||80});
-const cleanCam=c=>{const t=CAM[c.type]?c.type:'dome';return{id:num(c.id)||Date.now(),type:t,label:String(c.label??''),nx:num(c.nx),ny:num(c.ny),rotation:num(c.rotation),fov:num(c.fov)||90,rangeMeters:num(c.rangeMeters)||12,customCable:num(c.customCable),color:CAM[t].color}};
-const cleanProj=p=>({id:num(p.id)||Date.now(),date:String(p.date??''),projectTitle:String(p.projectTitle??''),clientName:String(p.clientName??''),grandTotal:num(p.grandTotal),appMetadata:(p.appMetadata&&typeof p.appMetadata==='object')?p.appMetadata:{},buildingElements:(p.buildingElements||[]).map(cleanRoom),cameras:(p.cameras||[]).map(cleanCam),customInventory:(p.customInventory||[]).map(cleanItem)});
+const cleanFloor=f=>({id:num(f.id)||uid(),name:String(f.name??'الدور')});
+const cleanRoom=r=>{const m=r.unit==='m',type=['room','outdoor','corridor','gate'].includes(r.type)?r.type:'room';
+ const w=m?num(r.w):Math.round(num(r.w)/OLD_PPM*2)/2,h=m?num(r.h):Math.round(num(r.h)/OLD_PPM*2)/2;
+ return{id:num(r.id)||uid(),floor:num(r.floor)||0,type,name:String(r.name??''),nx:num(r.nx),ny:num(r.ny),w:clampN(w||4,1,60),h:clampN(h||3,1,60),unit:'m',solid:r.solid==null?(type==='room'||type==='corridor'):!!r.solid,door:['none','top','bottom','left','right'].includes(r.door)?r.door:'none',doorW:clampN(num(r.doorW)||1,.6,6)}};
+const cleanCam=c=>{const t=CAM[c.type]?c.type:'dome';return{id:num(c.id)||uid(),floor:num(c.floor)||0,type:t,label:String(c.label??''),nx:num(c.nx),ny:num(c.ny),rotation:num(c.rotation),fov:num(c.fov)||90,rangeMeters:num(c.rangeMeters)||12,customCable:num(c.customCable),color:CAM[t].color}};
+const cleanProj=p=>({id:num(p.id)||Date.now(),date:String(p.date??''),projectTitle:String(p.projectTitle??''),clientName:String(p.clientName??''),grandTotal:num(p.grandTotal),appMetadata:(p.appMetadata&&typeof p.appMetadata==='object')?p.appMetadata:{},floors:(p.floors||[]).map(cleanFloor),dvr:(p.dvr&&typeof p.dvr==='object')?p.dvr:{},buildingElements:(p.buildingElements||[]).map(cleanRoom),cameras:(p.cameras||[]).map(cleanCam),customInventory:(p.customInventory||[]).map(cleanItem)});
 
 /* ===================== البيانات ===================== */
-const DEF_META={companyName:'الشركة الهندسية للأنظمة الأمنية والمراقبة',engineerName:'م. أحمد محمود',companyPhone:'01001234567',companyAddress:'القاهرة - مدينة نصر',warranty:'ضمان شامل لمدة عامين ضد عيوب الصناعة',projectTitle:'تأمين المقر الإداري والمخازن',clientName:'شركة النور للتجارة',clientPhone:'01234567890',projectLocation:'التجمع الخامس',discount:0,planWidthM:26,storage:{mbps:4,days:15}};
+const DEF_META={companyName:'الشركة الهندسية للأنظمة الأمنية والمراقبة',engineerName:'م. أحمد محمود',companyPhone:'01001234567',companyAddress:'القاهرة - مدينة نصر',warranty:'ضمان شامل لمدة عامين ضد عيوب الصناعة',projectTitle:'تأمين المقر الإداري والمخازن',clientName:'شركة النور للتجارة',clientPhone:'01234567890',projectLocation:'التجمع الخامس',discount:0,planWidthM:26,planHeightM:15,floorHeightM:3.5,storage:{mbps:4,days:15}};
 const DEF_INV=[
  {id:'dome',name:'كاميرا داخلية Hikvision Dome 5MP (2.8mm)',category:'كاميرات مراقبة',qtyMode:'cam_dome',manualQty:1,price:950},
  {id:'bullet',name:'كاميرا خارجية Hikvision Bullet 5MP',category:'كاميرات مراقبة',qtyMode:'cam_bullet',manualQty:1,price:1150},
@@ -316,26 +331,42 @@ const DEF_INV=[
  {id:'psu',name:'باور سبلاي مركزي 12V 10A',category:'إكسسوارات وباور',qtyMode:'manual',manualQty:1,price:650},
  {id:'install',name:'مصنعية تركيب وتمديد وبرمجة',category:'تركيب ومصنعية',qtyMode:'all_cams',manualQty:4,price:250}];
 const DEF_ROOMS=[
- {id:101,type:'room',name:'صالة الاستقبال والمعرض',nx:.34,ny:.42,w:230,h:150},
- {id:102,type:'room',name:'مكتب الإدارة والخزينة',nx:.68,ny:.32,w:170,h:110},
- {id:103,type:'room',name:'المخزن الرئيسي',nx:.68,ny:.66,w:190,h:120},
- {id:104,type:'gate',name:'البوابة والمدخل',nx:.16,ny:.78,w:140,h:55}];
+ {id:101,floor:1,unit:'m',type:'room',name:'صالة الاستقبال والمعرض',nx:.34,ny:.42,w:7,h:4.5,door:'right',doorW:1.2},
+ {id:102,floor:1,unit:'m',type:'room',name:'مكتب الإدارة والخزينة',nx:.68,ny:.32,w:5,h:3.2,door:'left',doorW:1},
+ {id:103,floor:1,unit:'m',type:'room',name:'المخزن الرئيسي',nx:.68,ny:.66,w:5.5,h:3.5,door:'left',doorW:1.5},
+ {id:104,floor:1,unit:'m',type:'gate',name:'البوابة والمدخل',nx:.16,ny:.78,w:4,h:1.6}];
 const DEF_CAMS=[
- {id:1,type:'dome',label:'كاميرا الصالة 1',nx:.22,ny:.28,rotation:35,fov:105,rangeMeters:14,customCable:0},
- {id:2,type:'bullet',label:'كاميرا البوابة 2',nx:.14,ny:.68,rotation:15,fov:82,rangeMeters:18,customCable:0},
- {id:3,type:'dome',label:'كاميرا المخزن 3',nx:.56,ny:.58,rotation:20,fov:105,rangeMeters:13,customCable:0}];
+ {id:1,floor:1,type:'dome',label:'كاميرا الصالة 1',nx:.22,ny:.28,rotation:35,fov:105,rangeMeters:14,customCable:0},
+ {id:2,floor:1,type:'bullet',label:'كاميرا البوابة 2',nx:.16,ny:.70,rotation:60,fov:82,rangeMeters:18,customCable:0},
+ {id:3,floor:1,type:'dome',label:'كاميرا المخزن 3',nx:.60,ny:.60,rotation:20,fov:105,rangeMeters:13,customCable:0}];
 
 let appMeta={...DEF_META,...load('cctv_pro_metadata_v95',{})};
 appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})};
 let inventory=load('cctv_pro_unified_inv_v95',DEF_INV).map(cleanItem);
 let archive=load('cctv_pro_archive_v95',[]).map(cleanProj);
 const work=load('cctv_pro_work_v96',null);
+let floors=(work?.floors?.length?work.floors:[{id:1,name:'الدور الأرضي'}]).map(cleanFloor);
 let rooms=(work?.rooms||DEF_ROOMS).map(cleanRoom);
 let cameras=(work?.cameras||DEF_CAMS).map(cleanCam);
-let dvr=work?.dvr||{nx:.72,ny:.25};
+let dvr={nx:.72,ny:.25,floorId:0,...(work?.dvr||{})};
+let curFloor=num(work?.curFloor)||0;
 let security=load('cctv_pro_security_v95',{});
-let selRoom=rooms[0]?.id??null, selCam=cameras[0]?.id??null;
-let locked=false,night=false,zoom=1,panX=0,panY=0,bg=null,hudOpen=true,drag=null,lastQuote=null;
+let selRoom=null,selCam=null,locked=false,night=false,showBlind=true,zoom=1,panX=0,panY=0,hudOpen=true,drag=null,lastQuote=null,lastCov=null;
+const bgImgs={};
+const floorRooms=()=>rooms.filter(r=>r.floor===curFloor);
+const floorCams=()=>cameras.filter(c=>c.floor===curFloor);
+const fIdx=id=>Math.max(0,floors.findIndex(f=>f.id===id));
+function normalize(){
+ if(!floors.length)floors=[{id:1,name:'الدور الأرضي'}];
+ const ids=floors.map(f=>f.id),f0=ids[0];
+ rooms.forEach(r=>{if(!ids.includes(r.floor))r.floor=f0});
+ cameras.forEach(c=>{if(!ids.includes(c.floor))c.floor=f0});
+ if(!ids.includes(dvr.floorId))dvr.floorId=f0;
+ if(!ids.includes(curFloor))curFloor=f0;
+ if(!floorRooms().some(r=>r.id===selRoom))selRoom=floorRooms()[0]?.id??null;
+ if(!floorCams().some(c=>c.id===selCam))selCam=floorCams()[0]?.id??null;
+}
+normalize();
 
 /* ===================== القفل (PIN بـ hash) ===================== */
 async function sha(s){if(!(window.crypto&&crypto.subtle))return'p:'+s;const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('cctv|'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
@@ -360,19 +391,19 @@ function fillMeta(){
  const m=appMeta,s=(id,v)=>$(id).value=v??'';
  s('mCompany',m.companyName);s('mEngineer',m.engineerName);s('mPhone',m.companyPhone);s('mAddress',m.companyAddress);s('mWarranty',m.warranty);
  s('mProject',m.projectTitle);s('mClient',m.clientName);s('mClientPhone',m.clientPhone);s('mLocation',m.projectLocation);s('mDiscount',m.discount||0);
- s('mPlanW',m.planWidthM);s('mMbps',m.storage.mbps);s('mDays',m.storage.days);
+ s('mPlanW',m.planWidthM);s('mPlanH',m.planHeightM);s('mFloorH',m.floorHeightM);s('mMbps',m.storage.mbps);s('mDays',m.storage.days);
 }
 function syncMeta(){
  const g=id=>$(id).value;
- Object.assign(appMeta,{companyName:g('mCompany')||'الشركة',engineerName:g('mEngineer'),companyPhone:g('mPhone'),companyAddress:g('mAddress'),warranty:g('mWarranty'),projectTitle:g('mProject')||'مشروع مراقبة',clientName:g('mClient')||'عميل',clientPhone:g('mClientPhone'),projectLocation:g('mLocation'),discount:num(g('mDiscount')),planWidthM:Math.max(5,num(g('mPlanW'))||26),storage:{mbps:num(g('mMbps'))||4,days:num(g('mDays'))||15}});
+ Object.assign(appMeta,{companyName:g('mCompany')||'الشركة',engineerName:g('mEngineer'),companyPhone:g('mPhone'),companyAddress:g('mAddress'),warranty:g('mWarranty'),projectTitle:g('mProject')||'مشروع مراقبة',clientName:g('mClient')||'عميل',clientPhone:g('mClientPhone'),projectLocation:g('mLocation'),discount:num(g('mDiscount')),planWidthM:Math.max(5,num(g('mPlanW'))||26),planHeightM:Math.max(3,num(g('mPlanH'))||15),floorHeightM:num(g('mFloorH'))||3.5,storage:{mbps:num(g('mMbps'))||4,days:num(g('mDays'))||15}});
  $('hdrCompany').textContent=appMeta.companyName;
  $('hdrProject').textContent=`المشروع: ${appMeta.projectTitle} • العميل: ${appMeta.clientName}`;
  store('cctv_pro_metadata_v95',appMeta);
- draw();calc();
+ resize();calc();
 }
 function toggleDash(){$('dash').classList.toggle('hid')}
 
-/* ===================== المبنى والغرف ===================== */
+/* ===================== المبنى والغرف والأدوار ===================== */
 function toggleLock(){
  locked=!locked;
  $('roomTools').classList.toggle('hid',locked);$('lockedBanner').classList.toggle('hid',!locked);
@@ -381,77 +412,186 @@ function toggleLock(){
 }
 function addRoom(){
  if(locked)return;
- const name=$('nrName').value.trim()||('مساحة '+(rooms.length+1));
- const id=Date.now();
- rooms.push({id,type:$('nrType').value,name,nx:.5,ny:.5,w:Math.max(40,num($('nrW').value)||160),h:Math.max(30,num($('nrH').value)||110)});
+ const name=$('nrName').value.trim()||('مساحة '+(floorRooms().length+1)),id=uid();
+ rooms.push(cleanRoom({id,floor:curFloor,unit:'m',type:$('nrType').value,name,nx:.5,ny:.5,w:num($('nrW').value)||5,h:num($('nrH').value)||4}));
  selRoom=id;$('nrName').value='';renderRooms();draw();toast('✅ تمت إضافة "'+name+'"');
 }
 function selectRoom(id){selRoom=id;renderRooms();draw()}
-function deleteRoom(id){rooms=rooms.filter(r=>r.id!==id);if(selRoom===id)selRoom=rooms[0]?.id??null;renderRooms();draw()}
+function deleteRoom(id){rooms=rooms.filter(r=>r.id!==id);if(selRoom===id)selRoom=floorRooms()[0]?.id??null;renderRooms();draw()}
 function editRoom(){
  const r=rooms.find(x=>x.id===selRoom);if(!r)return;
- r.name=$('erName').value||'مساحة';r.w=num($('erW').value)||120;r.h=num($('erH').value)||90;
- $('erWl').textContent=r.w;$('erHl').textContent=r.h;renderRoomList();draw();
+ r.name=$('erName').value||'مساحة';r.w=num($('erW').value)||4;r.h=num($('erH').value)||3;
+ r.solid=$('erSolid').checked;r.door=$('erDoor').value;r.doorW=clampN(num($('erDoorW').value)||1,.6,6);
+ $('erWl').textContent=r.w+' م';$('erHl').textContent=r.h+' م';$('erDoorRow').classList.toggle('hid',r.door==='none');
+ renderRoomList();draw();
 }
 function renderRooms(){
  const r=rooms.find(x=>x.id===selRoom);
  $('roomEditor').classList.toggle('hid',!r);
- if(r){$('erName').value=r.name;$('erW').value=r.w;$('erH').value=r.h;$('erWl').textContent=r.w;$('erHl').textContent=r.h}
+ if(r){$('erName').value=r.name;$('erW').value=r.w;$('erH').value=r.h;$('erWl').textContent=r.w+' م';$('erHl').textContent=r.h+' م';
+  $('erSolid').checked=r.solid;$('erDoor').value=r.door;$('erDoorW').value=r.doorW;$('erDoorRow').classList.toggle('hid',r.door==='none')}
  renderRoomList();
 }
 function renderRoomList(){
- $('roomList').innerHTML=rooms.map(el=>`<div onclick="selectRoom(${el.id})" class="cursor-pointer p-2 rounded-xl border flex items-center justify-between ${el.id===selRoom?'bg-cyan-950/50 border-cyan-400':'bg-slate-950 border-slate-800'}"><span><i class="fa-solid fa-vector-square text-cyan-400"></i> <b>${esc(el.name)}</b> <small class="text-slate-400 font-mono">(${el.w}×${el.h})</small></span><button onclick="event.stopPropagation();deleteRoom(${el.id})" class="text-rose-400"><i class="fa-solid fa-trash"></i></button></div>`).join('');
+ $('roomList').innerHTML=floorRooms().map(el=>`<div onclick="selectRoom(${el.id})" class="cursor-pointer p-2 rounded-xl border flex items-center justify-between ${el.id===selRoom?'bg-cyan-950/50 border-cyan-400':'bg-slate-950 border-slate-800'}"><span><i class="fa-solid fa-vector-square text-cyan-400"></i> <b>${esc(el.name)}</b> <small class="text-slate-400 font-mono">(${el.w}×${el.h} م)</small></span><button onclick="event.stopPropagation();deleteRoom(${el.id})" class="text-rose-400"><i class="fa-solid fa-trash"></i></button></div>`).join('')||'<div class="text-slate-500 text-center py-2">لا توجد مساحات في هذا الدور</div>';
 }
 
-/* ===================== الرسم ===================== */
+/* ---- الأدوار ---- */
+function renderFloors(){
+ $('floorBar').innerHTML=floors.map(f=>`<button class="btn ${f.id===curFloor?'b-cy':'b-gr'}" onclick="switchFloor(${f.id})">${esc(f.name)} <small>(${cameras.filter(c=>c.floor===f.id).length})</small></button>`).join('')
+ +`<button class="btn b-em" onclick="addFloor(false)">+ دور جديد</button><button class="btn b-gr" onclick="addFloor(true)" title="دور جديد بنفس الغرف">تكرار</button><button class="btn b-gr" onclick="renameFloor()" title="تسمية الدور">✎</button><button class="btn b-ro" onclick="deleteFloor()" title="حذف الدور"><i class="fa-solid fa-trash-can"></i></button>`
+ +`<span class="text-[11px] text-slate-400 mr-2">الـ DVR في:</span><select class="inp" style="width:auto" onchange="setDvrFloor(Number(this.value))">${floors.map(f=>`<option value="${f.id}" ${f.id===dvr.floorId?'selected':''}>${esc(f.name)}</option>`).join('')}</select>`;
+}
+function switchFloor(id){
+ curFloor=id;selRoom=floorRooms()[0]?.id??null;selCam=floorCams()[0]?.id??null;
+ renderFloors();renderRooms();renderCams();syncHud();draw();
+}
+function addFloor(copy){
+ const id=uid();floors.push({id,name:'الدور '+floors.length});
+ if(copy)floorRooms().forEach(r=>rooms.push({...r,id:uid(),floor:id}));
+ switchFloor(id);calc();toast('✅ تمت إضافة دور جديد'+(copy?' بنفس الغرف':''));
+}
+function renameFloor(){
+ const f=floors.find(x=>x.id===curFloor),n=prompt('اسم الدور:',f.name);
+ if(n&&n.trim()){f.name=n.trim().slice(0,30);renderFloors();renderCams();calc()}
+}
+function deleteFloor(){
+ if(floors.length<2){toast('⚠️ لازم يفضل دور واحد على الأقل');return}
+ const f=floors.find(x=>x.id===curFloor);
+ if(!confirm('حذف "'+f.name+'" بكل غرفه وكاميراته؟'))return;
+ floors=floors.filter(x=>x.id!==f.id);rooms=rooms.filter(r=>r.floor!==f.id);cameras=cameras.filter(c=>c.floor!==f.id);
+ normalize();switchFloor(curFloor);calc();toast('تم حذف الدور');
+}
+function setDvrFloor(id){dvr.floorId=id;draw();calc()}
+
+/* ===================== الرسم والتغطية ===================== */
 const cv=$('cv'),ctx=cv.getContext('2d');
-function resize(){const w=$('cv-wrap').clientWidth||900;cv.width=w;cv.height=Math.max(460,Math.min(620,Math.round(w*.56)));draw()}
+const planW=()=>Math.max(5,num(appMeta.planWidthM)||26),planH=()=>Math.max(3,num(appMeta.planHeightM)||15),ppm=()=>cv.width/planW();
+function resize(){const w=$('cv-wrap').clientWidth||900;cv.width=w;cv.height=Math.max(180,Math.round(w*planH()/planW()));draw()}
 window.addEventListener('resize',resize);
 function zoomBy(f){zoom=Math.max(.5,Math.min(2.6,zoom*f));$('zoomLbl').textContent=Math.round(zoom*100)+'%';draw()}
 function resetZoom(){zoom=1;panX=panY=0;$('zoomLbl').textContent='100%';draw()}
 function toggleNight(){night=!night;$('btnNight').className='btn '+(night?'b-em':'b-gr');draw()}
-function uploadPlan(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const i=new Image();i.onload=()=>{bg=i;draw();toast('✅ تم رفع المخطط')};i.src=ev.target.result};r.readAsDataURL(f)}
-const planW=()=>Math.max(5,num(appMeta.planWidthM)||26);
+function toggleBlind(){showBlind=!showBlind;$('btnBlind').className='btn '+(showBlind?'b-ro':'b-gr');draw()}
+function uploadPlan(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const i=new Image();i.onload=()=>{bgImgs[curFloor]=i;draw();toast('✅ تم رفع مخطط هذا الدور')};i.src=ev.target.result};r.readAsDataURL(f)}
 let saveT;
-function saveWork(){clearTimeout(saveT);saveT=setTimeout(()=>store('cctv_pro_work_v96',{rooms,cameras,dvr}),400)}
+function saveWork(){clearTimeout(saveT);saveT=setTimeout(()=>store('cctv_pro_work_v96',{floors,curFloor,rooms,cameras,dvr}),400)}
+const RC={room:['#38bdf8','rgba(15,32,58,.72)'],outdoor:['#10b981','rgba(6,45,36,.5)'],gate:['#f59e0b','rgba(69,39,10,.65)'],corridor:['#a855f7','rgba(46,16,78,.5)']};
 
-function draw(){
- const w=cv.width,h=cv.height;
+/* الحوائط (قطع مستقيمة) مع فتحات الأبواب */
+function wallData(){
+ const k=ppm(),w=cv.width,h=cv.height,S=[],per=[];
+ floorRooms().forEach(r=>{
+  const segs=[],doors=[];
+  if(r.solid){
+   const cx=r.nx*w,cy=r.ny*h,hw=r.w*k/2,hh=r.h*k/2,l=cx-hw,rt=cx+hw,t=cy-hh,b=cy+hh;
+   const side=(x1,y1,x2,y2,nm)=>{
+    if(r.door!==nm){segs.push([x1,y1,x2,y2]);return}
+    const len=Math.hypot(x2-x1,y2-y1),half=Math.max(0,Math.min(r.doorW*k/2,len/2-3)),ux=(x2-x1)/len,uy=(y2-y1)/len,mx=(x1+x2)/2,my=(y1+y2)/2;
+    segs.push([x1,y1,mx-ux*half,my-uy*half]);segs.push([mx+ux*half,my+uy*half,x2,y2]);doors.push([mx-ux*half,my-uy*half,mx+ux*half,my+uy*half]);
+   };
+   side(l,t,rt,t,'top');side(rt,t,rt,b,'right');side(rt,b,l,b,'bottom');side(l,b,l,t,'left');
+  }
+  segs.forEach(g=>S.push(g));per.push({r,segs,doors});
+ });
+ return{S,per};
+}
+/* أقرب حائط على الشعاع (الكاميرا المركّبة على الحائط تتجاهل أول 4 بكسل) */
+function rayHit(ox,oy,dx,dy,maxD,S){
+ let best=maxD;
+ for(let i=0;i<S.length;i++){const s=S[i],ex=s[2]-s[0],ey=s[3]-s[1],den=dx*ey-dy*ex;
+  if(Math.abs(den)<1e-9)continue;
+  const px=s[0]-ox,py=s[1]-oy,t=(px*ey-py*ex)/den,u=(px*dy-py*dx)/den;
+  if(t>4&&t<best&&u>=0&&u<=1)best=t;}
+ return best;
+}
+const isFull=c=>c.type==='ptz'||c.fov>=359;
+function conePoly(c,S){
+ const cx=c.nx*cv.width,cy=c.ny*cv.height,R=c.rangeMeters*ppm(),fov=isFull(c)?360:c.fov,a0=c.rotation-fov/2,n=Math.max(12,Math.ceil(fov/1.5)),pts=[];
+ for(let i=0;i<=n;i++){const a=(a0+fov*i/n)*Math.PI/180,dx=Math.cos(a),dy=Math.sin(a),d=rayHit(cx,cy,dx,dy,R,S);pts.push([cx+dx*d,cy+dy*d])}
+ return{cx,cy,R,pts};
+}
+function inCone(c,px,py,S){
+ const cx=c.nx*cv.width,cy=c.ny*cv.height,R=c.rangeMeters*ppm(),dx=px-cx,dy=py-cy,d=Math.hypot(dx,dy);
+ if(d>R)return false;if(d<1)return true;
+ if(!isFull(c)){let a=Math.atan2(dy,dx)*180/Math.PI-c.rotation;a=((a%360)+540)%360-180;if(Math.abs(a)>c.fov/2)return false}
+ return rayHit(cx,cy,dx/d,dy/d,d,S)>=d-.01;
+}
+/* تحليل التغطية: شبكة خلايا داخل الغرف، الخلية غير المغطاة = نقطة عمياء */
+function computeCoverage(S){
+ const w=cv.width,h=cv.height,k=ppm(),cellM=Math.max(.4,planW()/70),step=cellM*k,rs=floorRooms(),cs=floorCams();
+ const st=new Map(rs.map(r=>[r.id,{r,n:0,cov:0}])),blind=[];let n=0,cov=0;
+ for(let y=step/2;y<h;y+=step)for(let x=step/2;x<w;x+=step){
+  let room=null;
+  for(let i=rs.length-1;i>=0;i--){const r=rs[i];if(Math.abs(x-r.nx*w)<=r.w*k/2&&Math.abs(y-r.ny*h)<=r.h*k/2){room=r;break}}
+  if(!room)continue;
+  const o=st.get(room.id);o.n++;n++;
+  let ok=false;for(let i=0;i<cs.length;i++)if(inCone(cs[i],x,y,S)){ok=true;break}
+  if(ok){o.cov++;cov++}else blind.push([x-step/2,y-step/2]);
+ }
+ return{blind,step,cellM,n,cov,rooms:[...st.values()]};
+}
+const hatch=(()=>{const c=document.createElement('canvas');c.width=c.height=8;const g=c.getContext('2d');g.strokeStyle='rgba(248,113,113,.95)';g.lineWidth=1.6;g.beginPath();g.moveTo(0,8);g.lineTo(8,0);g.moveTo(-2,2);g.lineTo(2,-2);g.moveTo(6,10);g.lineTo(10,6);g.stroke();return c})();
+let raf=0;
+function draw(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;drawNow()})}
+function drawNow(){
+ const w=cv.width,h=cv.height,k=ppm(),{S,per}=wallData(),cov=computeCoverage(S);lastCov=cov;
  ctx.clearRect(0,0,w,h);ctx.fillStyle=night?'#020806':'#070e1b';ctx.fillRect(0,0,w,h);
  ctx.save();ctx.translate(w/2+panX,h/2+panY);ctx.scale(zoom,zoom);ctx.translate(-w/2,-h/2);
- ctx.strokeStyle=night?'rgba(16,185,129,.08)':'rgba(56,189,248,.07)';ctx.lineWidth=1;
- for(let x=0;x<w;x+=35){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
- for(let y=0;y<h;y+=35){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
- if(bg){ctx.globalAlpha=.45;ctx.drawImage(bg,20,20,w-40,h-40);ctx.globalAlpha=1}
- const rc={room:['#38bdf8','rgba(15,32,58,.72)'],outdoor:['#10b981','rgba(6,45,36,.5)'],gate:['#f59e0b','rgba(69,39,10,.65)'],corridor:['#a855f7','rgba(46,16,78,.5)']};
- rooms.forEach(el=>{
-  const ex=el.nx*w,ey=el.ny*h,sel=!locked&&el.id===selRoom,c=rc[el.type]||rc.room;
-  ctx.fillStyle=c[1];ctx.strokeStyle=sel?'#00f2fe':c[0];ctx.lineWidth=sel?2.8:1.8;
-  ctx.beginPath();ctx.roundRect(ex-el.w/2,ey-el.h/2,el.w,el.h,8);ctx.fill();ctx.stroke();
-  ctx.fillStyle='#f8fafc';ctx.font='bold 12px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(el.name,ex,ey);
- });
- const dx=dvr.nx*w,dy=dvr.ny*h;
- cameras.forEach(c=>{ctx.save();ctx.strokeStyle='rgba(251,191,36,.55)';ctx.lineWidth=1.8;ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(dx,dy);ctx.lineTo(c.nx*w,dy);ctx.lineTo(c.nx*w,c.ny*h);ctx.stroke();ctx.restore()});
- const ppm=w/planW();
- cameras.forEach(c=>{
-  const cx=c.nx*w,cy=c.ny*h,rad=c.rangeMeters*ppm,fov=c.type==='ptz'?360:c.fov;
-  const a0=(c.rotation-fov/2)*Math.PI/180,a1=(c.rotation+fov/2)*Math.PI/180;
-  ctx.save();const g=ctx.createRadialGradient(cx,cy,5,cx,cy,rad);
+ const gl=night?'16,185,129':'56,189,248';ctx.lineWidth=1;
+ for(let m=0;m*k<=w;m++){ctx.strokeStyle=`rgba(${gl},${m%5?.05:.14})`;ctx.beginPath();ctx.moveTo(m*k,0);ctx.lineTo(m*k,h);ctx.stroke()}
+ for(let m=0;m*k<=h;m++){ctx.strokeStyle=`rgba(${gl},${m%5?.05:.14})`;ctx.beginPath();ctx.moveTo(0,m*k);ctx.lineTo(w,m*k);ctx.stroke()}
+ const bg=bgImgs[curFloor];if(bg){ctx.globalAlpha=.45;ctx.drawImage(bg,0,0,w,h);ctx.globalAlpha=1}
+ per.forEach(({r})=>{ctx.fillStyle=RC[r.type][1];ctx.fillRect(r.nx*w-r.w*k/2,r.ny*h-r.h*k/2,r.w*k,r.h*k)});
+ if(showBlind&&cov.blind.length){
+  ctx.beginPath();cov.blind.forEach(([x,y])=>ctx.rect(x,y,cov.step,cov.step));
+  ctx.fillStyle='rgba(239,68,68,.30)';ctx.fill();ctx.fillStyle=ctx.createPattern(hatch,'repeat');ctx.fill();
+ }
+ const dx=dvr.nx*w,dy=dvr.ny*h,cs=floorCams();
+ cs.forEach(c=>{ctx.save();ctx.strokeStyle='rgba(251,191,36,.55)';ctx.lineWidth=1.8;ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(dx,dy);ctx.lineTo(c.nx*w,dy);ctx.lineTo(c.nx*w,c.ny*h);ctx.stroke();ctx.restore()});
+ cs.forEach(c=>{
+  const p=conePoly(c,S),g=ctx.createRadialGradient(p.cx,p.cy,5,p.cx,p.cy,Math.max(10,p.R));
   if(night){g.addColorStop(0,'rgba(239,68,68,.48)');g.addColorStop(.7,'rgba(16,185,129,.22)');g.addColorStop(1,'rgba(16,185,129,.02)')}
   else{g.addColorStop(0,c.color+'66');g.addColorStop(.75,c.color+'24');g.addColorStop(1,c.color+'05')}
-  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,rad,a0,a1);ctx.closePath();ctx.fill();
-  ctx.strokeStyle=night?'#ef4444':c.color;ctx.lineWidth=c.id===selCam?2.2:1.2;ctx.stroke();ctx.restore();
+  ctx.beginPath();ctx.moveTo(p.cx,p.cy);p.pts.forEach(q=>ctx.lineTo(q[0],q[1]));ctx.closePath();
+  ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=night?'#ef4444':c.color;ctx.lineWidth=c.id===selCam?2.2:1.1;ctx.stroke();
  });
- ctx.fillStyle='#0f172a';ctx.strokeStyle='#fbbf24';ctx.lineWidth=2.2;ctx.beginPath();ctx.roundRect(dx-42,dy-16,84,32,8);ctx.fill();ctx.stroke();
- ctx.fillStyle='#fbbf24';ctx.font='bold 11px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('جهاز DVR',dx,dy);
- cameras.forEach((c,i)=>{
+ /* الحوائط والأبواب فوق المخروط */
+ per.forEach(({r,segs,doors})=>{
+  const sel=!locked&&r.id===selRoom,col=sel?'#00f2fe':RC[r.type][0];
+  if(r.solid){
+   ctx.strokeStyle=col;ctx.lineWidth=sel?4:3.2;ctx.lineCap='round';ctx.beginPath();segs.forEach(s=>{ctx.moveTo(s[0],s[1]);ctx.lineTo(s[2],s[3])});ctx.stroke();
+   if(doors.length){ctx.strokeStyle='#fbbf24';ctx.lineWidth=2.2;ctx.setLineDash([4,3]);ctx.beginPath();doors.forEach(d=>{ctx.moveTo(d[0],d[1]);ctx.lineTo(d[2],d[3])});ctx.stroke();ctx.setLineDash([])}
+   ctx.lineCap='butt';
+  }else{ctx.strokeStyle=col;ctx.lineWidth=sel?2.8:1.6;ctx.setLineDash([7,5]);ctx.strokeRect(r.nx*w-r.w*k/2,r.ny*h-r.h*k/2,r.w*k,r.h*k);ctx.setLineDash([])}
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#f8fafc';ctx.font='bold 12px Cairo,sans-serif';ctx.fillText(r.name,r.nx*w,r.ny*h-6);
+  ctx.fillStyle='#94a3b8';ctx.font='10px Cairo,sans-serif';ctx.fillText(`${r.w}×${r.h} م`,r.nx*w,r.ny*h+8);
+ });
+ const isMain=dvr.floorId===curFloor;
+ ctx.fillStyle='#0f172a';ctx.strokeStyle=isMain?'#fbbf24':'#a78bfa';ctx.lineWidth=2.2;ctx.beginPath();ctx.roundRect(dx-42,dy-16,84,32,8);ctx.fill();ctx.stroke();
+ ctx.fillStyle=isMain?'#fbbf24':'#a78bfa';ctx.font='bold 11px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(isMain?'جهاز DVR':'رايزر ⇅',dx,dy);
+ cs.forEach(c=>{
   const cx=c.nx*w,cy=c.ny*h,s=c.id===selCam;
   if(s){ctx.beginPath();ctx.arc(cx,cy,20,0,7);ctx.fillStyle='rgba(0,242,254,.25)';ctx.fill()}
   ctx.beginPath();ctx.arc(cx,cy,13,0,7);ctx.fillStyle=s?'#fff':c.color;ctx.strokeStyle='#020617';ctx.lineWidth=2.5;ctx.fill();ctx.stroke();
-  ctx.fillStyle='#020617';ctx.font='bold 11px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(i+1,cx,cy);
+  ctx.fillStyle='#020617';ctx.font='bold 11px Cairo,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(cameras.indexOf(c)+1,cx,cy);
   ctx.fillStyle='#e2e8f0';ctx.font='bold 10px Cairo,sans-serif';ctx.fillText(`${c.label} (${cableOf(c)}م)`,cx,cy+24);
  });
- ctx.restore();saveWork();
+ ctx.restore();
+ const L=5*k*zoom;ctx.strokeStyle='#e2e8f0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(14,h-14);ctx.lineTo(14+L,h-14);ctx.moveTo(14,h-19);ctx.lineTo(14,h-9);ctx.moveTo(14+L,h-19);ctx.lineTo(14+L,h-9);ctx.stroke();
+ ctx.fillStyle='#e2e8f0';ctx.font='bold 10px Cairo,sans-serif';ctx.textAlign='center';ctx.fillText('5 م',14+L/2,h-24);
+ renderCoverage(cov);saveWork();
+}
+function renderCoverage(c){
+ const el=$('covPanel');if(!el)return;
+ const col=p=>p>=90?'#34d399':p>=70?'#fbbf24':'#f87171';
+ if(!c.n){el.innerHTML='<div class="text-slate-500">أضف غرفاً على هذا الدور لتحليل التغطية والنقاط العمياء</div>';return}
+ const pct=Math.round(c.cov/c.n*100),bm=(c.n-c.cov)*c.cellM*c.cellM,a=c.cellM*c.cellM;
+ const rows=c.rooms.filter(x=>x.n).map(x=>{const p=Math.round(x.cov/x.n*100),b=(x.n-x.cov)*a;
+  return `<div class="flex justify-between items-center gap-2"><span>${esc(x.r.name)}</span><span style="color:${col(p)}" class="font-bold whitespace-nowrap">${p}% <small class="text-slate-400 font-normal">${b>.05?'— عمياء '+b.toFixed(1)+' م²':'— مغطاة بالكامل'}</small></span></div>`}).join('');
+ el.innerHTML=`<div class="flex items-center justify-between"><b class="text-sm"><i class="fa-solid fa-eye-slash text-rose-400"></i> تحليل التغطية والنقاط العمياء (هذا الدور)</b><b style="color:${col(pct)}" class="text-base">${pct}%</b></div>
+ <div class="h-2 rounded bg-slate-800 overflow-hidden"><div style="width:${pct}%;background:${col(pct)}" class="h-full"></div></div>
+ <div class="text-slate-400">مساحة النقاط العمياء: <b class="text-rose-400">${bm.toFixed(1)} م²</b> &nbsp; <span class="inline-block w-3 h-3 align-middle" style="background:repeating-linear-gradient(45deg,#f87171 0 2px,transparent 2px 5px);border:1px solid #f87171"></span> = نقطة عمياء (غير مغطاة بأي كاميرا)</div>${rows}`;
 }
 
 /* ===================== السحب والتفاعل ===================== */
@@ -460,20 +600,20 @@ function pos(cx,cy){
  return{x:(rx-w/2-panX)/zoom+w/2,y:(ry-h/2-panY)/zoom+h/2,rx,ry};
 }
 function down(cx,cy){
- const p=pos(cx,cy),w=cv.width,h=cv.height;
- for(let i=cameras.length-1;i>=0;i--){const c=cameras[i];
+ const p=pos(cx,cy),w=cv.width,h=cv.height,k=ppm(),cs=floorCams(),rs=floorRooms();
+ for(let i=cs.length-1;i>=0;i--){const c=cs[i];
   if(Math.hypot(p.x-c.nx*w,p.y-c.ny*h)<=22){selCam=c.id;hudOpen=true;drag={t:'cam',id:c.id};syncHud();renderCams();draw();return}}
  if(Math.abs(p.x-dvr.nx*w)<=44&&Math.abs(p.y-dvr.ny*h)<=18){drag={t:'dvr'};return}
- if(!locked)for(let i=rooms.length-1;i>=0;i--){const el=rooms[i],ex=el.nx*w,ey=el.ny*h;
-  if(Math.abs(p.x-ex)<=el.w/2&&Math.abs(p.y-ey)<=el.h/2){selRoom=el.id;drag={t:'room',id:el.id,ox:p.x-ex,oy:p.y-ey};renderRooms();draw();return}}
+ if(!locked)for(let i=rs.length-1;i>=0;i--){const el=rs[i],ex=el.nx*w,ey=el.ny*h;
+  if(Math.abs(p.x-ex)<=el.w*k/2&&Math.abs(p.y-ey)<=el.h*k/2){selRoom=el.id;drag={t:'room',id:el.id,ox:p.x-ex,oy:p.y-ey};renderRooms();draw();return}}
  drag={t:'pan',sx:p.rx-panX,sy:p.ry-panY};
 }
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function move(cx,cy){
  if(!drag)return;const p=pos(cx,cy),w=cv.width,h=cv.height;
- if(drag.t==='cam'){const c=cameras.find(x=>x.id===drag.id);if(c){c.nx=clamp(p.x/w,.04,.96);c.ny=clamp(p.y/h,.04,.96);draw();calc()}}
+ if(drag.t==='cam'){const c=cameras.find(x=>x.id===drag.id);if(c){c.nx=clamp(p.x/w,.02,.98);c.ny=clamp(p.y/h,.02,.98);draw();calc()}}
  else if(drag.t==='dvr'){dvr.nx=clamp(p.x/w,.05,.95);dvr.ny=clamp(p.y/h,.05,.95);draw();calc()}
- else if(drag.t==='room'&&!locked){const r=rooms.find(x=>x.id===drag.id);if(r){r.nx=clamp((p.x-drag.ox)/w,.05,.95);r.ny=clamp((p.y-drag.oy)/h,.05,.95);draw()}}
+ else if(drag.t==='room'&&!locked){const r=rooms.find(x=>x.id===drag.id);if(r){r.nx=clamp((p.x-drag.ox)/w,.02,.98);r.ny=clamp((p.y-drag.oy)/h,.02,.98);draw()}}
  else if(drag.t==='pan'){panX=p.rx-drag.sx;panY=p.ry-drag.sy;draw()}
 }
 cv.addEventListener('mousedown',e=>down(e.clientX,e.clientY));
@@ -485,12 +625,12 @@ window.addEventListener('touchend',()=>drag=null);
 
 /* ===================== الكاميرات ===================== */
 function addCamera(type){
- const p=CAM[type],id=Date.now();
- cameras.push({id,type,label:`${p.title} ${cameras.length+1}`,nx:.45+(Math.random()-.5)*.15,ny:.45+(Math.random()-.5)*.15,rotation:45,fov:p.fov,rangeMeters:p.range,customCable:0,color:p.color});
+ const p=CAM[type],id=uid();
+ cameras.push({id,floor:curFloor,type,label:`${p.title} ${cameras.length+1}`,nx:.45+(Math.random()-.5)*.15,ny:.45+(Math.random()-.5)*.15,rotation:45,fov:p.fov,rangeMeters:p.range,customCable:0,color:p.color});
  selCam=id;hudOpen=true;syncHud();renderCams();draw();calc();toast('✅ تمت إضافة '+p.title);
 }
 function renderCams(){
- $('camList').innerHTML=cameras.map((c,i)=>`<button onclick="selCam=${c.id};hudOpen=true;syncHud();renderCams();draw()" class="btn ${c.id===selCam?'b-cy':'b-gr'}">#${i+1} ${esc(c.label)}</button>`).join('');
+ $('camList').innerHTML=floorCams().map(c=>`<button onclick="selCam=${c.id};hudOpen=true;syncHud();renderCams();draw()" class="btn ${c.id===selCam?'b-cy':'b-gr'}">#${cameras.indexOf(c)+1} ${esc(c.label)}</button>`).join('')||'<span class="text-slate-500 text-xs">لا توجد كاميرات في هذا الدور</span>';renderFloors();
 }
 function syncHud(){
  const c=cameras.find(x=>x.id===selCam);
@@ -506,14 +646,15 @@ function editCam(){
 }
 function changeCamType(t){const c=cameras.find(x=>x.id===selCam);if(!c)return;c.type=t;c.fov=CAM[t].fov;c.color=CAM[t].color;syncHud();draw();calc()}
 function setRot(d){const c=cameras.find(x=>x.id===selCam);if(!c)return;c.rotation=d;syncHud();draw()}
-function deleteCamera(){cameras=cameras.filter(c=>c.id!==selCam);selCam=cameras[0]?.id??null;syncHud();renderCams();draw();calc();toast('تم حذف الكاميرا')}
+function deleteCamera(){cameras=cameras.filter(c=>c.id!==selCam);selCam=floorCams()[0]?.id??null;syncHud();renderCams();draw();calc();toast('تم حذف الكاميرا')}
 
 /* ===================== الحسابات والمقايسة ===================== */
 function cableOf(c){
  if(c.customCable>0)return Math.round(c.customCable);
- const dx=Math.abs(c.nx-dvr.nx)*planW(),dy=Math.abs(c.ny-dvr.ny)*planW()*(cv.height/cv.width);
- return Math.max(8,Math.round((dx+dy)*1.25+5));
+ const dx=Math.abs(c.nx-dvr.nx)*planW(),dy=Math.abs(c.ny-dvr.ny)*planH(),vert=Math.abs(fIdx(c.floor)-fIdx(dvr.floorId))*(num(appMeta.floorHeightM)||3.5);
+ return Math.max(8,Math.round((dx+dy)*1.25+5+vert));
 }
+
 function qtyOf(it,k){
  if(it.override!=null)return num(it.override);
  return({all_cams:k.total,cam_dome:k.dome,cam_bullet:k.bullet,cam_zoom:k.zoom,cam_ptz:k.ptz,cable_m:k.cable,conduit_pipes:k.pipes})[it.qtyMode]??num(it.manualQty);
@@ -574,37 +715,38 @@ function addInvItem(){
 function delInv(i){collectInv();inventory.splice(i,1);store('cctv_pro_unified_inv_v95',inventory);renderInv();calc();toast('تم حذف البند')}
 
 /* ===================== الأرشيف والنسخ الاحتياطي ===================== */
-function persistAll(){store('cctv_pro_unified_inv_v95',inventory);store('cctv_pro_archive_v95',archive);store('cctv_pro_metadata_v95',appMeta);store('cctv_pro_work_v96',{rooms,cameras,dvr})}
-function refreshAll(){fillMeta();syncMeta();renderRooms();renderCams();syncHud();renderArchive();draw();calc()}
+function persistAll(){store('cctv_pro_unified_inv_v95',inventory);store('cctv_pro_archive_v95',archive);store('cctv_pro_metadata_v95',appMeta);store('cctv_pro_work_v96',{floors,curFloor,rooms,cameras,dvr})}
+function refreshAll(){normalize();fillMeta();syncMeta();renderFloors();renderRooms();renderCams();syncHud();renderArchive();draw();calc()}
 function saveToArchive(){
- archive.unshift(cleanProj({id:Date.now(),date:new Date().toLocaleDateString('ar-EG'),projectTitle:appMeta.projectTitle,clientName:appMeta.clientName,grandTotal:lastQuote?.grand||0,appMetadata:JSON.parse(JSON.stringify(appMeta)),buildingElements:rooms,cameras,customInventory:inventory}));
+ archive.unshift(cleanProj({id:Date.now(),date:new Date().toLocaleDateString('ar-EG'),projectTitle:appMeta.projectTitle,clientName:appMeta.clientName,grandTotal:lastQuote?.grand||0,appMetadata:JSON.parse(JSON.stringify(appMeta)),floors,dvr,buildingElements:rooms,cameras,customInventory:inventory}));
  store('cctv_pro_archive_v95',archive);renderArchive();toast('💾 تم الحفظ في الأرشيف');
 }
 function renderArchive(){
  $('archCount').textContent=archive.length;
  $('archList').innerHTML=archive.length?archive.map(p=>`<div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-2"><div><div class="font-bold">${esc(p.projectTitle)} — <span class="text-cyan-300">${esc(p.clientName)}</span></div><div class="text-[11px] text-slate-400">${esc(p.date)} • <b class="text-emerald-400">${p.grandTotal.toLocaleString()} ج.م</b></div></div><div class="flex gap-1.5"><button class="btn b-cy" onclick="openProject(${p.id})">فتح</button><button class="btn b-ro" onclick="delProject(${p.id})">حذف</button></div></div>`).join(''):'<div class="text-center py-4 text-slate-500">لا توجد مشاريع محفوظة</div>';
 }
+function applyData(d){
+ appMeta={...DEF_META,...appMeta,...(d.appMetadata||{})};appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})};
+ floors=(d.floors?.length?d.floors:[{id:1,name:'الدور الأرضي'}]).map(cleanFloor);
+ rooms=d.buildingElements.map(cleanRoom);cameras=d.cameras.map(cleanCam);inventory=d.customInventory.map(cleanItem);
+ dvr={nx:.72,ny:.25,floorId:0,...(d.dvr||{})};curFloor=0;selRoom=selCam=null;
+}
 function openProject(id){
  const p=archive.find(x=>x.id===id);if(!p)return;
- appMeta={...DEF_META,...p.appMetadata};appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})};
- rooms=p.buildingElements.map(cleanRoom);cameras=p.cameras.map(cleanCam);inventory=p.customInventory.map(cleanItem);
- selCam=cameras[0]?.id??null;selRoom=rooms[0]?.id??null;persistAll();refreshAll();closeSec();toast('📂 تم استرجاع المشروع كاملاً');
+ applyData(p);persistAll();refreshAll();closeSec();toast('📂 تم استرجاع المشروع كاملاً');
 }
 function delProject(id){archive=archive.filter(x=>x.id!==id);store('cctv_pro_archive_v95',archive);renderArchive()}
 function exportBackup(){
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({appMetadata:appMeta,customInventory:inventory,buildingElements:rooms,cameras,archivedProjects:archive},null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({appMetadata:appMeta,floors,dvr,customInventory:inventory,buildingElements:rooms,cameras,archivedProjects:archive},null,2)],{type:'application/json'}));
  a.download=`backup-cctv-${Date.now()}.json`;a.click();toast('✅ تم تحميل النسخة الاحتياطية');
 }
 function importBackup(e){
  const f=e.target.files[0];if(!f)return;const r=new FileReader();
  r.onload=ev=>{try{
   const d=JSON.parse(ev.target.result);
-  if(Array.isArray(d.customInventory))inventory=d.customInventory.map(cleanItem);
-  if(Array.isArray(d.buildingElements))rooms=d.buildingElements.map(cleanRoom);
-  if(Array.isArray(d.cameras))cameras=d.cameras.map(cleanCam);
+  applyData({appMetadata:d.appMetadata,floors:Array.isArray(d.floors)?d.floors:[],dvr:d.dvr,buildingElements:Array.isArray(d.buildingElements)?d.buildingElements:rooms,cameras:Array.isArray(d.cameras)?d.cameras:cameras,customInventory:Array.isArray(d.customInventory)?d.customInventory:inventory});
   if(Array.isArray(d.archivedProjects))archive=d.archivedProjects.map(cleanProj);
-  if(d.appMetadata&&typeof d.appMetadata==='object'){appMeta={...appMeta,...d.appMetadata};appMeta.storage={...DEF_META.storage,...(appMeta.storage||{})}}
-  selCam=cameras[0]?.id??null;selRoom=rooms[0]?.id??null;persistAll();refreshAll();toast('✅ تم استعادة النسخة وحفظها');
+  persistAll();refreshAll();toast('✅ تم استعادة النسخة وحفظها');
  }catch(err){toast('❌ ملف غير صالح')}};
  r.readAsText(f);e.target.value='';
 }
@@ -614,10 +756,15 @@ function printQuote(){
  const q=lastQuote;if(!q)return;const T=(id,v)=>$(id).textContent=v;
  T('pCompany',appMeta.companyName);T('pDetails',`${appMeta.engineerName} | تليفون: ${appMeta.companyPhone} | ${appMeta.companyAddress}`);T('pWarranty',appMeta.warranty);
  T('pDate','التاريخ: '+new Date().toLocaleDateString('ar-EG'));T('pProject','المشروع: '+appMeta.projectTitle);T('pClient',`السادة / ${appMeta.clientName} (${appMeta.projectLocation})`);
- $('pImg').src=cv.toDataURL('image/png');
+ const sv={z:zoom,x:panX,y:panY,f:curFloor};zoom=1;panX=panY=0;
+ const imgs=floors.map(f=>{curFloor=f.id;drawNow();const pc=lastCov.n?Math.round(lastCov.cov/lastCov.n*100)+'%':'—';
+  return `<div class="mb-4"><h4 class="text-xs font-black mb-1">${esc(f.name)} — ${cameras.filter(c=>c.floor===f.id).length} كاميرا — نسبة التغطية: ${pc}</h4><img src="${cv.toDataURL('image/png')}" alt="" class="w-full h-auto rounded-xl border-2 border-slate-300"></div>`}).join('');
+ zoom=sv.z;panX=sv.x;panY=sv.y;curFloor=sv.f;drawNow();
+ $('pImgs').innerHTML=imgs+(showBlind?'<p class="text-[10px] text-slate-600">المناطق الحمراء المخططة = نقاط عمياء غير مغطاة بأي كاميرا. الخطوط الصفراء المتقطعة = أبواب.</p>':'');
  $('pBody').innerHTML=q.bom.filter(i=>i.qty>0).map(i=>`<tr><td class="p-2 border border-slate-300 font-bold">${esc(i.name)}</td><td class="p-2 border border-slate-300">${esc(i.category)}</td><td class="p-2 border border-slate-300 text-center font-bold">${i.qty}</td><td class="p-2 border border-slate-300 text-center">${i.price.toLocaleString()} ج.م</td><td class="p-2 border border-slate-300 text-left font-black">${i.total.toLocaleString()} ج.م</td></tr>`).join('');
- T('pGrand',q.grand.toLocaleString());window.print();
+ T('pGrand',q.grand.toLocaleString());setTimeout(()=>window.print(),300);
 }
+
 function sendWA(){
  const q=lastQuote;if(!q)return;
  let m=`*${appMeta.companyName}*\nعرض سعر لمشروع: *${appMeta.projectTitle}*\nالعميل: *${appMeta.clientName}*\n────────────\n• الكاميرات: *${q.total}*\n• السلك التقديري: *${q.cable} متر*\n────────────\n`;
@@ -630,10 +777,11 @@ function sendWA(){
 /* ===================== التشغيل ===================== */
 (async()=>{
  if(security.pinCode){security.pinHash=await sha(security.pinCode);delete security.pinCode;store('cctv_pro_security_v95',{pinHash:security.pinHash,requireLockOnStart:security.requireLockOnStart})}
- resize();refreshAll();
+ refreshAll();
  $('btnLock').innerHTML='<i class="fa-solid fa-lock-open"></i> قفل المبنى';
  if(security.requireLockOnStart)lockNow();
 })();
+
 </script>
 </body>
 </html>
